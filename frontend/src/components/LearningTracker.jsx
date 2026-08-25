@@ -166,7 +166,6 @@ function GithubConnect({ onSynced }) {
 
 export default function LearningTracker() {
   const [journeys, setJourneys] = useState([]);
-  const [loading, setLoading] = useState(true);
   // Only the very first load should blank out the whole tree — every
   // subsequent refetch (confidence click, timer stop, quiz submit) must not
   // unmount running timers on other steps.
@@ -176,13 +175,11 @@ export default function LearningTracker() {
 
   const fetchJourneys = async () => {
     try {
-      setLoading(true);
       const data = await getJourneys();
       setJourneys(data);
     } catch (e) {
       setError(e.message);
     } finally {
-      setLoading(false);
       setInitialLoad(false);
     }
   };

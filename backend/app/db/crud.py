@@ -40,6 +40,7 @@ def create_path_steps(db: Session, journey_id: int, steps: list, order_offset: i
     steps instead of renumbering from 1; normal path creation leaves it 0."""
     import json
     db_steps = []
+    # order is derived from list position, not s.order — safe because build_path always emits steps in final order
     for i, s in enumerate(steps):
         db_step = models.PathStep(
             journey_id=journey_id,

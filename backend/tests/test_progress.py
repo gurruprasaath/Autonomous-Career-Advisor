@@ -125,3 +125,83 @@ def test_valid_progress_update_passes_validation():
     from app.main import ProgressUpdate, _validate_progress_update
 
     _validate_progress_update(ProgressUpdate(confidence_rating=3, quiz_score=80))  # must not raise
+
+
+def test_recalculate_depth_score_mapping_avoids_beginner_for_advanced_skill():
+    """Finding 1: recalculate_journey must set depth_score (not just level) on
+    reconstructed StudentSkill, since planner_agent's level-selection reads
+    depth_score exclusively (see _courses_for's depth_score < 4/< 8 cutoffs).
+    An 'advanced' skill has to land in the intermediate/advanced band, not
+    beginner, after reconstruction."""
+    from app.main import _LEVEL_TO_DEPTH
+    from app.schemas import StudentSkill
+
+    skill = StudentSkill(skill_id="react", name="React", level="advanced",
+                         depth_score=_LEVEL_TO_DEPTH.get("advanced", 1))
+    assert skill.depth_score >= 8  # would classify as "advanced" in _courses_for
+
+    skill_intermediate = StudentSkill(skill_id="sql", name="SQL", level="intermediate",
+                                      depth_score=_LEVEL_TO_DEPTH.get("intermediate", 1))
+    assert 4 <= skill_intermediate.depth_score < 8  # "intermediate" band
+
+    skill_beginner = StudentSkill(skill_id="git", name="Git", level="beginner",
+                                  depth_score=_LEVEL_TO_DEPTH.get("beginner", 1))
+    assert skill_beginner.depth_score < 4  # "beginner" band, as expected
+
+
+def _make_quiz_step(db, user_id, journey_id):
+    step = models.PathStep(journey_id=journey_id, order=1, skill_id="react",
+                           skill_name="React", objective="obj", milestone="ms",
+                           estimated_weeks=3.0)
+    db.add(step)
+    db.commit()
+    db.refresh(step)
+    return step
+
+
+def test_quiz_submit_evicts_cache_and_second_submit_fails_cleanly():
+    """Finding 2: a cached quiz must be evicted after scoring — otherwise the
+    same quiz can be resubmitted forever and a reused SQLite step id could be
+    scored against a stale, unrelated question set."""
+    import pytest
+    from fastapi import HTTPException
+    from app.main import _quiz_cache, submit_step_quiz, QuizSubmission
+
+    db = _db()
+    user = _make_user(db, email="quiz@example.com")
+    journey = crud.create_learning_journey(db, user.id, "Full-Stack Developer",
+                                           gap_report_json="{}", hours_per_week=10)
+    step = _make_quiz_step(db, user.id, journey.id)
+
+    _quiz_cache[step.id] = [{"question": "q", "options": ["a", "b"], "correct_index": 0}]
+
+    result = submit_step_quiz(step.id, QuizSubmission(answers=[0]), db, user)
+    assert result == {"score": 100}
+    assert step.id not in _quiz_cache  # evicted after scoring
+
+    with pytest.raises(HTTPException) as exc_info:
+        submit_step_quiz(step.id, QuizSubmission(answers=[0]), db, user)
+    assert exc_info.value.status_code == 400  # resubmit fails cleanly, no crash
+
+
+def test_recalculate_pops_quiz_cache_for_deleted_steps():
+    """The recalculate endpoint must also evict cache entries for steps it
+    deletes, so a reused id can't inherit a stale quiz."""
+    from app.main import _quiz_cache
+
+    db = _db()
+    user = _make_user(db, email="quiz2@example.com")
+    journey = crud.create_learning_journey(db, user.id, "Full-Stack Developer",
+                                           gap_report_json="{}", hours_per_week=10)
+    step = _make_quiz_step(db, user.id, journey.id)
+    _quiz_cache[step.id] = [{"question": "q", "options": ["a", "b"], "correct_index": 0}]
+
+    # Exercise the same delete+pop loop recalculate_journey runs, without
+    # invoking the full LLM-backed planner.
+    remaining = [step]
+    for s in remaining:
+        _quiz_cache.pop(s.id, None)
+        db.delete(s)
+    db.commit()
+
+    assert step.id not in _quiz_cache

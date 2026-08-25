@@ -169,6 +169,10 @@ def _get_owned_step(db: Session, step_id: int, current_user: models.User) -> mod
 # a shared store (DB row, Redis) instead.
 _quiz_cache: dict[int, list[dict]] = {}
 
+# Maps a gap report's current_level onto planner_agent's depth_score scale
+# (see _courses_for's depth_score < 4 / < 8 cutoffs for beginner/intermediate/advanced).
+_LEVEL_TO_DEPTH = {"none": 1, "beginner": 2, "intermediate": 5, "advanced": 9}
+
 
 @app.get("/api/tracker/journeys")
 def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
@@ -265,6 +269,7 @@ def submit_step_quiz(step_id: int, submission: QuizSubmission, db: Session = Dep
     correct = sum(1 for i, q in enumerate(questions)
                   if i < len(submission.answers) and submission.answers[i] == q["correct_index"])
     score = round((correct / len(questions)) * 100)
+    _quiz_cache.pop(step_id, None)  # one submission per generated quiz; also bounds cache growth
     return {"score": score}
 
 
@@ -338,7 +343,10 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
     )
     # Reconstruct the student's actual per-skill levels from the original gap
     # report so the planner doesn't default everyone to beginner resources.
-    skills = [StudentSkill(skill_id=g.skill_id, name=g.name, level=g.current_level)
+    # depth_score (not level) is what planner_agent actually reads for resource
+    # difficulty, so map current_level onto it too.
+    skills = [StudentSkill(skill_id=g.skill_id, name=g.name, level=g.current_level,
+                          depth_score=_LEVEL_TO_DEPTH.get(g.current_level, 1))
              for g in full_gap_report.gaps]
     profile = StudentProfile(hours_per_week=journey.hours_per_week,
                              target_role=journey.target_role, skills=skills)
@@ -354,6 +362,7 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
         raise HTTPException(502, "Re-planning produced no steps; your path is unchanged")
 
     for step in remaining:
+        _quiz_cache.pop(step.id, None)  # avoid a reused SQLite id inheriting a stale quiz
         db.delete(step)
     next_order_offset = max((s.order for s in completed), default=0)
     crud.create_path_steps(db, journey_id, path.steps, order_offset=next_order_offset)
