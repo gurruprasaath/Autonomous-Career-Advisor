@@ -260,3 +260,61 @@ def sync_github(req: GithubSyncRequest, db: Session = Depends(get_db),
     crud.replace_github_evidence(db, current_user.id, evidence_rows)
     return {"matched_skills": sorted({r["skill_id"] for r in evidence_rows}),
            "evidence_count": len(evidence_rows)}
+
+
+@app.post("/api/tracker/journey/{journey_id}/recalculate")
+def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
+                        current_user: models.User = Depends(get_current_user)):
+    import json
+    from .agents.planner_agent import build_path
+    from .agents.verifier_agent import verify_path
+    from .schemas import GapReport, StudentProfile
+
+    journey = db.query(models.LearningJourney).filter(
+        models.LearningJourney.id == journey_id,
+        models.LearningJourney.user_id == current_user.id).first()
+    if not journey:
+        raise HTTPException(404, "Journey not found")
+
+    all_steps = db.query(models.PathStep).filter(models.PathStep.journey_id == journey_id).all()
+    completed = [s for s in all_steps if s.status == "completed"]
+    remaining = [s for s in all_steps if s.status != "completed"]
+    if not remaining:
+        raise HTTPException(400, "No remaining steps to recalculate — every step is completed")
+
+    struggling = [s for s in remaining if s.status == "struggling"]
+    revision_request = "Student is struggling with: " + "; ".join(
+        f"{s.skill_name} (quiz_score={s.quiz_score}, confidence={s.confidence_rating})"
+        for s in struggling
+    ) if struggling else "Regenerate the remaining steps with fresh pacing."
+
+    full_gap_report = GapReport(**json.loads(journey.gap_report_json or "{}"))
+    remaining_skill_ids = {s.skill_id for s in remaining}
+    partial_gap_report = GapReport(
+        target_role=full_gap_report.target_role,
+        gaps=[g for g in full_gap_report.gaps if g.skill_id in remaining_skill_ids],
+        strengths=full_gap_report.strengths,
+    )
+    profile = StudentProfile(hours_per_week=journey.hours_per_week, target_role=journey.target_role)
+
+    path, _notes = build_path(profile, partial_gap_report, revision_request=revision_request)
+    critique, _notes2 = verify_path(path, partial_gap_report, profile)
+    if not critique.passed and critique.revision_request:
+        path, _notes3 = build_path(profile, partial_gap_report, revision_request=critique.revision_request)
+
+    for step in remaining:
+        db.delete(step)
+    db.commit()
+
+    next_order = (max((s.order for s in completed), default=0)) + 1
+    for i, step in enumerate(path.steps):
+        db.add(models.PathStep(
+            journey_id=journey_id, order=next_order + i, skill_id=step.skill_id,
+            skill_name=step.skill_name, objective=step.objective, milestone=step.milestone,
+            estimated_weeks=step.estimated_weeks,
+            resources_json=json.dumps([r.model_dump() for r in step.resources]),
+        ))
+    db.commit()
+
+    return {"journey_id": journey_id, "regenerated_steps": len(path.steps),
+           "kept_completed_steps": len(completed)}
