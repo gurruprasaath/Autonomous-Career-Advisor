@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.exc import OperationalError
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./advisor.db"
 
@@ -16,3 +17,24 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+# SQLite ADD COLUMN is safe for existing tables; there's no Alembic here, so
+# this is a deliberately minimal "add columns if missing" migration — not a
+# general migration system.
+def run_migrations(engine) -> None:
+    statements = [
+        "ALTER TABLE path_steps ADD COLUMN quiz_score INTEGER",
+        "ALTER TABLE path_steps ADD COLUMN confidence_rating INTEGER",
+        "ALTER TABLE path_steps ADD COLUMN time_spent_minutes INTEGER DEFAULT 0",
+        "ALTER TABLE users ADD COLUMN github_username VARCHAR",
+        "ALTER TABLE journeys ADD COLUMN gap_report_json TEXT",
+        "ALTER TABLE journeys ADD COLUMN hours_per_week INTEGER DEFAULT 10",
+    ]
+    with engine.connect() as conn:
+        for stmt in statements:
+            try:
+                conn.execute(text(stmt))
+                conn.commit()
+            except OperationalError:
+                conn.rollback()  # column already exists — fine
