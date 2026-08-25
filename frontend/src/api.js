@@ -51,8 +51,19 @@ export const register = (email, password) =>
 
 export const getJourneys = () => request("/api/tracker/journeys");
 
-export const updateStepStatus = (stepId, status) =>
-  request(`/api/tracker/step/${stepId}/status?status=${status}`, { method: "POST" });
+export const recordProgress = (stepId, update) =>
+  request(`/api/tracker/step/${stepId}/progress`, {
+    method: "POST", body: JSON.stringify(update),
+  });
+
+export const getStepQuiz = (stepId) =>
+  request(`/api/tracker/step/${stepId}/quiz`, { method: "POST" });
+
+export const syncGithub = (username) =>
+  request("/api/github/sync", { method: "POST", body: JSON.stringify({ username }) });
+
+export const recalculateJourney = (journeyId) =>
+  request(`/api/tracker/journey/${journeyId}/recalculate`, { method: "POST" });
 
 export const extractPdf = async (file) => {
   const formData = new FormData();
