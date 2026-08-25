@@ -1,6 +1,7 @@
 """FastAPI app for the Autonomous Career Advisor."""
 import logging
 from contextlib import asynccontextmanager
+from datetime import datetime
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +16,8 @@ from .core.vectorstore import warm_up
 from .providers import get_job_provider
 from .db import database, models, crud, auth
 from .db.database import engine, run_migrations
+from pydantic import BaseModel
+
 from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
@@ -149,6 +152,8 @@ def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depe
     from sqlalchemy.orm import joinedload
     journeys = db.query(models.LearningJourney).options(joinedload(models.LearningJourney.steps)).filter(models.LearningJourney.user_id == current_user.id).order_by(models.LearningJourney.created_at.desc()).all()
     
+    evidence_by_skill = crud.get_github_evidence_by_skill(db, current_user.id)
+
     result = []
     for j in journeys:
         import json
@@ -166,24 +171,89 @@ def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depe
                     "milestone": s.milestone,
                     "estimated_weeks": s.estimated_weeks,
                     "status": s.status,
-                    "resources": json.loads(s.resources_json) if s.resources_json else []
+                    "quiz_score": s.quiz_score,
+                    "confidence_rating": s.confidence_rating,
+                    "time_spent_minutes": s.time_spent_minutes,
+                    "resources": json.loads(s.resources_json) if s.resources_json else [],
+                    "github_evidence": [
+                        {"repo_name": e.repo_name, "last_pushed_at":
+                         e.last_pushed_at.isoformat() if hasattr(e.last_pushed_at, "isoformat") else e.last_pushed_at}
+                        for e in evidence_by_skill.get(s.skill_id, [])
+                    ],
                 } for s in sorted(j.steps, key=lambda x: x.order)
             ]
         }
         result.append(j_dict)
     return result
 
-@app.post("/api/tracker/step/{step_id}/status")
-def update_step_status(step_id: int, status: str, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    if status not in ["pending", "in_progress", "struggling", "completed"]:
-        raise HTTPException(status_code=400, detail="Invalid status")
-    step = crud.update_step_status(db, step_id, status)
+class ProgressUpdate(BaseModel):
+    quiz_score: int | None = None
+    confidence_rating: int | None = None
+    minutes_delta: int = 0
+
+@app.post("/api/tracker/step/{step_id}/progress")
+def record_progress(step_id: int, update: ProgressUpdate, db: Session = Depends(get_db),
+                    current_user: models.User = Depends(get_current_user)):
+    if update.confidence_rating is not None and not (1 <= update.confidence_rating <= 5):
+        raise HTTPException(400, "confidence_rating must be 1-5")
+    if update.quiz_score is not None and not (0 <= update.quiz_score <= 100):
+        raise HTTPException(400, "quiz_score must be 0-100")
+    step = crud.record_step_progress(
+        db, step_id, quiz_score=update.quiz_score,
+        confidence_rating=update.confidence_rating, minutes_delta=update.minutes_delta)
     if not step:
-        raise HTTPException(status_code=404, detail="Step not found")
-    
-    import json
-    return {
-        "id": step.id,
-        "status": step.status,
-        "skill_name": step.skill_name
-    }
+        raise HTTPException(404, "Step not found")
+    return {"id": step.id, "status": step.status, "skill_name": step.skill_name,
+           "quiz_score": step.quiz_score, "confidence_rating": step.confidence_rating,
+           "time_spent_minutes": step.time_spent_minutes}
+
+
+@app.post("/api/tracker/step/{step_id}/quiz")
+def get_step_quiz(step_id: int, db: Session = Depends(get_db),
+                  current_user: models.User = Depends(get_current_user)):
+    from .agents.quiz_agent import generate_quiz
+    step = db.query(models.PathStep).filter(models.PathStep.id == step_id).first()
+    if not step:
+        raise HTTPException(404, "Step not found")
+    questions = generate_quiz(step.skill_name, step.objective)
+    if not questions:
+        raise HTTPException(502, "Could not generate a quiz for this step right now")
+    return {"questions": questions}
+
+
+class GithubSyncRequest(BaseModel):
+    username: str
+
+@app.post("/api/github/sync")
+def sync_github(req: GithubSyncRequest, db: Session = Depends(get_db),
+                current_user: models.User = Depends(get_current_user)):
+    from .providers.github import GithubRateLimited, GithubUserNotFound, fetch_repo_languages
+    from .core.taxonomy import match_mention
+
+    try:
+        languages = fetch_repo_languages(req.username)
+    except GithubUserNotFound:
+        raise HTTPException(404, f"GitHub user '{req.username}' not found")
+    except GithubRateLimited as e:
+        raise HTTPException(429, str(e))
+
+    current_user.github_username = req.username
+    db.commit()
+
+    evidence_rows = []
+    for language, repos in languages.items():
+        hit = match_mention(language)
+        if not hit:
+            continue
+        skill_id = hit[0]
+        for repo in repos:
+            # GithubEvidence.last_pushed_at is a DateTime column; GitHub's API gives
+            # an ISO-8601 string ("...Z"), so parse it here before handing off to crud.
+            last_pushed_at = datetime.fromisoformat(repo["last_pushed_at"].replace("Z", "+00:00"))
+            evidence_rows.append({
+                "skill_id": skill_id, "repo_name": repo["repo_name"],
+                "repo_language": language, "last_pushed_at": last_pushed_at,
+            })
+    crud.replace_github_evidence(db, current_user.id, evidence_rows)
+    return {"matched_skills": sorted({r["skill_id"] for r in evidence_rows}),
+           "evidence_count": len(evidence_rows)}
