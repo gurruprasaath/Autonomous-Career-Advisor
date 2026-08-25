@@ -78,7 +78,10 @@ def advise(request: AdviseRequest, token: str = Depends(OAuth2PasswordBearer(tok
         result = run_advisor(request)
         if token and result.path:
             user = get_current_user(token, db)
-            journey = crud.create_learning_journey(db, user.id, result.path.target_role)
+            journey = crud.create_learning_journey(
+                db, user.id, result.path.target_role,
+                gap_report_json=result.gap_report.model_dump_json(),
+                hours_per_week=request.hours_per_week)
             crud.create_path_steps(db, journey.id, result.path.steps)
         return result
     except ValueError as e:  # e.g. unknown role
