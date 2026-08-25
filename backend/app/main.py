@@ -14,6 +14,7 @@ from .core.graph import run_advisor
 from .core.vectorstore import warm_up
 from .providers import get_job_provider
 from .db import database, models, crud, auth
+from .db.database import engine, run_migrations
 from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
@@ -23,6 +24,7 @@ log = logging.getLogger("advisor")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     models.Base.metadata.create_all(bind=database.engine)
+    run_migrations(engine)
     counts = warm_up()
     log.info("vector store ready: %s", counts)
     if not get_settings().llm_available:
