@@ -16,7 +16,7 @@ from .core.vectorstore import warm_up
 from .providers import get_job_provider
 from .db import database, models, crud, auth
 from .db.database import engine, run_migrations
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token
 
@@ -150,6 +150,26 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise credentials_exception
     return user
 
+
+def _get_owned_step(db: Session, step_id: int, current_user: models.User) -> models.PathStep:
+    """Look up a PathStep and verify it belongs to one of current_user's own
+    journeys — same join pattern recalculate_journey uses for its journey
+    lookup. Prevents one user from reading/writing another user's step via
+    a guessed step_id (IDOR)."""
+    step = (db.query(models.PathStep).join(models.LearningJourney)
+            .filter(models.PathStep.id == step_id,
+                    models.LearningJourney.user_id == current_user.id).first())
+    if not step:
+        raise HTTPException(404, "Step not found")
+    return step
+
+
+# ponytail: single-process in-memory cache, cleared on restart — fine for
+# this dev app (no multi-worker deployment); a real deployment would need
+# a shared store (DB row, Redis) instead.
+_quiz_cache: dict[int, list[dict]] = {}
+
+
 @app.get("/api/tracker/journeys")
 def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     from sqlalchemy.orm import joinedload
@@ -164,6 +184,7 @@ def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depe
             "id": j.id,
             "target_role": j.target_role,
             "created_at": j.created_at.isoformat(),
+            "hours_per_week": j.hours_per_week,
             "steps": [
                 {
                     "id": s.id,
@@ -194,18 +215,23 @@ class ProgressUpdate(BaseModel):
     confidence_rating: int | None = None
     minutes_delta: int = 0
 
-@app.post("/api/tracker/step/{step_id}/progress")
-def record_progress(step_id: int, update: ProgressUpdate, db: Session = Depends(get_db),
-                    current_user: models.User = Depends(get_current_user)):
+
+def _validate_progress_update(update: ProgressUpdate) -> None:
+    """Extracted from the endpoint so it's directly unit-testable."""
     if update.confidence_rating is not None and not (1 <= update.confidence_rating <= 5):
         raise HTTPException(400, "confidence_rating must be 1-5")
     if update.quiz_score is not None and not (0 <= update.quiz_score <= 100):
         raise HTTPException(400, "quiz_score must be 0-100")
+
+
+@app.post("/api/tracker/step/{step_id}/progress")
+def record_progress(step_id: int, update: ProgressUpdate, db: Session = Depends(get_db),
+                    current_user: models.User = Depends(get_current_user)):
+    _validate_progress_update(update)
+    step = _get_owned_step(db, step_id, current_user)
     step = crud.record_step_progress(
-        db, step_id, quiz_score=update.quiz_score,
+        db, step.id, quiz_score=update.quiz_score,
         confidence_rating=update.confidence_rating, minutes_delta=update.minutes_delta)
-    if not step:
-        raise HTTPException(404, "Step not found")
     return {"id": step.id, "status": step.status, "skill_name": step.skill_name,
            "quiz_score": step.quiz_score, "confidence_rating": step.confidence_rating,
            "time_spent_minutes": step.time_spent_minutes}
@@ -215,13 +241,31 @@ def record_progress(step_id: int, update: ProgressUpdate, db: Session = Depends(
 def get_step_quiz(step_id: int, db: Session = Depends(get_db),
                   current_user: models.User = Depends(get_current_user)):
     from .agents.quiz_agent import generate_quiz
-    step = db.query(models.PathStep).filter(models.PathStep.id == step_id).first()
-    if not step:
-        raise HTTPException(404, "Step not found")
+    step = _get_owned_step(db, step_id, current_user)
     questions = generate_quiz(step.skill_name, step.objective)
     if not questions:
         raise HTTPException(502, "Could not generate a quiz for this step right now")
-    return {"questions": questions}
+    _quiz_cache[step_id] = questions
+    # correct_index is never sent to the client — scoring happens server-side
+    # in /quiz/submit against the cached copy.
+    return {"questions": [{"question": q["question"], "options": q["options"]} for q in questions]}
+
+
+class QuizSubmission(BaseModel):
+    answers: list[int]
+
+
+@app.post("/api/tracker/step/{step_id}/quiz/submit")
+def submit_step_quiz(step_id: int, submission: QuizSubmission, db: Session = Depends(get_db),
+                     current_user: models.User = Depends(get_current_user)):
+    _get_owned_step(db, step_id, current_user)
+    questions = _quiz_cache.get(step_id)
+    if not questions:
+        raise HTTPException(400, "No quiz in progress for this step — request a new one first")
+    correct = sum(1 for i, q in enumerate(questions)
+                  if i < len(submission.answers) and submission.answers[i] == q["correct_index"])
+    score = round((correct / len(questions)) * 100)
+    return {"score": score}
 
 
 class GithubSyncRequest(BaseModel):
@@ -230,33 +274,24 @@ class GithubSyncRequest(BaseModel):
 @app.post("/api/github/sync")
 def sync_github(req: GithubSyncRequest, db: Session = Depends(get_db),
                 current_user: models.User = Depends(get_current_user)):
-    from .providers.github import GithubRateLimited, GithubUserNotFound, fetch_repo_languages
-    from .core.taxonomy import match_mention
+    from .providers.github import (GithubRateLimited, GithubUserNotFound,
+                                   fetch_repo_languages, map_languages_to_evidence)
 
     try:
         languages = fetch_repo_languages(req.username)
-    except GithubUserNotFound:
-        raise HTTPException(404, f"GitHub user '{req.username}' not found")
+    except GithubUserNotFound as e:
+        raise HTTPException(404, f"GitHub user '{req.username}' not found") from e
     except GithubRateLimited as e:
-        raise HTTPException(429, str(e))
+        raise HTTPException(429, str(e)) from e
 
     current_user.github_username = req.username
     db.commit()
 
-    evidence_rows = []
-    for language, repos in languages.items():
-        hit = match_mention(language)
-        if not hit:
-            continue
-        skill_id = hit[0]
-        for repo in repos:
-            # GithubEvidence.last_pushed_at is a DateTime column; GitHub's API gives
-            # an ISO-8601 string ("...Z"), so parse it here before handing off to crud.
-            last_pushed_at = datetime.fromisoformat(repo["last_pushed_at"].replace("Z", "+00:00"))
-            evidence_rows.append({
-                "skill_id": skill_id, "repo_name": repo["repo_name"],
-                "repo_language": language, "last_pushed_at": last_pushed_at,
-            })
+    evidence_rows = map_languages_to_evidence(languages)
+    for row in evidence_rows:
+        # GithubEvidence.last_pushed_at is a DateTime column; GitHub's API gives
+        # an ISO-8601 string ("...Z"), so parse it here before handing off to crud.
+        row["last_pushed_at"] = datetime.fromisoformat(row["last_pushed_at"].replace("Z", "+00:00"))
     crud.replace_github_evidence(db, current_user.id, evidence_rows)
     return {"matched_skills": sorted({r["skill_id"] for r in evidence_rows}),
            "evidence_count": len(evidence_rows)}
@@ -268,7 +303,7 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
     import json
     from .agents.planner_agent import build_path
     from .agents.verifier_agent import verify_path
-    from .schemas import GapReport, StudentProfile
+    from .schemas import GapReport, StudentProfile, StudentSkill
 
     journey = db.query(models.LearningJourney).filter(
         models.LearningJourney.id == journey_id,
@@ -288,33 +323,40 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
         for s in struggling
     ) if struggling else "Regenerate the remaining steps with fresh pacing."
 
-    full_gap_report = GapReport(**json.loads(journey.gap_report_json or "{}"))
+    try:
+        full_gap_report = GapReport(**json.loads(journey.gap_report_json or "{}"))
+    except (ValueError, ValidationError) as e:
+        raise HTTPException(
+            400, "This journey predates adaptive re-planning — regenerate the path to enable it."
+        ) from e
+
     remaining_skill_ids = {s.skill_id for s in remaining}
     partial_gap_report = GapReport(
         target_role=full_gap_report.target_role,
         gaps=[g for g in full_gap_report.gaps if g.skill_id in remaining_skill_ids],
         strengths=full_gap_report.strengths,
     )
-    profile = StudentProfile(hours_per_week=journey.hours_per_week, target_role=journey.target_role)
+    # Reconstruct the student's actual per-skill levels from the original gap
+    # report so the planner doesn't default everyone to beginner resources.
+    skills = [StudentSkill(skill_id=g.skill_id, name=g.name, level=g.current_level)
+             for g in full_gap_report.gaps]
+    profile = StudentProfile(hours_per_week=journey.hours_per_week,
+                             target_role=journey.target_role, skills=skills)
 
     path, _notes = build_path(profile, partial_gap_report, revision_request=revision_request)
     critique, _notes2 = verify_path(path, partial_gap_report, profile)
     if not critique.passed and critique.revision_request:
-        path, _notes3 = build_path(profile, partial_gap_report, revision_request=critique.revision_request)
+        combined_request = (revision_request + " " + critique.revision_request)
+        path, _notes3 = build_path(profile, partial_gap_report, revision_request=combined_request)
+        critique, _notes4 = verify_path(path, partial_gap_report, profile)
+
+    if not path.steps:
+        raise HTTPException(502, "Re-planning produced no steps; your path is unchanged")
 
     for step in remaining:
         db.delete(step)
-    db.commit()
-
-    next_order = (max((s.order for s in completed), default=0)) + 1
-    for i, step in enumerate(path.steps):
-        db.add(models.PathStep(
-            journey_id=journey_id, order=next_order + i, skill_id=step.skill_id,
-            skill_name=step.skill_name, objective=step.objective, milestone=step.milestone,
-            estimated_weeks=step.estimated_weeks,
-            resources_json=json.dumps([r.model_dump() for r in step.resources]),
-        ))
-    db.commit()
+    next_order_offset = max((s.order for s in completed), default=0)
+    crud.create_path_steps(db, journey_id, path.steps, order_offset=next_order_offset)
 
     return {"journey_id": journey_id, "regenerated_steps": len(path.steps),
-           "kept_completed_steps": len(completed)}
+           "kept_completed_steps": len(completed), "verified": critique.passed}

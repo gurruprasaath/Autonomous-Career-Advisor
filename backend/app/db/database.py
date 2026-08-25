@@ -22,6 +22,8 @@ def get_db():
 # SQLite ADD COLUMN is safe for existing tables; there's no Alembic here, so
 # this is a deliberately minimal "add columns if missing" migration — not a
 # general migration system.
+# ponytail: additive ALTERs only, no version tracking, no rename/drop/backfill
+# support — move to Alembic if a future change needs any of those.
 def run_migrations(engine) -> None:
     statements = [
         "ALTER TABLE path_steps ADD COLUMN quiz_score INTEGER",

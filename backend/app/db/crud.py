@@ -35,13 +35,15 @@ def create_path_step(db: Session, step_data: dict):
     db.refresh(db_step)
     return db_step
 
-def create_path_steps(db: Session, journey_id: int, steps: list):
+def create_path_steps(db: Session, journey_id: int, steps: list, order_offset: int = 0):
+    """order_offset lets recalculation append after already-kept completed
+    steps instead of renumbering from 1; normal path creation leaves it 0."""
     import json
     db_steps = []
-    for s in steps:
+    for i, s in enumerate(steps):
         db_step = models.PathStep(
             journey_id=journey_id,
-            order=s.order,
+            order=order_offset + i + 1,
             skill_id=s.skill_id,
             skill_name=s.skill_name,
             objective=s.objective,

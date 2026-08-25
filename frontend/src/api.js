@@ -59,6 +59,11 @@ export const recordProgress = (stepId, update) =>
 export const getStepQuiz = (stepId) =>
   request(`/api/tracker/step/${stepId}/quiz`, { method: "POST" });
 
+export const submitStepQuiz = (stepId, answers) =>
+  request(`/api/tracker/step/${stepId}/quiz/submit`, {
+    method: "POST", body: JSON.stringify({ answers }),
+  });
+
 export const syncGithub = (username) =>
   request("/api/github/sync", { method: "POST", body: JSON.stringify({ username }) });
 

@@ -6,7 +6,18 @@ language recently," which is the only claim this evidence makes.
 """
 import httpx
 
+from ..core.taxonomy import match_mention
+
 GITHUB_API = "https://api.github.com"
+
+# Recent-30 cap: evidence of *recent* practice is what matters (per design
+# spec), and it bounds the per-repo /languages calls against the
+# unauthenticated 60 req/hour limit shared by the whole server.
+MAX_REPOS = 30
+
+# Below this, match_mention's embedding fallback is producing noise, not
+# signal — e.g. "Jupyter Notebook" weakly matching "python" at ~0.056.
+EVIDENCE_CONFIDENCE_FLOOR = 0.6
 
 
 class GithubUserNotFound(RuntimeError):
@@ -32,10 +43,12 @@ def fetch_repo_languages(username: str) -> dict[str, list[dict]]:
         raise GithubRateLimited("GitHub API rate limit hit; try again later")
     repos_resp.raise_for_status()
 
+    repos = [r for r in repos_resp.json() if not r.get("fork")]
+    repos.sort(key=lambda r: r.get("pushed_at") or "", reverse=True)
+    repos = repos[:MAX_REPOS]
+
     result: dict[str, list[dict]] = {}
-    for repo in repos_resp.json():
-        if repo.get("fork"):
-            continue
+    for repo in repos:
         lang_resp = httpx.get(
             f"{GITHUB_API}/repos/{username}/{repo['name']}/languages", timeout=10)
         if lang_resp.status_code != 200:
@@ -46,3 +59,23 @@ def fetch_repo_languages(username: str) -> dict[str, list[dict]]:
                 "last_pushed_at": repo["pushed_at"],
             })
     return result
+
+
+def map_languages_to_evidence(languages: dict[str, list[dict]],
+                              confidence_floor: float = EVIDENCE_CONFIDENCE_FLOOR) -> list[dict]:
+    """GitHub language name -> taxonomy skill via match_mention, dropping
+    matches below confidence_floor. Returns evidence rows with
+    last_pushed_at still as the raw ISO string from GitHub (caller converts
+    to a datetime for storage)."""
+    evidence_rows = []
+    for language, repos in languages.items():
+        hit = match_mention(language)
+        if not hit or hit[1] < confidence_floor:
+            continue
+        skill_id = hit[0]
+        for repo in repos:
+            evidence_rows.append({
+                "skill_id": skill_id, "repo_name": repo["repo_name"],
+                "repo_language": language, "last_pushed_at": repo["last_pushed_at"],
+            })
+    return evidence_rows

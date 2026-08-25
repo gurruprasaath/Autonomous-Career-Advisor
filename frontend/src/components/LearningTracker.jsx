@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { getJourneys, recordProgress, getStepQuiz, syncGithub, recalculateJourney } from "../api";
+import { getJourneys, recordProgress, getStepQuiz, submitStepQuiz, syncGithub, recalculateJourney } from "../api";
 
 function QuizModal({ step, onClose, onScored }) {
   const [questions, setQuestions] = useState(null);
   const [answers, setAnswers] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     getStepQuiz(step.id)
@@ -14,10 +15,19 @@ function QuizModal({ step, onClose, onScored }) {
       .finally(() => setLoading(false));
   }, [step.id]);
 
-  const submit = () => {
-    const correct = questions.filter((q, i) => answers[i] === q.correct_index).length;
-    const score = Math.round((correct / questions.length) * 100);
-    onScored(score);
+  const submit = async () => {
+    setSubmitting(true);
+    try {
+      // Scoring happens server-side against the cached answer key — the
+      // client never sees correct_index.
+      const orderedAnswers = questions.map((_, i) => answers[i]);
+      const { score } = await submitStepQuiz(step.id, orderedAnswers);
+      onScored(score);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -38,8 +48,8 @@ function QuizModal({ step, onClose, onScored }) {
       ))}
       {questions && (
         <button className="primary-button" onClick={submit}
-               disabled={Object.keys(answers).length !== questions.length}>
-          Submit
+               disabled={submitting || Object.keys(answers).length !== questions.length}>
+          {submitting ? "Submitting..." : "Submit"}
         </button>
       )}
       <button className="secondary-button" style={{ marginLeft: "0.5rem" }} onClick={onClose}>Cancel</button>
@@ -47,7 +57,7 @@ function QuizModal({ step, onClose, onScored }) {
   );
 }
 
-function StepTracker({ step, onChanged }) {
+function StepTracker({ step, hoursPerWeek, onChanged }) {
   const [running, setRunning] = useState(false);
   const [elapsedSec, setElapsedSec] = useState(0);
   const [quizOpen, setQuizOpen] = useState(false);
@@ -64,8 +74,10 @@ function StepTracker({ step, onChanged }) {
 
   const stopAndSave = async () => {
     setRunning(false);
-    const minutes = Math.round(elapsedSec / 60);
-    if (minutes > 0) {
+    if (elapsedSec > 0) {
+      // Round up to at least 1 minute so short-but-real sessions (<30s)
+      // still get logged instead of silently disappearing.
+      const minutes = Math.max(1, Math.round(elapsedSec / 60));
       await recordProgress(step.id, { minutes_delta: minutes });
       onChanged();
     }
@@ -77,7 +89,7 @@ function StepTracker({ step, onChanged }) {
     onChanged();
   };
 
-  const budgetMinutes = step.estimated_weeks * 10 * 60; // rough: hours_per_week baked into estimated_weeks already
+  const budgetMinutes = step.estimated_weeks * (hoursPerWeek || 10) * 60;
   const pct = Math.min(100, Math.round(((step.time_spent_minutes || 0) / Math.max(budgetMinutes, 1)) * 100));
 
   return (
@@ -155,6 +167,10 @@ function GithubConnect({ onSynced }) {
 export default function LearningTracker() {
   const [journeys, setJourneys] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Only the very first load should blank out the whole tree — every
+  // subsequent refetch (confidence click, timer stop, quiz submit) must not
+  // unmount running timers on other steps.
+  const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState("");
   const [recalculating, setRecalculating] = useState(null);
 
@@ -167,6 +183,7 @@ export default function LearningTracker() {
       setError(e.message);
     } finally {
       setLoading(false);
+      setInitialLoad(false);
     }
   };
 
@@ -184,7 +201,7 @@ export default function LearningTracker() {
     }
   };
 
-  if (loading) return <div>Loading journeys...</div>;
+  if (initialLoad) return <div>Loading journeys...</div>;
   if (error) return <div className="error-box">{error}</div>;
 
   return (
@@ -225,7 +242,7 @@ export default function LearningTracker() {
                       ))}
                     </div>
                   )}
-                  <StepTracker step={s} onChanged={fetchJourneys} />
+                  <StepTracker step={s} hoursPerWeek={j.hours_per_week} onChanged={fetchJourneys} />
                 </div>
               ))}
             </div>

@@ -7,6 +7,7 @@ from app.providers.github import (
     GithubRateLimited,
     GithubUserNotFound,
     fetch_repo_languages,
+    map_languages_to_evidence,
 )
 
 
@@ -63,3 +64,32 @@ def test_rate_limit_raises():
         mock_get.return_value = _mock_response(403, {})
         with pytest.raises(GithubRateLimited):
             fetch_repo_languages("testuser")
+
+
+def test_map_languages_matches_legitimate_language():
+    languages = {"Python": [{"repo_name": "my-api", "last_pushed_at": "2026-07-01T00:00:00Z"}]}
+    rows = map_languages_to_evidence(languages)
+    assert len(rows) == 1
+    assert rows[0]["skill_id"] == "python"
+    assert rows[0]["repo_name"] == "my-api"
+
+
+def test_map_languages_excludes_low_confidence_matches():
+    # "Jupyter Notebook" only weakly matches "python" via the embedding
+    # fallback (well under the 0.6 confidence floor) — must not produce
+    # a false evidence chip.
+    languages = {
+        "Python": [{"repo_name": "my-api", "last_pushed_at": "2026-07-01T00:00:00Z"}],
+        "Jupyter Notebook": [{"repo_name": "notebooks", "last_pushed_at": "2026-06-01T00:00:00Z"}],
+    }
+    rows = map_languages_to_evidence(languages)
+    assert any(r["repo_language"] == "Python" for r in rows)
+    assert not any(r["repo_language"] == "Jupyter Notebook" for r in rows)
+
+
+def test_map_languages_unmapped_language_produces_no_row():
+    # Languages the taxonomy simply doesn't cover (Go, Rust, ...) are
+    # ignored, not an error.
+    languages = {"Rust": [{"repo_name": "systems-proj", "last_pushed_at": "2026-07-01T00:00:00Z"}]}
+    rows = map_languages_to_evidence(languages)
+    assert rows == []
