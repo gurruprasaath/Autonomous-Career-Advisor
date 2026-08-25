@@ -1,0 +1,30 @@
+# Python
+backend/.venv/
+**/__pycache__/
+*.pyc
+backend/.pytest_cache/
+backend/.chroma/
+backend/advisor.db
+
+# Secrets / local env
+.env
+.env.local
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Superpowers scratch (git-ignored progress ledger, per skill docs)
+.superpowers/

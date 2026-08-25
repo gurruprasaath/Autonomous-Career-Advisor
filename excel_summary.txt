@@ -1,0 +1,54 @@
+Sheets: ['PROJECT GUIDELINES & TIPS', 'EDUCATION BASE PAPERS', 'CYBERSECURITY BASE PAPERS']
+
+--- Sheet: PROJECT GUIDELINES & TIPS ---
+Columns: ['📋 PROJECT GUIDELINES - BASE PAPER SELECTION', 'Unnamed: 1']
+Rows: 52
+Sample Data (first row):
+[
+  {
+    "\ud83d\udccb PROJECT GUIDELINES - BASE PAPER SELECTION": NaN,
+    "Unnamed: 1": NaN
+  }
+]
+
+--- Sheet: EDUCATION BASE PAPERS ---
+Columns: ['#', 'Paper Title', 'Authors', 'Journal Name', 'Journal Type', 'SCI/SCIE Status', 'Year', 'Publication Date', 'Link/DOI', 'Key Features', 'Valid for Project', 'Notes']
+Rows: 5
+Sample Data (first row):
+[
+  {
+    "#": "1",
+    "Paper Title": "EduPlanner: LLM-Based Multiagent Systems for Customized and Intelligent Instructional Design",
+    "Authors": "Zhang et al.",
+    "Journal Name": "IEEE Transactions on Learning Technologies",
+    "Journal Type": "IEEE Journal",
+    "SCI/SCIE Status": "\u2705 SCI",
+    "Year": "2025",
+    "Publication Date": "2025",
+    "Link/DOI": "https://ieeexplore.ieee.org/abstract/document/10765432",
+    "Key Features": "Multi-agent instructional design, curriculum planning, adaptive learning",
+    "Valid for Project": "\u2705 VALID",
+    "Notes": "Highly Recommended - Direct match for Education topic"
+  }
+]
+
+--- Sheet: CYBERSECURITY BASE PAPERS ---
+Columns: ['#', 'Paper Title', 'Authors', 'Journal Name', 'Journal Type', 'SCI/SCIE Status', 'Year', 'Publication Date', 'Link/DOI', 'Key Features', 'Valid for Project', 'Notes']
+Rows: 5
+Sample Data (first row):
+[
+  {
+    "#": "1",
+    "Paper Title": "Leveraging Intra- and Inter-References in Vulnerability Detection Using Multi-Agent Collaboration Based on LLMs",
+    "Authors": "Tsai, CN., Xie, J., Lai, CM. et al.",
+    "Journal Name": "Cluster Computing (Springer)",
+    "Journal Type": "Springer Journal",
+    "SCI/SCIE Status": "\u2705 SCI",
+    "Year": "2025",
+    "Publication Date": "October 2025",
+    "Link/DOI": "https://link.springer.com/article/10.1007/s10586-025-05721-2",
+    "Key Features": "Multi-agent collaboration, RAG strategy, enhanced vulnerability detection",
+    "Valid for Project": "\u2705 VALID",
+    "Notes": "Excellent Choice - Published Oct 2025 - Directly relevant"
+  }
+]

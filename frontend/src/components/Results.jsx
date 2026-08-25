@@ -1,0 +1,183 @@
+import PathGraph from "./PathGraph";
+
+function Bar({ label, value, max = 1, gap = false, right }) {
+  const pct = Math.min(100, Math.round((value / max) * 100));
+  return (
+    <div className="bar-row">
+      <span className="bar-label" title={label}>{label}</span>
+      <div className="bar-track">
+        <div className={`bar-fill ${gap ? "gap" : ""}`} style={{ width: `${pct}%` }} />
+      </div>
+      <span className="bar-value">{right ?? `${pct}%`}</span>
+    </div>
+  );
+}
+
+function DemandChart({ demand }) {
+  const top = demand.skills.slice(0, 12);
+  return (
+    <div className="panel">
+      <h2>Market demand — {demand.target_role}</h2>
+      <p className="hint">
+        From {demand.postings_analysed} job postings. Every bar is backed by real
+        posting IDs (hover a skill to see them) — nothing here is model guesswork.
+      </p>
+      {top.map((s) => (
+        <div key={s.skill_id} title={`Evidence: ${s.posting_ids.join(", ")}`}>
+          <Bar label={s.name} value={s.share} right={`${Math.round(s.share * 100)}%`} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProfileView({ profile }) {
+  return (
+    <div className="panel">
+      <h2>Your extracted profile</h2>
+      <p className="hint">{profile.skills.length} skills mapped onto the taxonomy.</p>
+      <div className="skill-list">
+        {profile.skills.map((s) => (
+          <span key={s.skill_id} className="tag" title={s.evidence}>
+            {s.name} <span className="tag level">{s.level} (Depth: {s.depth_score}/10)</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ResumeReviewView({ review }) {
+  if (!review) return null;
+  return (
+    <div className="panel">
+      <h2>Resume Feedback (AI Agent)</h2>
+      <p className="hint">{review.overall_impression}</p>
+      
+      <div className="two-col" style={{ marginTop: "1rem" }}>
+        <div>
+          <h3 style={{ color: "var(--success)", marginTop: 0 }}>Strengths</h3>
+          <ul>
+            {review.strengths.map((s, i) => <li key={i}>{s}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h3 style={{ color: "var(--warning)", marginTop: 0 }}>Areas to Improve</h3>
+          <ul>
+            {review.weaknesses.map((s, i) => <li key={i}>{s}</li>)}
+          </ul>
+        </div>
+      </div>
+      <div style={{ marginTop: "1rem", fontStyle: "italic", fontSize: "0.9rem" }}>
+        <strong>Formatting Feedback:</strong> {review.formatting_feedback}
+      </div>
+    </div>
+  );
+}
+
+function GapView({ report }) {
+  const maxP = Math.max(...report.gaps.map((g) => g.priority), 0.001);
+  return (
+    <div className="panel">
+      <h2>Skill gaps (priority = demand × gap)</h2>
+      <p className="hint">
+        Computed deterministically over the taxonomy — auditable, not LLM-guessed.
+      </p>
+      {report.gaps.slice(0, 10).map((g) => (
+        <div key={g.skill_id} title={`${g.current_level} → ${g.required_level}`}>
+          <Bar label={g.name} value={g.priority} max={maxP} gap
+               right={g.priority.toFixed(2)} />
+        </div>
+      ))}
+      {report.strengths.length > 0 && (
+        <>
+          <label>Already at market level:</label>
+          <div className="skill-list">
+            {report.strengths.map((s) => <span key={s} className="tag good">✓ {s}</span>)}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function VerifierBadge({ critique, revisions }) {
+  if (!critique) return null;
+  const cls = (v) => (v >= 4 ? "good" : v >= 3 ? "warn" : "bad");
+  return (
+    <div className="panel">
+      <h2>
+        Verifier (FGCR rubric){" "}
+        <span className={`badge ${critique.passed ? "pass" : "fail"}`}>
+          {critique.passed ? "✓ verified" : "✗ issues remain"}
+        </span>
+      </h2>
+      <p className="hint">
+        An adversarial critic agent scored this path; hard rule-checks cap the LLM's
+        scores. Revision loops used: {revisions}.
+      </p>
+      <div className="fgcr">
+        {[["Feasibility", critique.feasibility], ["Groundedness", critique.groundedness],
+          ["Coverage", critique.coverage], ["Realism", critique.realism]].map(([dim, v]) => (
+          <div className="fgcr-card" key={dim}>
+            <div className={`score ${cls(v)}`}>{v.toFixed(1)}</div>
+            <div className="dim">{dim} / 5</div>
+          </div>
+        ))}
+      </div>
+      {critique.issues.length > 0 && (
+        <ul className="hint">
+          {critique.issues.map((i, k) => <li key={k}>{i}</li>)}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function PathTimeline({ path }) {
+  if (!path) return null;
+  return (
+    <div className="panel">
+      <h2>Your learning path — {path.total_weeks} weeks total</h2>
+      <p className="hint">{path.rationale}</p>
+      <div className="timeline">
+        {path.steps.map((s) => (
+          <div className="tstep" key={s.skill_id}>
+            <h3>
+              {s.order}. {s.skill_name}{" "}
+              <span className="weeks">{s.estimated_weeks} wk</span>
+            </h3>
+            <p>{s.objective}</p>
+            <p className="milestone">🏁 {s.milestone}</p>
+            {s.resources.map((r) => (
+              <a key={r.course_id} className="resource" href={r.url}
+                 target="_blank" rel="noreferrer">
+                📚 {r.title} — {r.provider}{r.free ? " (free)" : ""}
+              </a>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function Results({ result, onRestart }) {
+  return (
+    <>
+      {result.notes.length > 0 && result.notes.map((n, i) => (
+        <div className="note" key={i}>⚠ {n}</div>
+      ))}
+      <div className="two-col">
+        <ProfileView profile={result.profile} />
+        <GapView report={result.gap_report} />
+      </div>
+      <ResumeReviewView review={result.resume_review} />
+      <DemandChart demand={result.demand} />
+      <VerifierBadge critique={result.critique} revisions={result.revisions_used} />
+      <PathGraph path={result.path} />
+      <PathTimeline path={result.path} />
+      <button className="ghost" onClick={onRestart}>↺ Start over</button>
+    </>
+  );
+}

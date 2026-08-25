@@ -1,0 +1,773 @@
+{
+  "note": "Real, well-known free learning resources. URLs point to stable top-level course pages.",
+  "courses": [
+    {
+      "id": "course-001",
+      "skill_id": "python",
+      "title": "Python for Everybody",
+      "provider": "Coursera (University of Michigan)",
+      "url": "https://www.coursera.org/specializations/python",
+      "free": true
+    },
+    {
+      "id": "course-002",
+      "skill_id": "python",
+      "title": "Official Python Tutorial",
+      "provider": "python.org",
+      "url": "https://docs.python.org/3/tutorial/",
+      "free": true
+    },
+    {
+      "id": "course-003",
+      "skill_id": "javascript",
+      "title": "JavaScript Algorithms and Data Structures",
+      "provider": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
+      "free": true
+    },
+    {
+      "id": "course-004",
+      "skill_id": "javascript",
+      "title": "MDN JavaScript Guide",
+      "provider": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+      "free": true
+    },
+    {
+      "id": "course-005",
+      "skill_id": "typescript",
+      "title": "TypeScript Handbook",
+      "provider": "typescriptlang.org",
+      "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+      "free": true
+    },
+    {
+      "id": "course-006",
+      "skill_id": "java",
+      "title": "Java Programming and Software Engineering Fundamentals",
+      "provider": "Coursera (Duke)",
+      "url": "https://www.coursera.org/specializations/java-programming",
+      "free": true
+    },
+    {
+      "id": "course-007",
+      "skill_id": "go",
+      "title": "A Tour of Go",
+      "provider": "go.dev",
+      "url": "https://go.dev/tour/",
+      "free": true
+    },
+    {
+      "id": "course-008",
+      "skill_id": "cpp",
+      "title": "C++ Tutorial",
+      "provider": "learncpp.com",
+      "url": "https://www.learncpp.com/",
+      "free": true
+    },
+    {
+      "id": "course-009",
+      "skill_id": "bash",
+      "title": "The Linux Command Line & Shell Scripting",
+      "provider": "linuxcommand.org",
+      "url": "https://linuxcommand.org/",
+      "free": true
+    },
+    {
+      "id": "course-010",
+      "skill_id": "r-lang",
+      "title": "R Programming",
+      "provider": "Coursera (Johns Hopkins)",
+      "url": "https://www.coursera.org/learn/r-programming",
+      "free": true
+    },
+    {
+      "id": "course-011",
+      "skill_id": "html-css",
+      "title": "Responsive Web Design",
+      "provider": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org/learn/2022/responsive-web-design/",
+      "free": true
+    },
+    {
+      "id": "course-012",
+      "skill_id": "react",
+      "title": "React Official Tutorial",
+      "provider": "react.dev",
+      "url": "https://react.dev/learn",
+      "free": true
+    },
+    {
+      "id": "course-013",
+      "skill_id": "react",
+      "title": "Front End Development Libraries",
+      "provider": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org/learn/front-end-development-libraries/",
+      "free": true
+    },
+    {
+      "id": "course-014",
+      "skill_id": "nextjs",
+      "title": "Next.js Learn Course",
+      "provider": "nextjs.org",
+      "url": "https://nextjs.org/learn",
+      "free": true
+    },
+    {
+      "id": "course-015",
+      "skill_id": "vue",
+      "title": "Vue.js Official Tutorial",
+      "provider": "vuejs.org",
+      "url": "https://vuejs.org/tutorial/",
+      "free": true
+    },
+    {
+      "id": "course-016",
+      "skill_id": "tailwind",
+      "title": "Tailwind CSS Docs & Screencasts",
+      "provider": "tailwindcss.com",
+      "url": "https://tailwindcss.com/docs",
+      "free": true
+    },
+    {
+      "id": "course-017",
+      "skill_id": "state-management",
+      "title": "Redux Essentials",
+      "provider": "redux.js.org",
+      "url": "https://redux.js.org/tutorials/essentials/part-1-overview-concepts",
+      "free": true
+    },
+    {
+      "id": "course-018",
+      "skill_id": "web-accessibility",
+      "title": "Learn Accessibility",
+      "provider": "web.dev",
+      "url": "https://web.dev/learn/accessibility",
+      "free": true
+    },
+    {
+      "id": "course-019",
+      "skill_id": "nodejs",
+      "title": "Node.js Official Learn Guides",
+      "provider": "nodejs.org",
+      "url": "https://nodejs.org/en/learn",
+      "free": true
+    },
+    {
+      "id": "course-020",
+      "skill_id": "nodejs",
+      "title": "Back End Development and APIs",
+      "provider": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org/learn/back-end-development-and-apis/",
+      "free": true
+    },
+    {
+      "id": "course-021",
+      "skill_id": "express",
+      "title": "Express Guide",
+      "provider": "expressjs.com",
+      "url": "https://expressjs.com/en/guide/routing.html",
+      "free": true
+    },
+    {
+      "id": "course-022",
+      "skill_id": "fastapi",
+      "title": "FastAPI Official Tutorial",
+      "provider": "fastapi.tiangolo.com",
+      "url": "https://fastapi.tiangolo.com/tutorial/",
+      "free": true
+    },
+    {
+      "id": "course-023",
+      "skill_id": "django",
+      "title": "Django Official Tutorial",
+      "provider": "djangoproject.com",
+      "url": "https://docs.djangoproject.com/en/stable/intro/tutorial01/",
+      "free": true
+    },
+    {
+      "id": "course-024",
+      "skill_id": "rest-api",
+      "title": "REST API Design Best Practices",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design",
+      "free": true
+    },
+    {
+      "id": "course-025",
+      "skill_id": "graphql",
+      "title": "Introduction to GraphQL",
+      "provider": "graphql.org",
+      "url": "https://graphql.org/learn/",
+      "free": true
+    },
+    {
+      "id": "course-026",
+      "skill_id": "auth",
+      "title": "OAuth 2.0 Simplified",
+      "provider": "oauth.net",
+      "url": "https://www.oauth.com/",
+      "free": true
+    },
+    {
+      "id": "course-027",
+      "skill_id": "microservices",
+      "title": "Microservices Guide",
+      "provider": "martinfowler.com",
+      "url": "https://martinfowler.com/microservices/",
+      "free": true
+    },
+    {
+      "id": "course-028",
+      "skill_id": "statistics",
+      "title": "Statistics and Probability",
+      "provider": "Khan Academy",
+      "url": "https://www.khanacademy.org/math/statistics-probability",
+      "free": true
+    },
+    {
+      "id": "course-029",
+      "skill_id": "pandas",
+      "title": "Pandas Getting Started Tutorials",
+      "provider": "pandas.pydata.org",
+      "url": "https://pandas.pydata.org/docs/getting_started/intro_tutorials/",
+      "free": true
+    },
+    {
+      "id": "course-030",
+      "skill_id": "numpy",
+      "title": "NumPy Beginner's Guide",
+      "provider": "numpy.org",
+      "url": "https://numpy.org/doc/stable/user/absolute_beginners.html",
+      "free": true
+    },
+    {
+      "id": "course-031",
+      "skill_id": "data-viz",
+      "title": "Data Visualization",
+      "provider": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org/learn/data-visualization/",
+      "free": true
+    },
+    {
+      "id": "course-032",
+      "skill_id": "data-viz",
+      "title": "Tableau Public Training",
+      "provider": "Tableau",
+      "url": "https://public.tableau.com/app/learn/how-to-videos",
+      "free": true
+    },
+    {
+      "id": "course-033",
+      "skill_id": "eda",
+      "title": "Exploratory Data Analysis with Python",
+      "provider": "Coursera (IBM)",
+      "url": "https://www.coursera.org/learn/data-analysis-with-python",
+      "free": true
+    },
+    {
+      "id": "course-034",
+      "skill_id": "ab-testing",
+      "title": "A/B Testing",
+      "provider": "Udacity",
+      "url": "https://www.udacity.com/course/ab-testing--ud257",
+      "free": true
+    },
+    {
+      "id": "course-035",
+      "skill_id": "feature-engineering",
+      "title": "Feature Engineering",
+      "provider": "Kaggle Learn",
+      "url": "https://www.kaggle.com/learn/feature-engineering",
+      "free": true
+    },
+    {
+      "id": "course-036",
+      "skill_id": "storytelling",
+      "title": "Data Storytelling Guide",
+      "provider": "storytellingwithdata.com",
+      "url": "https://www.storytellingwithdata.com/blog",
+      "free": true
+    },
+    {
+      "id": "course-037",
+      "skill_id": "ml-fundamentals",
+      "title": "Machine Learning Specialization",
+      "provider": "Coursera (DeepLearning.AI & Stanford)",
+      "url": "https://www.coursera.org/specializations/machine-learning-introduction",
+      "free": true
+    },
+    {
+      "id": "course-038",
+      "skill_id": "ml-fundamentals",
+      "title": "Intro to Machine Learning",
+      "provider": "Kaggle Learn",
+      "url": "https://www.kaggle.com/learn/intro-to-machine-learning",
+      "free": true
+    },
+    {
+      "id": "course-039",
+      "skill_id": "scikit-learn",
+      "title": "scikit-learn User Guide",
+      "provider": "scikit-learn.org",
+      "url": "https://scikit-learn.org/stable/user_guide.html",
+      "free": true
+    },
+    {
+      "id": "course-040",
+      "skill_id": "deep-learning",
+      "title": "Deep Learning Specialization",
+      "provider": "Coursera (DeepLearning.AI)",
+      "url": "https://www.coursera.org/specializations/deep-learning",
+      "free": true
+    },
+    {
+      "id": "course-041",
+      "skill_id": "deep-learning",
+      "title": "Practical Deep Learning for Coders",
+      "provider": "fast.ai",
+      "url": "https://course.fast.ai/",
+      "free": true
+    },
+    {
+      "id": "course-042",
+      "skill_id": "pytorch",
+      "title": "PyTorch Official Tutorials",
+      "provider": "pytorch.org",
+      "url": "https://pytorch.org/tutorials/",
+      "free": true
+    },
+    {
+      "id": "course-043",
+      "skill_id": "tensorflow",
+      "title": "TensorFlow Core Tutorials",
+      "provider": "tensorflow.org",
+      "url": "https://www.tensorflow.org/tutorials",
+      "free": true
+    },
+    {
+      "id": "course-044",
+      "skill_id": "nlp",
+      "title": "NLP Course",
+      "provider": "Hugging Face",
+      "url": "https://huggingface.co/learn/nlp-course",
+      "free": true
+    },
+    {
+      "id": "course-045",
+      "skill_id": "computer-vision",
+      "title": "Computer Vision",
+      "provider": "Kaggle Learn",
+      "url": "https://www.kaggle.com/learn/computer-vision",
+      "free": true
+    },
+    {
+      "id": "course-046",
+      "skill_id": "llms",
+      "title": "Generative AI for Everyone",
+      "provider": "Coursera (DeepLearning.AI)",
+      "url": "https://www.coursera.org/learn/generative-ai-for-everyone",
+      "free": true
+    },
+    {
+      "id": "course-047",
+      "skill_id": "llms",
+      "title": "Prompt Engineering Guide",
+      "provider": "promptingguide.ai",
+      "url": "https://www.promptingguide.ai/",
+      "free": true
+    },
+    {
+      "id": "course-048",
+      "skill_id": "rag",
+      "title": "LangChain RAG Tutorial",
+      "provider": "langchain.com",
+      "url": "https://python.langchain.com/docs/tutorials/rag/",
+      "free": true
+    },
+    {
+      "id": "course-049",
+      "skill_id": "agentic-ai",
+      "title": "LangGraph Tutorials",
+      "provider": "langchain.com",
+      "url": "https://langchain-ai.github.io/langgraph/tutorials/",
+      "free": true
+    },
+    {
+      "id": "course-050",
+      "skill_id": "agentic-ai",
+      "title": "Building AI Agents (Anthropic docs)",
+      "provider": "anthropic.com",
+      "url": "https://docs.anthropic.com/en/docs/build-with-claude/overview",
+      "free": true
+    },
+    {
+      "id": "course-051",
+      "skill_id": "mlops",
+      "title": "MLOps Zoomcamp",
+      "provider": "DataTalks.Club",
+      "url": "https://github.com/DataTalksClub/mlops-zoomcamp",
+      "free": true
+    },
+    {
+      "id": "course-052",
+      "skill_id": "mlops",
+      "title": "Made With ML MLOps Course",
+      "provider": "madewithml.com",
+      "url": "https://madewithml.com/",
+      "free": true
+    },
+    {
+      "id": "course-053",
+      "skill_id": "model-evaluation",
+      "title": "Model Validation",
+      "provider": "Kaggle Learn",
+      "url": "https://www.kaggle.com/learn/intro-to-machine-learning",
+      "free": true
+    },
+    {
+      "id": "course-054",
+      "skill_id": "sql",
+      "title": "SQLBolt Interactive Lessons",
+      "provider": "sqlbolt.com",
+      "url": "https://sqlbolt.com/",
+      "free": true
+    },
+    {
+      "id": "course-055",
+      "skill_id": "sql",
+      "title": "Intro to SQL",
+      "provider": "Kaggle Learn",
+      "url": "https://www.kaggle.com/learn/intro-to-sql",
+      "free": true
+    },
+    {
+      "id": "course-056",
+      "skill_id": "etl",
+      "title": "Data Engineering Zoomcamp",
+      "provider": "DataTalks.Club",
+      "url": "https://github.com/DataTalksClub/data-engineering-zoomcamp",
+      "free": true
+    },
+    {
+      "id": "course-057",
+      "skill_id": "spark",
+      "title": "Spark Quick Start",
+      "provider": "spark.apache.org",
+      "url": "https://spark.apache.org/docs/latest/quick-start.html",
+      "free": true
+    },
+    {
+      "id": "course-058",
+      "skill_id": "airflow",
+      "title": "Airflow Tutorials",
+      "provider": "airflow.apache.org",
+      "url": "https://airflow.apache.org/docs/apache-airflow/stable/tutorial/index.html",
+      "free": true
+    },
+    {
+      "id": "course-059",
+      "skill_id": "kafka",
+      "title": "Kafka Quickstart",
+      "provider": "kafka.apache.org",
+      "url": "https://kafka.apache.org/quickstart",
+      "free": true
+    },
+    {
+      "id": "course-060",
+      "skill_id": "data-warehousing",
+      "title": "BigQuery Getting Started",
+      "provider": "Google Cloud",
+      "url": "https://cloud.google.com/bigquery/docs/introduction",
+      "free": true
+    },
+    {
+      "id": "course-061",
+      "skill_id": "dbt",
+      "title": "dbt Fundamentals",
+      "provider": "dbt Labs",
+      "url": "https://learn.getdbt.com/",
+      "free": true
+    },
+    {
+      "id": "course-062",
+      "skill_id": "data-modeling",
+      "title": "Kimball Dimensional Modeling Techniques",
+      "provider": "kimballgroup.com",
+      "url": "https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/",
+      "free": true
+    },
+    {
+      "id": "course-063",
+      "skill_id": "nosql",
+      "title": "MongoDB University Basics",
+      "provider": "MongoDB",
+      "url": "https://learn.mongodb.com/",
+      "free": true
+    },
+    {
+      "id": "course-064",
+      "skill_id": "linux",
+      "title": "Linux Journey",
+      "provider": "linuxjourney.com",
+      "url": "https://linuxjourney.com/",
+      "free": true
+    },
+    {
+      "id": "course-065",
+      "skill_id": "git",
+      "title": "Pro Git Book",
+      "provider": "git-scm.com",
+      "url": "https://git-scm.com/book/en/v2",
+      "free": true
+    },
+    {
+      "id": "course-066",
+      "skill_id": "git",
+      "title": "GitHub Skills",
+      "provider": "GitHub",
+      "url": "https://skills.github.com/",
+      "free": true
+    },
+    {
+      "id": "course-067",
+      "skill_id": "docker",
+      "title": "Docker Get Started Guide",
+      "provider": "docker.com",
+      "url": "https://docs.docker.com/get-started/",
+      "free": true
+    },
+    {
+      "id": "course-068",
+      "skill_id": "kubernetes",
+      "title": "Kubernetes Basics",
+      "provider": "kubernetes.io",
+      "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/",
+      "free": true
+    },
+    {
+      "id": "course-069",
+      "skill_id": "aws",
+      "title": "AWS Cloud Practitioner Essentials",
+      "provider": "AWS Skill Builder",
+      "url": "https://skillbuilder.aws/",
+      "free": true
+    },
+    {
+      "id": "course-070",
+      "skill_id": "aws",
+      "title": "AWS Free Tier Hands-on",
+      "provider": "AWS",
+      "url": "https://aws.amazon.com/getting-started/hands-on/",
+      "free": true
+    },
+    {
+      "id": "course-071",
+      "skill_id": "azure",
+      "title": "Azure Fundamentals Learning Path",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/paths/microsoft-azure-fundamentals-describe-cloud-concepts/",
+      "free": true
+    },
+    {
+      "id": "course-072",
+      "skill_id": "gcp",
+      "title": "Google Cloud Skills Boost",
+      "provider": "Google",
+      "url": "https://www.cloudskillsboost.google/",
+      "free": true
+    },
+    {
+      "id": "course-073",
+      "skill_id": "terraform",
+      "title": "Terraform Tutorials",
+      "provider": "HashiCorp",
+      "url": "https://developer.hashicorp.com/terraform/tutorials",
+      "free": true
+    },
+    {
+      "id": "course-074",
+      "skill_id": "cicd",
+      "title": "GitHub Actions Documentation",
+      "provider": "GitHub",
+      "url": "https://docs.github.com/en/actions",
+      "free": true
+    },
+    {
+      "id": "course-075",
+      "skill_id": "cicd",
+      "title": "CI/CD with Jenkins",
+      "provider": "jenkins.io",
+      "url": "https://www.jenkins.io/doc/tutorials/",
+      "free": true
+    },
+    {
+      "id": "course-076",
+      "skill_id": "monitoring",
+      "title": "Prometheus Getting Started",
+      "provider": "prometheus.io",
+      "url": "https://prometheus.io/docs/prometheus/latest/getting_started/",
+      "free": true
+    },
+    {
+      "id": "course-077",
+      "skill_id": "networking",
+      "title": "Computer Networking Full Course",
+      "provider": "freeCodeCamp (YouTube)",
+      "url": "https://www.youtube.com/watch?v=qiQR5rTSshw",
+      "free": true
+    },
+    {
+      "id": "course-078",
+      "skill_id": "networking",
+      "title": "Cisco Networking Basics",
+      "provider": "Cisco Networking Academy",
+      "url": "https://www.netacad.com/courses/networking-basics",
+      "free": true
+    },
+    {
+      "id": "course-079",
+      "skill_id": "network-security",
+      "title": "Introduction to Cybersecurity",
+      "provider": "Cisco Networking Academy",
+      "url": "https://www.netacad.com/courses/introduction-to-cybersecurity",
+      "free": true
+    },
+    {
+      "id": "course-080",
+      "skill_id": "siem",
+      "title": "Splunk Free Training",
+      "provider": "Splunk",
+      "url": "https://www.splunk.com/en_us/training/free-courses/overview.html",
+      "free": true
+    },
+    {
+      "id": "course-081",
+      "skill_id": "incident-response",
+      "title": "Incident Handler's Handbook",
+      "provider": "SANS Reading Room",
+      "url": "https://www.sans.org/white-papers/33901/",
+      "free": true
+    },
+    {
+      "id": "course-082",
+      "skill_id": "vuln-assessment",
+      "title": "TryHackMe Vulnerability Research Path",
+      "provider": "TryHackMe",
+      "url": "https://tryhackme.com/",
+      "free": true
+    },
+    {
+      "id": "course-083",
+      "skill_id": "threat-intel",
+      "title": "MITRE ATT&CK Fundamentals",
+      "provider": "MITRE",
+      "url": "https://attack.mitre.org/resources/learn-more-about-attack/",
+      "free": true
+    },
+    {
+      "id": "course-084",
+      "skill_id": "appsec",
+      "title": "OWASP Top 10",
+      "provider": "OWASP",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "free": true
+    },
+    {
+      "id": "course-085",
+      "skill_id": "appsec",
+      "title": "PortSwigger Web Security Academy",
+      "provider": "PortSwigger",
+      "url": "https://portswigger.net/web-security",
+      "free": true
+    },
+    {
+      "id": "course-086",
+      "skill_id": "cryptography",
+      "title": "Cryptography I",
+      "provider": "Coursera (Stanford)",
+      "url": "https://www.coursera.org/learn/crypto",
+      "free": true
+    },
+    {
+      "id": "course-087",
+      "skill_id": "iam",
+      "title": "Identity Fundamentals",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/entra/fundamentals/identity-fundamental-concepts",
+      "free": true
+    },
+    {
+      "id": "course-088",
+      "skill_id": "cloud-security",
+      "title": "AWS Security Fundamentals",
+      "provider": "AWS Skill Builder",
+      "url": "https://skillbuilder.aws/",
+      "free": true
+    },
+    {
+      "id": "course-089",
+      "skill_id": "communication",
+      "title": "Technical Writing Courses",
+      "provider": "Google",
+      "url": "https://developers.google.com/tech-writing",
+      "free": true
+    },
+    {
+      "id": "course-090",
+      "skill_id": "agile",
+      "title": "Agile with Atlassian Jira",
+      "provider": "Coursera (Atlassian)",
+      "url": "https://www.coursera.org/learn/agile-atlassian-jira",
+      "free": true
+    },
+    {
+      "id": "course-091",
+      "skill_id": "problem-solving",
+      "title": "NeetCode Roadmap",
+      "provider": "neetcode.io",
+      "url": "https://neetcode.io/roadmap",
+      "free": true
+    },
+    {
+      "id": "course-092",
+      "skill_id": "problem-solving",
+      "title": "LeetCode Study Plans",
+      "provider": "LeetCode",
+      "url": "https://leetcode.com/studyplan/",
+      "free": true
+    },
+    {
+      "id": "course-093",
+      "skill_id": "system-design",
+      "title": "System Design Primer",
+      "provider": "GitHub (donnemartin)",
+      "url": "https://github.com/donnemartin/system-design-primer",
+      "free": true
+    },
+    {
+      "id": "course-094",
+      "skill_id": "testing",
+      "title": "Test Automation University",
+      "provider": "Applitools",
+      "url": "https://testautomationu.applitools.com/",
+      "free": true
+    },
+    {
+      "id": "course-095",
+      "skill_id": "rest-api",
+      "title": "REST API Tutorial",
+      "provider": "restapitutorial.com",
+      "url": "https://www.restapitutorial.com/",
+      "free": true
+    },
+    {
+      "id": "course-096",
+      "skill_id": "auth",
+      "title": "Auth0 Quickstart for SPA",
+      "provider": "Auth0",
+      "url": "https://auth0.com/docs/quickstart/spa",
+      "free": true
+    }
+  ]
+}
