@@ -1,20 +1,19 @@
-import { useMemo } from 'react';
-import ReactFlow, { Background, Controls, MarkerType } from 'reactflow';
-import 'reactflow/dist/style.css';
+import { useMemo } from 'react'
+import ReactFlow, { Background, Controls, MarkerType, type Edge, type Node } from 'reactflow'
+import 'reactflow/dist/style.css'
+import type { LearningPath } from '../api/types'
 
-// stable references: an inline {} literal as a prop is a new object every
-// render, which is what triggers ReactFlow's nodeTypes/edgeTypes warning
-const NODE_TYPES = {};
-const EDGE_TYPES = {};
+const NODE_TYPES = {}
+const EDGE_TYPES = {}
 
-export default function PathGraph({ path }) {
+export default function PathGraph({ path }: { path: LearningPath | null }) {
   const { nodes, edges } = useMemo(() => {
-    if (!path || !path.steps) return { nodes: [], edges: [] };
+    if (!path || !path.steps) return { nodes: [] as Node[], edges: [] as Edge[] }
 
-    const newNodes = path.steps.map((step, i) => ({
+    const newNodes: Node[] = path.steps.map((step, i) => ({
       id: step.skill_id,
       position: { x: 250, y: i * 150 + 50 },
-      data: { 
+      data: {
         label: (
           <div style={{ padding: '10px', textAlign: 'center' }}>
             <strong>{step.order}. {step.skill_name}</strong>
@@ -22,37 +21,30 @@ export default function PathGraph({ path }) {
               {step.estimated_weeks} weeks
             </div>
           </div>
-        )
+        ),
       },
       style: {
-        background: 'rgba(24, 24, 27, 0.7)',
-        color: '#fff',
-        border: '1px solid #333',
-        borderRadius: '8px',
-        width: 250,
-        backdropFilter: 'blur(12px)'
-      }
-    }));
+        background: 'rgba(24, 24, 27, 0.7)', color: '#fff', border: '1px solid #333',
+        borderRadius: '8px', width: 250, backdropFilter: 'blur(12px)',
+      },
+    }))
 
-    const newEdges = [];
+    const newEdges: Edge[] = []
     for (let i = 0; i < path.steps.length - 1; i++) {
       newEdges.push({
-        id: `e-${path.steps[i].skill_id}-${path.steps[i+1].skill_id}`,
+        id: `e-${path.steps[i].skill_id}-${path.steps[i + 1].skill_id}`,
         source: path.steps[i].skill_id,
-        target: path.steps[i+1].skill_id,
+        target: path.steps[i + 1].skill_id,
         animated: true,
         style: { stroke: '#00ff00', strokeWidth: 2 },
-        markerEnd: {
-          type: MarkerType.ArrowClosed,
-          color: '#00ff00',
-        },
-      });
+        markerEnd: { type: MarkerType.ArrowClosed, color: '#00ff00' },
+      })
     }
 
-    return { nodes: newNodes, edges: newEdges };
-  }, [path]);
+    return { nodes: newNodes, edges: newEdges }
+  }, [path])
 
-  if (!path) return null;
+  if (!path) return null
 
   return (
     <div className="panel" style={{ height: '600px', padding: 0 }}>
@@ -67,5 +59,5 @@ export default function PathGraph({ path }) {
         </ReactFlow>
       </div>
     </div>
-  );
+  )
 }

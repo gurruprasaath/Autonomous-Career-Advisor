@@ -1,34 +1,37 @@
-import { useState, useRef } from "react";
-import { extractPdf } from "../api";
+import { useRef, useState } from 'react'
+import { useExtractPdf } from '../api/advise'
 
 const SAMPLE = `Final year B.Tech CSE student. Comfortable with Python — built several
 projects with pandas and matplotlib for data analysis coursework. Completed an
 online SQL course and used PostgreSQL in a database project. Did a machine
 learning course covering regression and classification with scikit-learn.
-Familiar with Git and GitHub from team projects. Basic knowledge of HTML and CSS.`;
+Familiar with Git and GitHub from team projects. Basic knowledge of HTML and CSS.`
 
-export default function ProfileForm({ onSubmit }) {
-  const [text, setText] = useState("");
-  const [education, setEducation] = useState("");
-  const [hours, setHours] = useState(10);
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef(null);
+export interface ProfileFormValues {
+  resume_text: string
+  education: string
+  hours_per_week: number
+}
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    setUploading(true);
+export default function ProfileForm({ onSubmit }: { onSubmit: (values: ProfileFormValues) => void }) {
+  const [text, setText] = useState('')
+  const [education, setEducation] = useState('')
+  const [hours, setHours] = useState(10)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const extractPdf = useExtractPdf()
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
     try {
-      const data = await extractPdf(file);
-      setText(data.text);
+      const data = await extractPdf.mutateAsync(file)
+      setText(data.text)
     } catch (err) {
-      alert("Failed to extract PDF: " + err.message);
+      alert('Failed to extract PDF: ' + (err instanceof Error ? err.message : String(err)))
     } finally {
-      setUploading(false);
-      e.target.value = null; // reset input
+      e.target.value = ''
     }
-  };
+  }
 
   return (
     <div className="panel">
@@ -48,19 +51,19 @@ export default function ProfileForm({ onSubmit }) {
         <button className="ghost" onClick={() => setText(SAMPLE)} style={{ marginTop: 0 }}>
           Use sample profile
         </button>
-        <button 
-          className="ghost" 
-          onClick={() => fileInputRef.current?.click()} 
-          disabled={uploading}
+        <button
+          className="ghost"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={extractPdf.isPending}
           style={{ marginTop: 0, borderColor: 'var(--accent)', color: 'var(--accent)' }}
         >
-          {uploading ? "Extracting..." : "Upload Resume (PDF)"}
+          {extractPdf.isPending ? 'Extracting...' : 'Upload Resume (PDF)'}
         </button>
-        <input 
-          type="file" 
-          accept="application/pdf" 
-          ref={fileInputRef} 
-          style={{ display: "none" }} 
+        <input
+          type="file"
+          accept="application/pdf"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
           onChange={handleFileUpload}
         />
       </div>
@@ -95,5 +98,5 @@ export default function ProfileForm({ onSubmit }) {
         Continue →
       </button>
     </div>
-  );
+  )
 }

@@ -1,4 +1,11 @@
-export default function RolePicker({ roles, selected, onSelect, onBack, onAnalyse, loadError }) {
+export default function RolePicker({ roles, selected, onSelect, onBack, onAnalyse, loadError }: {
+  roles: string[]
+  selected: string
+  onSelect: (role: string) => void
+  onBack: () => void
+  onAnalyse: () => void
+  loadError: string
+}) {
   return (
     <div className="panel">
       <h2>2 · Pick your target role</h2>
@@ -11,7 +18,7 @@ export default function RolePicker({ roles, selected, onSelect, onBack, onAnalys
         {roles.map((r) => (
           <button
             key={r}
-            className={`role-card ${selected === r ? "selected" : ""}`}
+            className={`role-card ${selected === r ? 'selected' : ''}`}
             onClick={() => onSelect(r)}
           >
             {r}
@@ -25,5 +32,5 @@ export default function RolePicker({ roles, selected, onSelect, onBack, onAnalys
         </button>
       </div>
     </div>
-  );
+  )
 }
