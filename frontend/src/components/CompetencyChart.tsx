@@ -49,7 +49,7 @@ export default function CompetencyChart({ historyData, skillNames }: {
               return (
                 <g key={i}>
                   <circle cx={cx} cy={cy} r="4" fill="#007bff" />
-                  <title>Depth: {d.depth_score}</title>
+                  <title>Depth: {d.depth_score}&#10;{d.rationale}</title>
                 </g>
               )
             })}

@@ -15,7 +15,7 @@ describe('CompetencyChart', () => {
         skillNames={{ python: 'Python' }}
       />
     )
-    expect(screen.getByText(/Initial resume estimate/)).toBeInTheDocument()
+    expect(screen.getByText(/Latest assessment: Initial resume estimate/)).toBeInTheDocument()
   })
 
   it('renders a multi-point trajectory and shows the latest rationale', () => {
