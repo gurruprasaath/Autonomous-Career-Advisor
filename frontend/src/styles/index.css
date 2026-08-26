@@ -596,3 +596,19 @@ select:focus {
   flex-wrap: wrap;
   margin-bottom: 2rem;
 }
+
+/* Confidence-rating row (StepTracker) — must wrap at narrow widths instead
+   of overflowing horizontally, and each button needs a touch-friendly
+   (~44px) target instead of the old 4px/10px padding. */
+.confidence-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confidence-btn {
+  padding: 10px 16px;
+  min-width: 44px;
+  min-height: 44px;
+}
