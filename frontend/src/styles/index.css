@@ -581,8 +581,18 @@ select:focus {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
-.role-card.selected { 
-  border-color: var(--primary); 
+.role-card.selected {
+  border-color: var(--primary);
   background: var(--primary-light);
   color: var(--primary-hover);
+}
+
+/* App nav (Generate Path / Tracker / GitHub Analysis / Logout) — must wrap
+   instead of overflowing horizontally at narrow widths. */
+.app-nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
 }
