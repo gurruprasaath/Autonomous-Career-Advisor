@@ -76,6 +76,12 @@ def courses_collection():
     return col
 
 
+def repo_collection(username: str, repo_name: str) -> chromadb.Collection:
+    """Dynamic collection for a specific GitHub repository's contents."""
+    collection_name = f"repo_{username}_{repo_name}".replace("-", "_").replace(".", "_")
+    return get_client().get_or_create_collection(collection_name)
+
+
 def warm_up() -> dict[str, int]:
     """Build all collections eagerly (called on app startup)."""
     return {

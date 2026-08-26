@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     adzuna_app_id: str = ""
     adzuna_app_key: str = ""
     adzuna_country: str = "in"
+    youtube_api_key: str = ""
 
     max_revision_loops: int = 2
     verifier_pass_threshold: float = 3.5  # mean FGCR score out of 5

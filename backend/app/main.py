@@ -13,12 +13,12 @@ import io
 from .config import get_settings
 from .core.graph import run_advisor
 from .core.vectorstore import warm_up
-from .providers import get_job_provider
+from .providers import get_job_provider, github
 from .db import database, models, crud, auth
 from .db.database import engine, run_migrations
 from pydantic import BaseModel, ValidationError
 
-from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token
+from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token, RepoChatRequest, RepoChatResponse
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("advisor")
@@ -83,6 +83,11 @@ def advise(request: AdviseRequest, token: str = Depends(OAuth2PasswordBearer(tok
                 gap_report_json=result.gap_report.model_dump_json(),
                 hours_per_week=request.hours_per_week)
             crud.create_path_steps(db, journey.id, result.path.steps)
+            for skill in result.profile.skills:
+                crud.create_competency_history(
+                    db, user.id, skill.skill_id, skill.depth_score,
+                    None, None, False, "Initial assessment based on resume."
+                )
         return result
     except ValueError as e:  # e.g. unknown role
         raise HTTPException(400, str(e))
@@ -164,6 +169,74 @@ def _get_owned_step(db: Session, step_id: int, current_user: models.User) -> mod
     return step
 
 
+@app.post("/api/github/repo/{username}/{repo_name}/analyze")
+def analyze_repo(username: str, repo_name: str, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    
+    try:
+        files = github.download_and_extract_repo(username, repo_name)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+        
+    from .core.vectorstore import repo_collection
+    collection = repo_collection(username, repo_name)
+    
+    ids = []
+    documents = []
+    metadatas = []
+    
+    for f in files:
+        path = f["path"]
+        content = f["content"]
+        chunk_size = 1000
+        for i in range(0, len(content), chunk_size):
+            chunk = content[i:i+chunk_size]
+            chunk_id = f"{path}_{i}"
+            ids.append(chunk_id)
+            documents.append(chunk)
+            metadatas.append({"path": path})
+            
+    if ids:
+        existing = collection.get(include=[])["ids"]
+        if existing:
+            collection.delete(ids=existing)
+        for i in range(0, len(ids), 1000):
+            collection.add(
+                ids=ids[i:i+1000],
+                documents=documents[i:i+1000],
+                metadatas=metadatas[i:i+1000]
+            )
+            
+    return {"message": "Analyzed successfully", "files_processed": len(files)}
+
+
+@app.post("/api/github/repo/{username}/{repo_name}/chat", response_model=RepoChatResponse)
+def chat_repo(username: str, repo_name: str, req: RepoChatRequest, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    user = get_current_user(token, db)
+    
+    from .core.vectorstore import repo_collection
+    collection = repo_collection(username, repo_name)
+    
+    results = collection.query(query_texts=[req.query], n_results=5)
+    
+    context = ""
+    if results and results["documents"] and results["documents"][0]:
+        for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
+            context += f"\n--- File: {meta['path']} ---\n{doc}\n"
+            
+    from .core.llm import invoke_llm, get_llm
+    from .config import get_settings
+    llm = get_llm(get_settings().fast_model)
+    prompt = f"Answer the user's question about the repository '{repo_name}' based on the provided code snippets.\n\nContext:{context}\n\nQuestion: {req.query}"
+    
+    try:
+        resp = invoke_llm(llm, prompt)
+        return RepoChatResponse(answer=resp.content)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 # ponytail: single-process in-memory cache, cleared on restart — fine for
 # this dev app (no multi-worker deployment); a real deployment would need
 # a shared store (DB row, Redis) instead.
@@ -213,6 +286,10 @@ def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depe
         }
         result.append(j_dict)
     return result
+
+@app.get("/api/tracker/competency-history")
+def get_competency_history_api(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    return crud.get_competency_history(db, current_user.id)
 
 class ProgressUpdate(BaseModel):
     quiz_score: int | None = None
@@ -350,6 +427,23 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
              for g in full_gap_report.gaps]
     profile = StudentProfile(hours_per_week=journey.hours_per_week,
                              target_role=journey.target_role, skills=skills)
+
+    from .agents.competency_agent import assess_competency
+    github_evidence = crud.get_github_evidence_by_skill(db, current_user.id)
+    
+    for s in profile.skills:
+        if s.skill_id in remaining_skill_ids:
+            step = next((x for x in remaining if x.skill_id == s.skill_id), None)
+            if step:
+                has_github = s.skill_id in github_evidence
+                new_depth, rationale = assess_competency(
+                    s.name, s.depth_score, step.quiz_score, step.confidence_rating, has_github
+                )
+                s.depth_score = new_depth
+                crud.create_competency_history(
+                    db, current_user.id, s.skill_id, new_depth,
+                    step.quiz_score, step.confidence_rating, has_github, rationale
+                )
 
     path, _notes = build_path(profile, partial_gap_report, revision_request=revision_request)
     critique, _notes2 = verify_path(path, partial_gap_report, profile)

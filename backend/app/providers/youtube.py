@@ -2,13 +2,13 @@ import os
 import requests
 import logging
 from ..schemas import PathResource
+from ..config import get_settings
 
 log = logging.getLogger(__name__)
 
-YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY")
-
 def search_youtube_videos(query: str, max_results: int = 3) -> list[PathResource]:
-    if not YOUTUBE_API_KEY:
+    api_key = get_settings().youtube_api_key
+    if not api_key:
         log.warning("No YOUTUBE_API_KEY found, falling back to mock videos.")
         return [
             PathResource(
@@ -26,7 +26,7 @@ def search_youtube_videos(query: str, max_results: int = 3) -> list[PathResource
         "q": f"{query} tutorial crash course",
         "type": "video",
         "maxResults": max_results,
-        "key": YOUTUBE_API_KEY
+        "key": api_key
     }
     try:
         resp = requests.get(url, params=params)

@@ -5,6 +5,8 @@ public. Good enough to answer "have they actually written code in this
 language recently," which is the only claim this evidence makes.
 """
 import httpx
+import io
+import zipfile
 
 from ..core.taxonomy import match_mention
 
@@ -79,3 +81,44 @@ def map_languages_to_evidence(languages: dict[str, list[dict]],
                 "repo_language": language, "last_pushed_at": repo["last_pushed_at"],
             })
     return evidence_rows
+
+
+def download_and_extract_repo(username: str, repo_name: str) -> list[dict]:
+    """Downloads a public repo zipball and extracts text files.
+    Returns [{"path": "...", "content": "..."}, ...]
+    """
+    url = f"{GITHUB_API}/repos/{username}/{repo_name}/zipball"
+    resp = httpx.get(url, follow_redirects=True, timeout=30)
+    if resp.status_code == 404:
+        raise GithubUserNotFound(f"Repo {username}/{repo_name} not found")
+    if resp.status_code in (403, 429):
+        raise GithubRateLimited("GitHub API rate limit hit; try again later")
+    resp.raise_for_status()
+
+    files = []
+    with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
+        for info in z.infolist():
+            if info.is_dir():
+                continue
+                
+            # Zipball adds a root dir like owner-repo-sha
+            path_parts = info.filename.split('/', 1)
+            path = path_parts[1] if len(path_parts) > 1 else info.filename
+
+            ignore_dirs = ['node_modules/', '.git/', '__pycache__/', 'venv/', '.venv/', 'dist/', 'build/', 'package-lock.json']
+            if any(path.startswith(d) or f"/{d}" in path for d in ignore_dirs):
+                continue
+
+            ignore_exts = ['.jpg', '.png', '.gif', '.pdf', '.zip', '.tar', '.gz', '.mp4', '.pyc', '.ico', '.svg', '.lock']
+            if any(path.endswith(ext) for ext in ignore_exts):
+                continue
+
+            try:
+                content = z.read(info.filename).decode('utf-8')
+                if len(content) > 100_000:
+                    continue
+                files.append({"path": path, "content": content})
+            except UnicodeDecodeError:
+                continue
+
+    return files

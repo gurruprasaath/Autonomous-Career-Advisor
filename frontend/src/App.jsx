@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { advise, getRoles, getToken } from "./api";
+import { advise, getRoles, getToken, setToken } from "./api";
 import ProfileForm from "./components/ProfileForm";
 import RolePicker from "./components/RolePicker";
 import Results from "./components/Results";
 import AgentTerminal from "./components/AgentTerminal";
 import Auth from "./components/Auth";
 import LearningTracker from "./components/LearningTracker";
+import RepoChat from "./components/RepoChat";
 
 const STEPS = ["Profile", "Target role", "Analysis", "Learning path"];
 
@@ -73,6 +74,8 @@ export default function App() {
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '2rem' }}>
             <button className={`secondary-button ${currentTab === 'generator' ? 'active' : ''}`} onClick={() => setCurrentTab('generator')}>Generate Path</button>
             <button className={`secondary-button ${currentTab === 'tracker' ? 'active' : ''}`} onClick={() => setCurrentTab('tracker')}>My Learning Tracker</button>
+            <button className={`secondary-button ${currentTab === 'repochat' ? 'active' : ''}`} onClick={() => setCurrentTab('repochat')}>GitHub Analysis</button>
+            <button className="secondary-button" onClick={() => { setToken(null); setIsLoggedIn(false); }}>Logout</button>
           </div>
 
           {currentTab === "generator" && (
@@ -100,6 +103,10 @@ export default function App() {
 
           {currentTab === "tracker" && (
             <LearningTracker />
+          )}
+
+          {currentTab === "repochat" && (
+            <RepoChat />
           )}
         </>
       )}

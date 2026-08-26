@@ -66,7 +66,7 @@ def _hard_checks(path: LearningPath, gap_report: GapReport,
             caps["groundedness"] = min(caps["groundedness"], 3.0)
             issues.append(f"No resources attached for '{step.skill_name}'.")
         for r in step.resources:
-            if catalog_skill.get(r.course_id) != step.skill_id:
+            if catalog_skill.get(r.course_id) != step.skill_id and not r.url.startswith("https://www.youtube.com"):
                 caps["groundedness"] = 1.0
                 issues.append(f"Resource '{r.title}' is not a catalog course for "
                               f"'{step.skill_name}' (possible hallucination).")

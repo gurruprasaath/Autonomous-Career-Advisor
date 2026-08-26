@@ -52,3 +52,16 @@ class GithubEvidence(Base):
     repo_language = Column(String)
     last_pushed_at = Column(DateTime, nullable=True)
     detected_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+class CompetencyHistory(Base):
+    __tablename__ = "competency_history"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    skill_id = Column(String)
+    depth_score = Column(Integer)
+    quiz_score = Column(Integer, nullable=True)
+    confidence_rating = Column(Integer, nullable=True)
+    has_github_evidence = Column(Boolean, default=False)
+    rationale = Column(String)
+    recorded_at = Column(DateTime, default=datetime.datetime.utcnow)
+

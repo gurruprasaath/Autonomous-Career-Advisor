@@ -11,9 +11,8 @@ import logging
 from ..config import get_settings
 from ..core.llm import LLMUnavailable, extract_json, get_llm, invoke_llm
 from ..core.taxonomy import prerequisite_order
-from ..core.vectorstore import courses_collection
-from ..providers.youtube import search_youtube_videos
 from ..schemas import GapReport, LearningPath, PathResource, PathStep, StudentProfile
+from .resource_curator_agent import curate_resources
 
 log = logging.getLogger(__name__)
 
@@ -46,29 +45,6 @@ Return ONLY JSON:
   "rationale": "..."}}
 """
 
-
-def _courses_for(skill_id: str, skill_name: str, depth_score: int, k: int = 2) -> list[PathResource]:
-    if depth_score < 4:
-        level = "beginner"
-    elif depth_score < 8:
-        level = "intermediate"
-    else:
-        level = "advanced"
-        
-    yt = search_youtube_videos(f"{level} {skill_name}", max_results=k)
-    if yt and not yt[0].course_id.startswith("yt-mock-"):
-        return yt
-
-    hits = courses_collection().get(where={"skill_id": skill_id})
-    resources = []
-    for cid, meta in zip(hits["ids"][:k], hits["metadatas"][:k]):
-        resources.append(PathResource(
-            course_id=cid, title=meta["title"], provider=meta["provider"],
-            url=meta["url"], free=bool(meta["free"]),
-        ))
-    if not resources and yt: # fallback to mock if vector store is empty
-        return yt
-    return resources
 
 
 def build_path(profile: StudentProfile, gap_report: GapReport,
@@ -132,14 +108,14 @@ def build_path(profile: StudentProfile, gap_report: GapReport,
                 depth_score = getattr(s, 'depth_score', 1)
                 break
                 
+        obj_text = str(llm_step.get("objective", "")) or f"Reach {gap.required_level} level in {gap.name} (demanded by {gap.demand_share:.0%} of {gap_report.target_role} postings)."
+
         steps.append(PathStep(
             order=order, skill_id=sid, skill_name=gap.name,
-            objective=str(llm_step.get("objective", ""))
-                or f"Reach {gap.required_level} level in {gap.name} "
-                   f"(demanded by {gap.demand_share:.0%} of {gap_report.target_role} postings).",
+            objective=obj_text,
             milestone=str(llm_step.get("milestone", ""))
                 or f"Complete a hands-on exercise or mini-project using {gap.name}.",
-            resources=_courses_for(sid, gap.name, depth_score),
+            resources=curate_resources(sid, gap.name, depth_score, obj_text),
             estimated_weeks=weeks,
         ))
 

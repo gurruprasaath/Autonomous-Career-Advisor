@@ -109,3 +109,36 @@ def get_github_evidence_by_skill(db: Session, user_id: int) -> dict[str, list]:
     for row in rows:
         by_skill.setdefault(row.skill_id, []).append(row)
     return by_skill
+
+def create_competency_history(db: Session, user_id: int, skill_id: str, depth_score: int,
+                              quiz_score: int | None, confidence_rating: int | None,
+                              has_github_evidence: bool, rationale: str) -> models.CompetencyHistory:
+    db_history = models.CompetencyHistory(
+        user_id=user_id,
+        skill_id=skill_id,
+        depth_score=depth_score,
+        quiz_score=quiz_score,
+        confidence_rating=confidence_rating,
+        has_github_evidence=has_github_evidence,
+        rationale=rationale
+    )
+    db.add(db_history)
+    db.commit()
+    db.refresh(db_history)
+    return db_history
+
+def get_competency_history(db: Session, user_id: int) -> dict[str, list]:
+    rows = db.query(models.CompetencyHistory).filter(
+        models.CompetencyHistory.user_id == user_id
+    ).order_by(models.CompetencyHistory.recorded_at.asc()).all()
+    history: dict[str, list] = {}
+    for row in rows:
+        history.setdefault(row.skill_id, []).append({
+            "depth_score": row.depth_score,
+            "quiz_score": row.quiz_score,
+            "confidence_rating": row.confidence_rating,
+            "has_github_evidence": row.has_github_evidence,
+            "rationale": row.rationale,
+            "recorded_at": row.recorded_at.isoformat() if hasattr(row.recorded_at, "isoformat") else row.recorded_at
+        })
+    return history

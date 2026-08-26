@@ -1,5 +1,69 @@
 import { useState, useEffect, useRef } from "react";
-import { getJourneys, recordProgress, getStepQuiz, submitStepQuiz, syncGithub, recalculateJourney } from "../api";
+import { getJourneys, recordProgress, getStepQuiz, submitStepQuiz, syncGithub, recalculateJourney, getCompetencyHistory } from "../api";
+
+function CompetencyChart({ historyData }) {
+  const [selectedSkill, setSelectedSkill] = useState("");
+  
+  const skillIds = Object.keys(historyData || {});
+  useEffect(() => {
+    if (skillIds.length > 0 && !selectedSkill) {
+      setSelectedSkill(skillIds[0]);
+    }
+  }, [skillIds, selectedSkill]);
+  
+  if (skillIds.length === 0) return null;
+  
+  const data = historyData[selectedSkill] || [];
+  
+  const width = 500;
+  const height = 200;
+  const pad = 30;
+  
+  const mapY = (val) => height - pad - ((val - 1) / 9) * (height - 2 * pad);
+  const minTime = data.length > 0 ? new Date(data[0].recorded_at).getTime() : 0;
+  const maxTime = data.length > 0 ? new Date(data[data.length-1].recorded_at).getTime() : 0;
+  const timeRange = maxTime - minTime || 1;
+  const mapX = (time) => pad + ((time - minTime) / timeRange) * (width - 2 * pad);
+  
+  const points = data.map(d => `${mapX(new Date(d.recorded_at).getTime())},${mapY(d.depth_score)}`).join(" ");
+  
+  return (
+    <div className="panel" style={{ marginBottom: "1.5rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>Competency Growth</h2>
+        <select value={selectedSkill} onChange={e => setSelectedSkill(e.target.value)} className="input-field">
+          {skillIds.map(id => <option key={id} value={id}>{id}</option>)}
+        </select>
+      </div>
+      {data.length > 0 && (
+        <>
+          <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ background: "#f8f9fa", borderRadius: "8px", marginTop: "1rem" }}>
+            {[1, 5, 10].map(val => (
+              <g key={val}>
+                <line x1={pad} y1={mapY(val)} x2={width - pad} y2={mapY(val)} stroke="#ddd" strokeDasharray="4 4" />
+                <text x={pad - 5} y={mapY(val) + 4} fontSize="10" textAnchor="end" fill="#666">{val}</text>
+              </g>
+            ))}
+            <polyline points={points} fill="none" stroke="#007bff" strokeWidth="2" />
+            {data.map((d, i) => {
+               const cx = mapX(new Date(d.recorded_at).getTime());
+               const cy = mapY(d.depth_score);
+               return (
+                 <g key={i}>
+                   <circle cx={cx} cy={cy} r="4" fill="#007bff" />
+                   <title>Depth: {d.depth_score}&#10;{d.rationale}</title>
+                 </g>
+               );
+            })}
+          </svg>
+          <div style={{ marginTop: "0.5rem" }} className="hint">
+            Latest assessment: {data[data.length-1].rationale}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 function QuizModal({ step, onClose, onScored }) {
   const [questions, setQuestions] = useState(null);
@@ -172,11 +236,14 @@ export default function LearningTracker() {
   const [initialLoad, setInitialLoad] = useState(true);
   const [error, setError] = useState("");
   const [recalculating, setRecalculating] = useState(null);
+  const [historyData, setHistoryData] = useState({});
 
   const fetchJourneys = async () => {
     try {
       const data = await getJourneys();
       setJourneys(data);
+      const hist = await getCompetencyHistory();
+      setHistoryData(hist);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -204,6 +271,7 @@ export default function LearningTracker() {
   return (
     <div className="tracker">
       <GithubConnect onSynced={fetchJourneys} />
+      <CompetencyChart historyData={historyData} />
       {journeys.length === 0 && <div>No learning paths generated yet. Go to Generate Path!</div>}
       {journeys.map((j) => {
         const hasStruggling = j.steps.some((s) => s.status === "struggling");

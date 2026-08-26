@@ -20,6 +20,10 @@ async function request(path, options = {}) {
     ...options,
     headers: { ...headers, ...(options.headers || {}) },
   });
+  if (res.status === 401) {
+    setToken(null);
+    window.location.reload();
+  }
   if (!res.ok) {
     let detail = res.statusText;
     try {
@@ -70,6 +74,9 @@ export const syncGithub = (username) =>
 export const recalculateJourney = (journeyId) =>
   request(`/api/tracker/journey/${journeyId}/recalculate`, { method: "POST" });
 
+export const getCompetencyHistory = () =>
+  request("/api/tracker/competency-history");
+
 export const extractPdf = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -88,3 +95,11 @@ export const extractPdf = async (file) => {
   }
   return res.json();
 };
+
+export const analyzeRepo = (username, repo_name) =>
+  request(`/api/github/repo/${username}/${repo_name}/analyze`, { method: "POST" });
+
+export const chatRepo = (username, repo_name, query) =>
+  request(`/api/github/repo/${username}/${repo_name}/chat`, {
+    method: "POST", body: JSON.stringify({ query }),
+  });

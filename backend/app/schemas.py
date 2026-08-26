@@ -87,6 +87,14 @@ class PathStep(BaseModel):
     milestone: str = ""
 
 
+class RepoChatRequest(BaseModel):
+    query: str
+
+
+class RepoChatResponse(BaseModel):
+    answer: str
+
+
 class LearningPath(BaseModel):
     target_role: str
     steps: list[PathStep] = []
