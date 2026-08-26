@@ -4,6 +4,7 @@ Uses Chroma's built-in ONNX MiniLM embedding function — no torch, no GPU,
 no API key needed. Collections are rebuilt from the JSON data files when
 their document counts drift (cheap at this dataset size).
 """
+import hashlib
 import json
 from functools import lru_cache
 
@@ -76,10 +77,30 @@ def courses_collection():
     return col
 
 
-def repo_collection(username: str, repo_name: str) -> chromadb.Collection:
-    """Dynamic collection for a specific GitHub repository's contents."""
-    collection_name = f"repo_{username}_{repo_name}".replace("-", "_").replace(".", "_")
-    return get_client().get_or_create_collection(collection_name)
+def _repo_collection_name(user_id: int, username: str, repo_name: str) -> str:
+    # A hash of the real "owner/repo" string avoids the lossy dash/dot
+    # substitution the old naming scheme used (which let e.g. "alice/foo-bar"
+    # and "alice-foo/bar" collide); user_id scopes collections per-user so
+    # one learner's repo chat can't leak into another's.
+    digest = hashlib.sha256(f"{username}/{repo_name}".encode()).hexdigest()[:16]
+    return f"repo_{user_id}_{digest}"
+
+
+def repo_collection(user_id: int, username: str, repo_name: str) -> chromadb.Collection:
+    """Per-user collection for a specific GitHub repository's contents."""
+    return get_client().get_or_create_collection(_repo_collection_name(user_id, username, repo_name))
+
+
+def reset_repo_collection(user_id: int, username: str, repo_name: str) -> chromadb.Collection:
+    """Drop and recreate the collection for a fresh re-index — avoids the
+    non-transactional get-all-ids-then-delete-then-re-add round trip."""
+    name = _repo_collection_name(user_id, username, repo_name)
+    client = get_client()
+    try:
+        client.delete_collection(name)
+    except Exception:
+        pass  # collection didn't exist yet — nothing to drop
+    return client.get_or_create_collection(name)
 
 
 def warm_up() -> dict[str, int]:

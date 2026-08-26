@@ -12,6 +12,13 @@ from ..core.taxonomy import match_mention
 
 GITHUB_API = "https://api.github.com"
 
+# Caps against a decompression-bomb / oversized-repo zipball: stop adding
+# files once either limit is hit rather than processing an entire massive
+# repo into memory.
+MAX_FILE_CHARS = 100_000
+MAX_TOTAL_FILES = 2000
+MAX_TOTAL_BYTES = 25_000_000
+
 # Recent-30 cap: evidence of *recent* practice is what matters (per design
 # spec), and it bounds the per-repo /languages calls against the
 # unauthenticated 60 req/hour limit shared by the whole server.
@@ -96,28 +103,42 @@ def download_and_extract_repo(username: str, repo_name: str) -> list[dict]:
     resp.raise_for_status()
 
     files = []
+    total_bytes = 0
     with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
         for info in z.infolist():
+            if len(files) >= MAX_TOTAL_FILES or total_bytes >= MAX_TOTAL_BYTES:
+                break
             if info.is_dir():
                 continue
-                
+
             # Zipball adds a root dir like owner-repo-sha
             path_parts = info.filename.split('/', 1)
             path = path_parts[1] if len(path_parts) > 1 else info.filename
 
-            ignore_dirs = ['node_modules/', '.git/', '__pycache__/', 'venv/', '.venv/', 'dist/', 'build/', 'package-lock.json']
+            ignore_dirs = ['node_modules/', '.git/', '__pycache__/', 'venv/', '.venv/', 'dist/', 'build/']
             if any(path.startswith(d) or f"/{d}" in path for d in ignore_dirs):
+                continue
+
+            ignore_files = {'package-lock.json'}
+            if path.split('/')[-1] in ignore_files:
                 continue
 
             ignore_exts = ['.jpg', '.png', '.gif', '.pdf', '.zip', '.tar', '.gz', '.mp4', '.pyc', '.ico', '.svg', '.lock']
             if any(path.endswith(ext) for ext in ignore_exts):
                 continue
 
+            # Check the uncompressed size from the zip header *before*
+            # decompressing — a highly-compressible entry could otherwise
+            # allocate a huge amount of memory just to be thrown away.
+            if info.file_size > MAX_FILE_CHARS:
+                continue
+
             try:
                 content = z.read(info.filename).decode('utf-8')
-                if len(content) > 100_000:
+                if len(content) > MAX_FILE_CHARS:
                     continue
                 files.append({"path": path, "content": content})
+                total_bytes += len(content)
             except UnicodeDecodeError:
                 continue
 

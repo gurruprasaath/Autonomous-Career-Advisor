@@ -127,6 +127,24 @@ def create_competency_history(db: Session, user_id: int, skill_id: str, depth_sc
     db.refresh(db_history)
     return db_history
 
+def create_competency_history_batch(db: Session, rows: list[dict]) -> None:
+    """Write several CompetencyHistory rows in one commit (e.g. one per skill
+    at initial /api/advise time) instead of one commit per row."""
+    db.add_all([models.CompetencyHistory(**row) for row in rows])
+    db.commit()
+
+
+def get_latest_competency(db: Session, user_id: int, skill_id: str) -> models.CompetencyHistory | None:
+    """Most recent CompetencyHistory row for this (user, skill), if any —
+    used as the reassessment prior instead of re-deriving a coarse bucket
+    from the original static gap report every time."""
+    return (db.query(models.CompetencyHistory)
+            .filter(models.CompetencyHistory.user_id == user_id,
+                    models.CompetencyHistory.skill_id == skill_id)
+            .order_by(models.CompetencyHistory.recorded_at.desc())
+            .first())
+
+
 def get_competency_history(db: Session, user_id: int) -> dict[str, list]:
     rows = db.query(models.CompetencyHistory).filter(
         models.CompetencyHistory.user_id == user_id

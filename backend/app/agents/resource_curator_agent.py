@@ -1,7 +1,6 @@
 import logging
-import json
 from ..config import get_settings
-from ..core.llm import get_llm, invoke_llm, extract_json, LLMUnavailable
+from ..core.llm import get_llm, invoke_llm, extract_json
 from ..core.vectorstore import courses_collection
 from ..providers.youtube import search_youtube_videos
 from ..schemas import PathResource
@@ -37,11 +36,16 @@ def curate_resources(skill_id: str, skill_name: str, depth_score: int, objective
     # 1. Retrieve candidates
     candidates: dict[str, PathResource] = {}
     
-    # YouTube candidates
+    # YouTube candidates — mock results (course_id prefixed "yt-mock-",
+    # returned whenever no YOUTUBE_API_KEY is configured, all pointing at a
+    # placeholder video) must never enter the candidate pool: they'd otherwise
+    # be returnable as a "curated" resource via the deterministic fallback.
     yt_resources = search_youtube_videos(f"{level} {skill_name}", max_results=5)
     for res in yt_resources:
+        if res.course_id.startswith("yt-mock-"):
+            continue
         candidates[res.course_id] = res
-        
+
     # Course catalog candidates
     hits = courses_collection().get(where={"skill_id": skill_id})
     if hits and hits["ids"]:
@@ -52,7 +56,7 @@ def curate_resources(skill_id: str, skill_name: str, depth_score: int, objective
             )
 
     if not candidates:
-        return yt_resources[:k] if yt_resources else []
+        return []
 
     candidate_list = list(candidates.values())
     if len(candidate_list) <= k:
@@ -75,9 +79,11 @@ def curate_resources(skill_id: str, skill_name: str, depth_score: int, objective
         
         picks = data.get("picks", [])
         final_resources = []
+        seen: set[str] = set()
         for pick in picks:
             cid = pick.get("candidate_id")
-            if cid in candidates:
+            if cid in candidates and cid not in seen:
+                seen.add(cid)
                 # We could attach justification, but PathResource currently doesn't have it.
                 # Just return the selected resource.
                 final_resources.append(candidates[cid])

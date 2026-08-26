@@ -1,4 +1,6 @@
 """Deterministic status derivation from quiz/confidence signals."""
+import datetime
+
 from app.db import crud, database, models
 
 def _db():
@@ -205,3 +207,68 @@ def test_recalculate_pops_quiz_cache_for_deleted_steps():
     db.commit()
 
     assert step.id not in _quiz_cache
+
+
+def test_create_and_read_competency_history():
+    db = _db()
+    user = _make_user(db, email="comp@example.com")
+    crud.create_competency_history(db, user.id, "python", 6, 80, 4, True, "Depth raised to 6/10.")
+
+    history = crud.get_competency_history(db, user.id)
+    assert "python" in history
+    assert len(history["python"]) == 1
+    row = history["python"][0]
+    assert row["depth_score"] == 6
+    assert row["quiz_score"] == 80
+    assert row["confidence_rating"] == 4
+    assert row["has_github_evidence"] is True
+    assert row["rationale"] == "Depth raised to 6/10."
+
+
+def test_competency_history_multiple_rows_ordered_by_recorded_at():
+    db = _db()
+    user = _make_user(db, email="comp2@example.com")
+    base = datetime.datetime(2026, 1, 1)
+    for i, depth in enumerate([3, 5, 7]):
+        db.add(models.CompetencyHistory(
+            user_id=user.id, skill_id="python", depth_score=depth,
+            rationale=f"step {i}", recorded_at=base + datetime.timedelta(days=i)))
+    db.commit()
+
+    history = crud.get_competency_history(db, user.id)
+    assert [r["depth_score"] for r in history["python"]] == [3, 5, 7]
+
+
+def test_get_latest_competency_returns_most_recent_row():
+    db = _db()
+    user = _make_user(db, email="comp3@example.com")
+    base = datetime.datetime(2026, 1, 1)
+    for i, depth in enumerate([3, 5, 7]):
+        db.add(models.CompetencyHistory(
+            user_id=user.id, skill_id="python", depth_score=depth,
+            rationale=f"step {i}", recorded_at=base + datetime.timedelta(days=i)))
+    db.commit()
+
+    latest = crud.get_latest_competency(db, user.id, "python")
+    assert latest.depth_score == 7
+
+
+def test_get_latest_competency_none_when_no_history():
+    db = _db()
+    user = _make_user(db, email="comp4@example.com")
+    assert crud.get_latest_competency(db, user.id, "python") is None
+
+
+def test_create_competency_history_batch_single_commit():
+    db = _db()
+    user = _make_user(db, email="comp5@example.com")
+    crud.create_competency_history_batch(db, [
+        {"user_id": user.id, "skill_id": "python", "depth_score": 4,
+         "quiz_score": None, "confidence_rating": None,
+         "has_github_evidence": False, "rationale": "r1"},
+        {"user_id": user.id, "skill_id": "sql", "depth_score": 3,
+         "quiz_score": None, "confidence_rating": None,
+         "has_github_evidence": False, "rationale": "r2"},
+    ])
+    history = crud.get_competency_history(db, user.id)
+    assert set(history.keys()) == {"python", "sql"}

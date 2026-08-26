@@ -106,7 +106,7 @@ def build_profile(resume_text: str, target_role: str,
         if not existing or MASTERY_SCORE[level] > MASTERY_SCORE[existing.level]:
             skills[sid] = StudentSkill(
                 skill_id=sid, name=node_name, level=level,
-                depth_score=int(item.get("depth_score", 1)),
+                depth_score=max(1, min(10, int(item.get("depth_score", 1)))),
                 evidence=str(item.get("evidence", ""))[:200],
             )
     if unmatched:

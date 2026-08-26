@@ -1,4 +1,3 @@
-import os
 import requests
 import logging
 from ..schemas import PathResource
@@ -29,7 +28,7 @@ def search_youtube_videos(query: str, max_results: int = 3) -> list[PathResource
         "key": api_key
     }
     try:
-        resp = requests.get(url, params=params)
+        resp = requests.get(url, params=params, timeout=10)
         resp.raise_for_status()
         data = resp.json()
         resources = []

@@ -23,6 +23,7 @@ async function request(path, options = {}) {
   if (res.status === 401) {
     setToken(null);
     window.location.reload();
+    return; // reload is already in flight; don't also fall through to the throw below
   }
   if (!res.ok) {
     let detail = res.statusText;
@@ -97,9 +98,9 @@ export const extractPdf = async (file) => {
 };
 
 export const analyzeRepo = (username, repo_name) =>
-  request(`/api/github/repo/${username}/${repo_name}/analyze`, { method: "POST" });
+  request(`/api/github/repo/${encodeURIComponent(username)}/${encodeURIComponent(repo_name)}/analyze`, { method: "POST" });
 
 export const chatRepo = (username, repo_name, query) =>
-  request(`/api/github/repo/${username}/${repo_name}/chat`, {
+  request(`/api/github/repo/${encodeURIComponent(username)}/${encodeURIComponent(repo_name)}/chat`, {
     method: "POST", body: JSON.stringify({ query }),
   });

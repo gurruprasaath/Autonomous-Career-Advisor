@@ -1,4 +1,6 @@
 """GitHub public-repo language fetch. Mocks httpx — no real network calls."""
+import io
+import zipfile
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -6,6 +8,7 @@ import pytest
 from app.providers.github import (
     GithubRateLimited,
     GithubUserNotFound,
+    download_and_extract_repo,
     fetch_repo_languages,
     map_languages_to_evidence,
 )
@@ -93,3 +96,71 @@ def test_map_languages_unmapped_language_produces_no_row():
     languages = {"Rust": [{"repo_name": "systems-proj", "last_pushed_at": "2026-07-01T00:00:00Z"}]}
     rows = map_languages_to_evidence(languages)
     assert rows == []
+
+
+def _make_zip(entries):
+    """entries: list of (path, content_bytes). Wrapped in a root dir like a
+    real GitHub zipball (owner-repo-sha/...)."""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        for path, content in entries:
+            z.writestr(f"owner-repo-abc123/{path}", content)
+    return buf.getvalue()
+
+
+def _mock_zip_download(zip_bytes):
+    resp = MagicMock()
+    resp.status_code = 200
+    resp.content = zip_bytes
+    resp.raise_for_status.return_value = None
+    return resp
+
+
+def test_oversized_entry_skipped_via_pre_decompression_size_check():
+    small_content = b"print('hello')\n"
+    # Highly compressible: a few MB of one repeated byte compresses to almost
+    # nothing but decompresses to a lot — the fix must reject it using the
+    # zip header's file_size, not by decompressing first.
+    huge_compressible = b"A" * (5 * 1024 * 1024)
+    zip_bytes = _make_zip([("small.py", small_content), ("huge.py", huge_compressible)])
+
+    with patch("app.providers.github.httpx.get", return_value=_mock_zip_download(zip_bytes)):
+        files = download_and_extract_repo("owner", "repo")
+
+    paths = {f["path"] for f in files}
+    assert "small.py" in paths
+    assert "huge.py" not in paths
+
+
+def test_total_file_count_cap_respected():
+    entries = [(f"file_{i}.py", f"print({i})".encode()) for i in range(10)]
+    zip_bytes = _make_zip(entries)
+
+    with patch("app.providers.github.httpx.get", return_value=_mock_zip_download(zip_bytes)), \
+         patch("app.providers.github.MAX_TOTAL_FILES", 3):
+        files = download_and_extract_repo("owner", "repo")
+
+    assert len(files) == 3
+
+
+def test_total_byte_cap_respected():
+    entries = [(f"file_{i}.py", b"x" * 20) for i in range(5)]
+    zip_bytes = _make_zip(entries)
+
+    with patch("app.providers.github.httpx.get", return_value=_mock_zip_download(zip_bytes)), \
+         patch("app.providers.github.MAX_TOTAL_BYTES", 25):
+        files = download_and_extract_repo("owner", "repo")
+
+    assert len(files) == 2  # 20 bytes, then 40 >= 25 cap -> stop
+
+
+def test_package_lock_json_excluded_by_exact_basename():
+    entries = [("package-lock.json", b'{"lockfileVersion": 1}'),
+               ("sub/package-lock.json", b'{"lockfileVersion": 1}'),
+               ("app.py", b"print('ok')")]
+    zip_bytes = _make_zip(entries)
+
+    with patch("app.providers.github.httpx.get", return_value=_mock_zip_download(zip_bytes)):
+        files = download_and_extract_repo("owner", "repo")
+
+    assert {f["path"] for f in files} == {"app.py"}

@@ -110,6 +110,9 @@ def build_path(profile: StudentProfile, gap_report: GapReport,
                 
         obj_text = str(llm_step.get("objective", "")) or f"Reach {gap.required_level} level in {gap.name} (demanded by {gap.demand_share:.0%} of {gap_report.target_role} postings)."
 
+        # curate_resources makes one LLM call per step (up to MAX_PATH_SKILLS
+        # per plan) where the old first-k selection made zero — a known,
+        # accepted latency tradeoff for real curated resources, not a bug.
         steps.append(PathStep(
             order=order, skill_id=sid, skill_name=gap.name,
             objective=obj_text,

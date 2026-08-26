@@ -1,19 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { getJourneys, recordProgress, getStepQuiz, submitStepQuiz, syncGithub, recalculateJourney, getCompetencyHistory } from "../api";
 
-function CompetencyChart({ historyData }) {
+function CompetencyChart({ historyData, skillNames }) {
   const [selectedSkill, setSelectedSkill] = useState("");
-  
+
   const skillIds = Object.keys(historyData || {});
-  useEffect(() => {
-    if (skillIds.length > 0 && !selectedSkill) {
-      setSelectedSkill(skillIds[0]);
-    }
-  }, [skillIds, selectedSkill]);
-  
   if (skillIds.length === 0) return null;
-  
-  const data = historyData[selectedSkill] || [];
+
+  // Derived inline instead of an effect keyed on a fresh array each render —
+  // setSelectedSkill is only ever called from the dropdown's onChange.
+  const activeSkill = selectedSkill || skillIds[0];
+  const data = historyData[activeSkill] || [];
   
   const width = 500;
   const height = 200;
@@ -31,8 +28,8 @@ function CompetencyChart({ historyData }) {
     <div className="panel" style={{ marginBottom: "1.5rem" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Competency Growth</h2>
-        <select value={selectedSkill} onChange={e => setSelectedSkill(e.target.value)} className="input-field">
-          {skillIds.map(id => <option key={id} value={id}>{id}</option>)}
+        <select value={activeSkill} onChange={e => setSelectedSkill(e.target.value)} className="input-field">
+          {skillIds.map(id => <option key={id} value={id}>{(skillNames && skillNames[id]) || id}</option>)}
         </select>
       </div>
       {data.length > 0 && (
@@ -268,10 +265,13 @@ export default function LearningTracker() {
   if (initialLoad) return <div>Loading journeys...</div>;
   if (error) return <div className="error-box">{error}</div>;
 
+  const skillNames = {};
+  journeys.forEach((j) => j.steps.forEach((s) => { skillNames[s.skill_id] = s.skill_name; }));
+
   return (
     <div className="tracker">
       <GithubConnect onSynced={fetchJourneys} />
-      <CompetencyChart historyData={historyData} />
+      <CompetencyChart historyData={historyData} skillNames={skillNames} />
       {journeys.length === 0 && <div>No learning paths generated yet. Go to Generate Path!</div>}
       {journeys.map((j) => {
         const hasStruggling = j.steps.some((s) => s.status === "struggling");

@@ -1,6 +1,6 @@
 import logging
 from ..config import get_settings
-from ..core.llm import get_llm, invoke_llm, LLMUnavailable
+from ..core.llm import get_llm, invoke_llm
 
 log = logging.getLogger(__name__)
 
