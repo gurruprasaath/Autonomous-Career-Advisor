@@ -1,20 +1,12 @@
 const BASE = ""
 
-let token: string | null = null
-
-try {
-  token = localStorage.getItem("access_token")
-} catch {
-  // localStorage not available in test environment
-}
+let token: string | null = typeof localStorage !== 'undefined' ? localStorage.getItem("access_token") : null
 
 export function setToken(newToken: string | null) {
   token = newToken
-  try {
+  if (typeof localStorage !== 'undefined') {
     if (token) localStorage.setItem("access_token", token)
     else localStorage.removeItem("access_token")
-  } catch {
-    // localStorage not available
   }
 }
 
