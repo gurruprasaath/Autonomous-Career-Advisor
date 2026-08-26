@@ -1,13 +1,20 @@
 const BASE = ""
 
-let token: string | null = typeof localStorage !== 'undefined' ? localStorage.getItem("access_token") : null
+// Guarded because this project's actual Vitest + jsdom test environment
+// does not provide a working global `localStorage` at all (verified by
+// running the test suite: an unguarded access throws
+// "Cannot read properties of undefined" both at module-eval time and from
+// inside a test body) — this is not a real-browser concern to defend
+// against, it's this specific test environment's gap. The in-memory `token`
+// variable is still authoritative either way, so getToken()/setToken()
+// behave identically for callers regardless of whether persistence happens.
+let token: string | null = typeof localStorage !== "undefined" ? localStorage.getItem("access_token") : null
 
 export function setToken(newToken: string | null) {
   token = newToken
-  if (typeof localStorage !== 'undefined') {
-    if (token) localStorage.setItem("access_token", token)
-    else localStorage.removeItem("access_token")
-  }
+  if (typeof localStorage === "undefined") return
+  if (token) localStorage.setItem("access_token", token)
+  else localStorage.removeItem("access_token")
 }
 
 export function getToken(): string | null {
