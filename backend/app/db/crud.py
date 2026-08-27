@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from . import models, auth
+import datetime
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -160,3 +161,33 @@ def get_competency_history(db: Session, user_id: int) -> dict[str, list]:
             "recorded_at": row.recorded_at.isoformat() if hasattr(row.recorded_at, "isoformat") else row.recorded_at
         })
     return history
+
+
+def upsert_analyzed_repo(db: Session, user_id: int, username: str, repo_name: str,
+                         file_count: int) -> models.AnalyzedRepo:
+    """Record that this user has analyzed this repo — update the existing row
+    if they've analyzed it before, insert otherwise, so re-submitting the same
+    repo is recognized instead of silently re-downloading with no memory of
+    the prior run."""
+    existing = (db.query(models.AnalyzedRepo)
+                .filter(models.AnalyzedRepo.user_id == user_id,
+                        models.AnalyzedRepo.username == username,
+                        models.AnalyzedRepo.repo_name == repo_name).first())
+    if existing:
+        existing.file_count = file_count
+        existing.analyzed_at = datetime.datetime.utcnow()
+        db.commit()
+        db.refresh(existing)
+        return existing
+    db_repo = models.AnalyzedRepo(user_id=user_id, username=username,
+                                  repo_name=repo_name, file_count=file_count)
+    db.add(db_repo)
+    db.commit()
+    db.refresh(db_repo)
+    return db_repo
+
+
+def get_analyzed_repos(db: Session, user_id: int) -> list[models.AnalyzedRepo]:
+    return (db.query(models.AnalyzedRepo)
+            .filter(models.AnalyzedRepo.user_id == user_id)
+            .order_by(models.AnalyzedRepo.analyzed_at.desc()).all())

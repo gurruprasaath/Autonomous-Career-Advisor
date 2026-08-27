@@ -75,14 +75,25 @@ def map_languages_to_evidence(languages: dict[str, list[dict]],
     """GitHub language name -> taxonomy skill via match_mention, dropping
     matches below confidence_floor. Returns evidence rows with
     last_pushed_at still as the raw ISO string from GitHub (caller converts
-    to a datetime for storage)."""
+    to a datetime for storage).
+
+    A repo can report multiple languages that map to the same taxonomy skill
+    (GitHub lists "HTML" and "CSS" separately, both -> html-css) — dedup by
+    (skill_id, repo_name) so one repo contributes at most one evidence row
+    per skill instead of one per matching language.
+    """
     evidence_rows = []
+    seen: set[tuple[str, str]] = set()
     for language, repos in languages.items():
         hit = match_mention(language)
         if not hit or hit[1] < confidence_floor:
             continue
         skill_id = hit[0]
         for repo in repos:
+            key = (skill_id, repo["repo_name"])
+            if key in seen:
+                continue
+            seen.add(key)
             evidence_rows.append({
                 "skill_id": skill_id, "repo_name": repo["repo_name"],
                 "repo_language": language, "last_pushed_at": repo["last_pushed_at"],

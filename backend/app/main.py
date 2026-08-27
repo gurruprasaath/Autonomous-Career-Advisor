@@ -230,6 +230,7 @@ def analyze_repo(username: str, repo_name: str, token: str = Depends(oauth2_sche
         log.warning("repo indexing failed for %s/%s: %s", username, repo_name, e)
         raise HTTPException(500, "Failed to analyze repository") from e
 
+    crud.upsert_analyzed_repo(db, current_user.id, username, repo_name, len(files))
     return {"message": "Analyzed successfully", "files_processed": len(files)}
 
 
@@ -270,6 +271,21 @@ def chat_repo(username: str, repo_name: str, req: RepoChatRequest, token: str = 
     except Exception as e:
         log.warning("repo chat LLM failed for %s/%s: %s", username, repo_name, e)
         raise HTTPException(500, "Failed to answer — try re-analyzing the repository") from e
+
+
+@app.get("/api/github/repos")
+def list_analyzed_repos(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    current_user = get_current_user(token, db)
+    repos = crud.get_analyzed_repos(db, current_user.id)
+    return [
+        {
+            "username": r.username,
+            "repo_name": r.repo_name,
+            "file_count": r.file_count,
+            "analyzed_at": r.analyzed_at.isoformat(),
+        }
+        for r in repos
+    ]
 
 
 

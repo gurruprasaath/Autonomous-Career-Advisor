@@ -164,3 +164,16 @@ def test_package_lock_json_excluded_by_exact_basename():
         files = download_and_extract_repo("owner", "repo")
 
     assert {f["path"] for f in files} == {"app.py"}
+
+
+def test_map_languages_dedupes_same_skill_from_multiple_languages_in_one_repo():
+    # GitHub reports HTML and CSS as separate languages that both map to the
+    # taxonomy's single "html-css" skill — a repo with both must contribute
+    # only one evidence row for that skill, not two.
+    languages = {
+        "HTML": [{"repo_name": "portfolio-site", "last_pushed_at": "2026-07-01T00:00:00Z"}],
+        "CSS": [{"repo_name": "portfolio-site", "last_pushed_at": "2026-07-01T00:00:00Z"}],
+    }
+    rows = map_languages_to_evidence(languages)
+    matching = [r for r in rows if r["repo_name"] == "portfolio-site"]
+    assert len(matching) == 1

@@ -65,3 +65,12 @@ class CompetencyHistory(Base):
     rationale = Column(String)
     recorded_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+class AnalyzedRepo(Base):
+    __tablename__ = "analyzed_repos"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    username = Column(String)
+    repo_name = Column(String)
+    file_count = Column(Integer, default=0)
+    analyzed_at = Column(DateTime, default=datetime.datetime.utcnow)
+
