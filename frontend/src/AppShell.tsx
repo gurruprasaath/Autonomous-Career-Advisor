@@ -1,11 +1,14 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { setToken } from './api/client'
 
 export default function AppShell() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const logout = () => {
     setToken(null)
+    queryClient.clear()
     navigate('/login', { replace: true })
   }
 

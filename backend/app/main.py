@@ -282,7 +282,7 @@ def list_analyzed_repos(token: str = Depends(oauth2_scheme), db: Session = Depen
             "username": r.username,
             "repo_name": r.repo_name,
             "file_count": r.file_count,
-            "analyzed_at": r.analyzed_at.isoformat(),
+            "analyzed_at": r.analyzed_at.isoformat() + "Z",
         }
         for r in repos
     ]
