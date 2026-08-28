@@ -27,6 +27,11 @@ class Settings(BaseSettings):
     adzuna_app_id: str = ""
     adzuna_app_key: str = ""
     adzuna_country: str = "in"
+    jobspy_country: str = "India"  # JobSpy/Indeed expects a full country
+                                    # name, not an ISO code like
+                                    # adzuna_country — kept as its own
+                                    # setting so the two providers' config
+                                    # isn't coupled together.
     youtube_api_key: str = ""
 
     max_revision_loops: int = 2
