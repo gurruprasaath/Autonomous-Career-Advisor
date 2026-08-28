@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 from app.agents import job_matcher
 from app.db import crud, database, models
+from app.providers import get_job_provider
 
 
 def _db():
@@ -106,3 +107,12 @@ def test_recommend_jobs_handles_a_user_with_no_competency_history_yet():
 
     assert len(results) == 1
     assert results[0].matched_skills == []
+
+
+def test_get_job_provider_returns_jobspy_provider_when_configured():
+    with patch("app.providers.get_settings") as mock_settings:
+        mock_settings.return_value.job_provider = "jobspy"
+        provider = get_job_provider()
+
+    from app.providers.jobspy_provider import JobSpyProvider
+    assert isinstance(provider, JobSpyProvider)

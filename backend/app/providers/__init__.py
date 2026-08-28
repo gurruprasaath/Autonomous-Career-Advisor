@@ -7,5 +7,8 @@ def get_job_provider() -> JobProvider:
     if provider == "adzuna":
         from .adzuna import AdzunaJobProvider
         return AdzunaJobProvider()
+    if provider == "jobspy":
+        from .jobspy_provider import JobSpyProvider
+        return JobSpyProvider()
     from .sample import SampleJobProvider
     return SampleJobProvider()
