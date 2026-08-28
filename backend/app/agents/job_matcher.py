@@ -21,8 +21,8 @@ from .market_agent import _posting_skills
 OVERLAP_WEIGHT = 0.7
 SEMANTIC_WEIGHT = 0.3
 IN_PROGRESS_WEIGHT = 0.4
-FETCH_LIMIT = 50
-RESULT_LIMIT = 15
+FETCH_LIMIT = 100
+RESULT_LIMIT = 30
 
 
 def _user_skill_weights(db: Session, user_id: int, journey: models.LearningJourney) -> dict[str, float]:
