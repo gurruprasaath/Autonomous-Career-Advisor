@@ -171,3 +171,13 @@ export interface AnalyzedRepo {
   file_count: number
   analyzed_at: string
 }
+
+export interface JobRecommendation {
+  posting_id: string
+  title: string
+  company: string
+  location: string
+  url: string
+  score: number
+  matched_skills: string[]
+}

@@ -9,6 +9,7 @@ import LoginPage from './routes/LoginPage'
 import GeneratePage from './routes/GeneratePage'
 import TrackerPage from './routes/TrackerPage'
 import RepoAnalysisPage from './routes/RepoAnalysisPage'
+import JobsPage from './routes/JobsPage'
 
 document.title = 'Autonomous Career Advisor'
 
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="generate" element={<GeneratePage />} />
             <Route path="tracker" element={<TrackerPage />} />
             <Route path="repo-analysis" element={<RepoAnalysisPage />} />
+            <Route path="jobs" element={<JobsPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

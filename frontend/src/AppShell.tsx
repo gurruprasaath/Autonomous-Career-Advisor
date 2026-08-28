@@ -29,6 +29,9 @@ export default function AppShell() {
         <NavLink to="/repo-analysis" className={({ isActive }) => `secondary-button ${isActive ? 'active' : ''}`}>
           GitHub Analysis
         </NavLink>
+        <NavLink to="/jobs" className={({ isActive }) => `secondary-button ${isActive ? 'active' : ''}`}>
+          Job Matches
+        </NavLink>
         <button className="secondary-button" onClick={logout}>Logout</button>
       </nav>
 
