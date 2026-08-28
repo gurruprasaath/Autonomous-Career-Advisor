@@ -260,8 +260,8 @@ describe('PathGraph', () => {
 
   it('renders one node per step with its order and weeks', () => {
     render(<PathGraph path={makePath(3)} />)
-    expect(screen.getByText('Skill 1')).toBeInTheDocument()
-    expect(screen.getByText('Skill 3')).toBeInTheDocument()
+    expect(screen.getByText(/1\. Skill 1/)).toBeInTheDocument()
+    expect(screen.getByText(/3\. Skill 3/)).toBeInTheDocument()
     expect(screen.getAllByText('2 weeks')).toHaveLength(3)
   })
 
@@ -430,6 +430,7 @@ Create `frontend/src/components/Results.test.tsx`:
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MemoryRouter } from 'react-router-dom'
 import Results from './Results'
 import type { AdvisorResult } from '../api/types'
 
@@ -448,7 +449,9 @@ function renderResults() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   render(
     <QueryClientProvider client={queryClient}>
-      <Results result={RESULT} onRestart={vi.fn()} />
+      <MemoryRouter>
+        <Results result={RESULT} onRestart={vi.fn()} />
+      </MemoryRouter>
     </QueryClientProvider>
   )
 }
