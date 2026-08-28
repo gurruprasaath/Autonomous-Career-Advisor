@@ -4,6 +4,13 @@ import GithubConnect from '../components/GithubConnect'
 import CompetencyChart from '../components/CompetencyChart'
 import StepTracker from '../components/StepTracker'
 
+const STATUS_LABEL: Record<string, string> = {
+  pending: 'Pending',
+  in_progress: 'In progress',
+  struggling: 'Struggling',
+  completed: 'Completed',
+}
+
 export default function TrackerPage() {
   const { data: journeys, isLoading, error } = useJourneys()
   const { data: historyData } = useCompetencyHistory()
@@ -48,25 +55,29 @@ export default function TrackerPage() {
                 </button>
               )}
             </div>
-            <div className="timeline">
+            <div className="syllabus">
               {j.steps.map((s) => (
-                <div className={`tstep ${s.status === 'completed' ? 'done' : s.status === 'struggling' ? 'warn' : ''}`} key={s.id}>
-                  <h3 style={{ margin: 0 }}>
-                    {s.order}. {s.skill_name} <span className="weeks">{s.estimated_weeks} wk</span>
-                    <span className="hint" style={{ marginLeft: '0.5rem' }}>({s.status})</span>
-                  </h3>
-                  <p>{s.objective}</p>
-                  <p className="milestone">🏁 {s.milestone}</p>
-                  {s.resources.length > 0 && (
-                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      {s.resources.map((r) => (
-                        <a key={r.course_id} className="resource" href={r.url} target="_blank" rel="noreferrer">
-                          📚 {r.title} — {r.provider} {r.free ? '(free)' : ''}
-                        </a>
-                      ))}
+                <div className={`syl-row ${s.status === 'completed' ? 'done' : s.status === 'struggling' ? 'warn' : ''}`} key={s.id}>
+                  <div className="syl-num">{s.order}</div>
+                  <div>
+                    <div className="syl-name">
+                      {s.skill_name}
+                      <span className={`status-tag status-${s.status}`}>{STATUS_LABEL[s.status] ?? s.status}</span>
                     </div>
-                  )}
-                  <StepTracker step={s} hoursPerWeek={j.hours_per_week} />
+                    <p className="syl-obj">{s.objective}</p>
+                    <p className="milestone">🏁 {s.milestone}</p>
+                    {s.resources.length > 0 && (
+                      <div style={{ marginTop: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        {s.resources.map((r) => (
+                          <a key={r.course_id} className="resource" href={r.url} target="_blank" rel="noreferrer">
+                            📚 {r.title} — {r.provider} {r.free ? '(free)' : ''}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    <StepTracker step={s} hoursPerWeek={j.hours_per_week} />
+                  </div>
+                  <div className="weeks">{s.estimated_weeks} wk</div>
                 </div>
               ))}
             </div>
