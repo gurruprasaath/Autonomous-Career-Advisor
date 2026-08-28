@@ -13,24 +13,53 @@ export interface ProfileFormValues {
   hours_per_week: number
 }
 
-export default function ProfileForm({ onSubmit }: { onSubmit: (values: ProfileFormValues) => void }) {
-  const [text, setText] = useState('')
-  const [education, setEducation] = useState('')
-  const [hours, setHours] = useState(10)
+export default function ProfileForm({ onSubmit, initialValues }: {
+  onSubmit: (values: ProfileFormValues) => void
+  initialValues?: ProfileFormValues | null
+}) {
+  const [text, setText] = useState(initialValues?.resume_text ?? '')
+  const [education, setEducation] = useState(initialValues?.education ?? '')
+  const [hours, setHours] = useState(initialValues?.hours_per_week ?? 10)
+  const [uploadedFileName, setUploadedFileName] = useState('')
+  const [uploadedChars, setUploadedChars] = useState(0)
+  const [uploadError, setUploadError] = useState('')
+  const [dragging, setDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const extractPdf = useExtractPdf()
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const uploadFile = async (file: File) => {
+    setUploadError('')
+    if (file.type !== 'application/pdf') {
+      setUploadError('Please upload a PDF file.')
+      return
+    }
     try {
       const data = await extractPdf.mutateAsync(file)
       setText(data.text)
+      setUploadedFileName(file.name)
+      setUploadedChars(data.text.length)
     } catch (err) {
-      alert('Failed to extract PDF: ' + (err instanceof Error ? err.message : String(err)))
-    } finally {
-      e.target.value = ''
+      setUploadError('Failed to extract PDF: ' + (err instanceof Error ? err.message : String(err)))
     }
+  }
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (file) uploadFile(file)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setDragging(false)
+    const file = e.dataTransfer.files?.[0]
+    if (file) uploadFile(file)
+  }
+
+  const removeUpload = () => {
+    setUploadedFileName('')
+    setUploadedChars(0)
+    setUploadError('')
   }
 
   return (
@@ -51,22 +80,35 @@ export default function ProfileForm({ onSubmit }: { onSubmit: (values: ProfileFo
         <button className="ghost" onClick={() => setText(SAMPLE)} style={{ marginTop: 0 }}>
           Use sample profile
         </button>
-        <button
-          className="ghost"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={extractPdf.isPending}
-          style={{ marginTop: 0, borderColor: 'var(--accent)', color: 'var(--accent)' }}
-        >
-          {extractPdf.isPending ? 'Extracting...' : 'Upload Resume (PDF)'}
-        </button>
-        <input
-          type="file"
-          accept="application/pdf"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={handleFileUpload}
-        />
       </div>
+
+      {uploadError && <div className="error-box">{uploadError}</div>}
+
+      {uploadedFileName ? (
+        <div className="upload-confirm">
+          <span>✓ Extracted {uploadedChars.toLocaleString()} characters from {uploadedFileName}.</span>
+          <button className="ghost" onClick={removeUpload} style={{ marginTop: 0 }}>Remove</button>
+        </div>
+      ) : (
+        <div
+          className={`dropzone ${dragging ? 'dragging' : ''}`}
+          onClick={() => fileInputRef.current?.click()}
+          onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={handleDrop}
+        >
+          {extractPdf.isPending
+            ? 'Extracting text from your resume...'
+            : '📄 Drop your resume PDF here, or click to browse'}
+        </div>
+      )}
+      <input
+        type="file"
+        accept="application/pdf"
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+        onChange={handleFileInput}
+      />
 
       <div className="two-col">
         <div>

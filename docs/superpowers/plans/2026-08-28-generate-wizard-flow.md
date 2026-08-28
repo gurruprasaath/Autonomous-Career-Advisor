@@ -83,7 +83,7 @@ describe('ProfileForm', () => {
 
     fireEvent.drop(screen.getByText(/Drop your resume PDF here/), { dataTransfer: { files: [pdfFile()] } })
 
-    await waitFor(() => expect(screen.getByText('✓ Extracted 22 characters from resume.pdf.')).toBeInTheDocument())
+    await waitFor(() => expect(screen.getByText('✓ Extracted 21 characters from resume.pdf.')).toBeInTheDocument())
     expect(screen.getByDisplayValue('Extracted resume text')).toBeInTheDocument()
     expect(screen.queryByText(/Drop your resume PDF here/)).not.toBeInTheDocument()
   })
