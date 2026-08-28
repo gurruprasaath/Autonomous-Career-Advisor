@@ -59,11 +59,11 @@ export default function RepoAnalysisPage() {
   return (
     <div className="panel" style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h2>GitHub Repository Analysis</h2>
-      <p>Enter a public GitHub repository to download its source code and chat with it locally using AI RAG.</p>
+      <p className="hint">Enter a public GitHub repository to download its source code and chat with it locally using AI RAG.</p>
 
       {analyzedRepos && analyzedRepos.length > 0 && (
-        <div className="hint" style={{ marginBottom: '1rem' }}>
-          <strong>Already analyzed:</strong>
+        <div className="repo-history">
+          <strong>Already analyzed</strong>
           <ul>
             {analyzedRepos.map((r) => (
               <li key={`${r.username}/${r.repo_name}`}>
@@ -86,15 +86,16 @@ export default function RepoAnalysisPage() {
       {status && <div className="hint" style={{ marginBottom: '1rem' }}>{status}</div>}
 
       {analyzed && (
-        <div className="chat-interface" style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1rem' }}>
-          <div className="chat-history" style={{ maxHeight: '400px', overflowY: 'auto', marginBottom: '1rem' }}>
+        <div style={{ border: '1px solid var(--panel-border)', borderRadius: '12px', padding: '1rem' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto', marginBottom: '1rem' }}>
             {chatHistory.length === 0 && <p className="hint">Ask a question about the code!</p>}
             {chatHistory.map((msg, i) => (
               <div key={i} style={{ marginBottom: '1rem', textAlign: msg.role === 'user' ? 'right' : 'left' }}>
                 <div style={{
-                  display: 'inline-block', padding: '0.5rem 1rem', borderRadius: '8px',
-                  background: msg.role === 'user' ? '#4f46e5' : '#f1f1f1',
-                  color: msg.role === 'user' ? 'white' : 'black',
+                  display: 'inline-block', padding: '0.5rem 1rem', borderRadius: '10px',
+                  background: msg.role === 'user' ? 'var(--primary)' : 'var(--bg-main)',
+                  color: msg.role === 'user' ? 'white' : 'var(--text-main)',
+                  border: msg.role === 'user' ? 'none' : '1px solid var(--panel-border)',
                   whiteSpace: 'pre-wrap', textAlign: 'left',
                 }}>
                   <ReactMarkdown
@@ -106,8 +107,8 @@ export default function RepoAnalysisPage() {
                       li: ({ ...props }) => <li style={{ marginBottom: '0.25rem' }} {...props} />,
                       code: ({ className, ...props }) =>
                         className?.includes('language-')
-                          ? <code style={{ display: 'block', background: 'rgba(0,0,0,0.1)', padding: '0.5rem', borderRadius: '5px', overflowX: 'auto' }} className={className} {...props} />
-                          : <code style={{ background: 'rgba(0,0,0,0.1)', padding: '0.1rem 0.3rem', borderRadius: '3px' }} {...props} />,
+                          ? <code style={{ display: 'block', fontFamily: "'IBM Plex Mono', monospace", background: 'rgba(36,29,18,0.08)', padding: '0.5rem', borderRadius: '6px', overflowX: 'auto' }} className={className} {...props} />
+                          : <code style={{ fontFamily: "'IBM Plex Mono', monospace", background: 'rgba(36,29,18,0.08)', padding: '0.1rem 0.3rem', borderRadius: '4px' }} {...props} />,
                     }}
                   >
                     {msg.text}
