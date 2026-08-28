@@ -18,8 +18,18 @@ from ..schemas import (
 )
 from .taxonomy import load_taxonomy
 
-# A skill demanded by fewer than this share of postings is noise, not a gap.
-MIN_DEMAND_SHARE = 0.15
+# A skill mentioned in fewer postings than this is one-off noise, not a
+# signal — independent of how many postings were fetched (a fixed
+# %-of-postings threshold doesn't generalize: real live job data spreads
+# mentions far more thinly than the old synthetic sample data did, so a
+# %-based rule left almost every role with 0-1 candidate skills once the
+# live Adzuna provider went live).
+MIN_DEMAND_FREQUENCY = 2
+
+# Cap the candidate pool to the N most-demanded skills clearing the floor
+# above (matches the "top 12" convention the demand-chart UI already uses)
+# so a long real-data tail of rarely-mentioned skills can't dilute the list.
+MAX_CANDIDATE_SKILLS = 15
 
 _LEVEL_BY_SCORE = {v: k for k, v in MASTERY_SCORE.items()}
 
@@ -35,11 +45,14 @@ def compute_gaps(
     have = {s.skill_id: MASTERY_SCORE[s.level] for s in profile.skills}
     required_levels = required_levels or {}
 
+    # demand.skills is already sorted by frequency, descending (market_agent).
+    candidates = [sd for sd in demand.skills if sd.frequency >= MIN_DEMAND_FREQUENCY][:MAX_CANDIDATE_SKILLS]
+
     gaps: list[SkillGap] = []
     strengths: list[str] = []
 
-    for sd in demand.skills:
-        if sd.share < MIN_DEMAND_SHARE or sd.skill_id not in taxonomy:
+    for sd in candidates:
+        if sd.skill_id not in taxonomy:
             continue
         required_level = required_levels.get(sd.skill_id, "intermediate")
         required = MASTERY_SCORE[required_level]

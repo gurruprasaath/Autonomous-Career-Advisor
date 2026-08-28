@@ -1,5 +1,5 @@
 """Offline tests: taxonomy matching + gap engine. No API key required."""
-from app.core.gap_engine import MIN_DEMAND_SHARE, compute_gaps
+from app.core.gap_engine import MAX_CANDIDATE_SKILLS, MIN_DEMAND_FREQUENCY, compute_gaps
 from app.core.taxonomy import load_taxonomy, match_mention, prerequisite_order
 from app.schemas import MarketDemandProfile, SkillDemand, StudentProfile, StudentSkill
 
@@ -86,8 +86,31 @@ class TestGapEngine:
 
     def test_low_demand_noise_filtered(self):
         profile = StudentProfile(skills=[])
-        report = compute_gaps(profile, demand([("go", MIN_DEMAND_SHARE / 2)]))
+        # frequency = int(share * n) = int((1/20) * 20) = 1, below MIN_DEMAND_FREQUENCY
+        report = compute_gaps(profile, demand([("go", 1 / 20)]))
         assert report.gaps == []
+
+    def test_low_frequency_absolute_floor_independent_of_share(self):
+        # A skill mentioned in only 1 posting is noise even if that's a
+        # large share of a tiny posting set — the floor is a frequency
+        # count, not a percentage (real Adzuna data spreads mentions too
+        # thinly across few postings for a %-based rule to work).
+        profile = StudentProfile(skills=[])
+        report = compute_gaps(profile, demand([("go", 1 / 3)], n=3))
+        assert report.gaps == []
+
+    def test_candidate_pool_capped_at_top_n_by_frequency(self):
+        taxonomy = load_taxonomy()
+        skill_ids = list(taxonomy.keys())[: MAX_CANDIDATE_SKILLS + 5]
+        # descending share (and therefore frequency) so skill_ids[0] is the
+        # most-demanded and skill_ids[-1] the least.
+        entries = [(sid, 0.9 - i * 0.01) for i, sid in enumerate(skill_ids)]
+        profile = StudentProfile(skills=[])
+        report = compute_gaps(profile, demand(entries, n=100),
+                              {sid: "advanced" for sid in skill_ids})
+        assert len(report.gaps) == MAX_CANDIDATE_SKILLS
+        assert skill_ids[-1] not in {g.skill_id for g in report.gaps}
+        assert skill_ids[0] in {g.skill_id for g in report.gaps}
 
     def test_sorted_by_priority(self):
         profile = StudentProfile(skills=[])
