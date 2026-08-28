@@ -24,6 +24,13 @@ class Settings(BaseSettings):
     planner_model: str = "qwen2.5:7b-instruct"
     fast_model: str = "qwen2.5:7b-instruct"
 
+    # Optional fast cloud primary: comma-separated Groq API keys (one per
+    # real account you/teammates hold — a rate-limited or invalid key moves
+    # to the next one). Empty means stay on local Ollama only. Falls back
+    # to Ollama automatically if every configured key is exhausted.
+    groq_api_keys: str = ""
+    groq_model: str = "openai/gpt-oss-120b"
+
     adzuna_app_id: str = ""
     adzuna_app_key: str = ""
     adzuna_country: str = "in"
@@ -34,7 +41,13 @@ class Settings(BaseSettings):
                                     # isn't coupled together.
     youtube_api_key: str = ""
 
-    max_revision_loops: int = 2
+    # Capped at 1 (not the more thorough 2) to keep the advisor pipeline's
+    # worst case closer to ~6 sequential local-LLM calls than ~9 — the
+    # verifier's hard rule-checks (prerequisite order, catalog grounding,
+    # coverage, realism bounds) still cap the score regardless of revision
+    # count, so this only limits how many qualitative polish passes a path
+    # can get, not whether structural problems get caught.
+    max_revision_loops: int = 1
     verifier_pass_threshold: float = 3.5  # mean FGCR score out of 5
 
     @property
