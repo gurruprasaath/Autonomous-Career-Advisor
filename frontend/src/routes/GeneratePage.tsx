@@ -45,7 +45,7 @@ export default function GeneratePage() {
       <div className="steps">
         {STEPS.map((s, i) => (
           <span key={s} className={`step-chip ${i === step ? 'active' : ''} ${i < step ? 'done' : ''}`}>
-            {i < step ? '✓ ' : ''}{s}
+            {String(i + 1).padStart(2, '0')} {i < step ? '✓ ' : ''}{s}
           </span>
         ))}
       </div>
