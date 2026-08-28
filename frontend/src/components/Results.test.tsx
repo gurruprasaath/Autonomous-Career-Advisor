@@ -63,6 +63,7 @@ describe('Results', () => {
     renderResults()
 
     await waitFor(() => expect(screen.getByText(/Data Engineer — Acme/)).toBeInTheDocument())
+    expect(screen.getByText('🔗 Apply')).toHaveAttribute('href', 'https://example.com/job-a')
   })
 
   it('renders interview tips once the interview-tips request resolves', async () => {

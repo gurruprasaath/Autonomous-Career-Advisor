@@ -88,6 +88,17 @@ def build_profile(resume_text: str, target_role: str,
         notes.append(f"LLM extraction failed ({type(e).__name__}); used keyword scan fallback.")
         raw_skills = _extract_deterministic(resume_text)
 
+    if not raw_skills:
+        # The LLM ran fine but found nothing — a real failure mode for
+        # terse/casual text on a small model (reproduced directly: "know
+        # some linux and cloud stuff" extracts zero mentions despite
+        # "linux" being right there). An empty LLM result isn't proof the
+        # student has no skills, so fall back to the same deterministic
+        # scan used when the LLM is unreachable.
+        raw_skills = _extract_deterministic(resume_text)
+        if raw_skills:
+            notes.append("LLM found no skills in this text; used a keyword scan instead.")
+
     skills: dict[str, StudentSkill] = {}
     unmatched: list[str] = []
     for item in raw_skills:

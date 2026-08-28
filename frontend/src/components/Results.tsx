@@ -57,6 +57,11 @@ function RecommendedJobsView() {
               <div>
                 <div className="syl-name">{job.title} — {job.company}</div>
                 <p className="syl-obj">{job.location}</p>
+                {job.url && (
+                  <a className="resource" href={job.url} target="_blank" rel="noreferrer" style={{ marginTop: '0.4rem', display: 'inline-flex' }}>
+                    🔗 Apply
+                  </a>
+                )}
               </div>
               <div className="weeks">{Math.round(job.score * 100)}%</div>
             </div>
