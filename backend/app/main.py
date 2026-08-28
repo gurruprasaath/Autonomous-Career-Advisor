@@ -1,4 +1,5 @@
 """FastAPI app for the Autonomous Career Advisor."""
+import json
 import logging
 import re
 from contextlib import asynccontextmanager
@@ -20,7 +21,7 @@ from .db import database, models, crud, auth
 from .db.database import engine, run_migrations
 from pydantic import BaseModel, ValidationError
 
-from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token, RepoChatRequest, RepoChatResponse, JobRecommendation
+from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token, RepoChatRequest, RepoChatResponse, JobRecommendation, InterviewTips
 
 # GitHub's own username/repo-name constraints, applied to path params before
 # they reach Chroma collection naming or an outbound GitHub URL.
@@ -309,6 +310,24 @@ def get_job_recommendations(db: Session = Depends(get_db),
     if not journey:
         raise HTTPException(404, "Generate a learning path first to get job recommendations.")
     return recommend_jobs(db, current_user.id, journey)
+
+
+@app.get("/api/interview-tips", response_model=InterviewTips)
+def get_interview_tips(db: Session = Depends(get_db),
+                       current_user: models.User = Depends(get_current_user)):
+    from .agents.interview_agent import generate_interview_tips
+    journey = crud.get_most_recent_journey(db, current_user.id)
+    if not journey:
+        raise HTTPException(404, "Generate a learning path first to get interview tips.")
+    focus_topics = []
+    if journey.gap_report_json:
+        try:
+            gaps = json.loads(journey.gap_report_json).get("gaps", [])
+            focus_topics = [g["name"] for g in gaps[:5]]
+        except (ValueError, KeyError):
+            pass
+    tips, _notes = generate_interview_tips(journey.target_role, focus_topics)
+    return tips
 
 
 @app.get("/api/tracker/journeys")

@@ -143,6 +143,12 @@ class JobRecommendation(BaseModel):
     score: float
     matched_skills: list[str] = []
 
+class InterviewTips(BaseModel):
+    role: str
+    focus_topics: list[str] = []
+    common_questions: list[str] = []
+    advice: str = ""
+
 
 class UserCreate(BaseModel):
     email: str
