@@ -46,20 +46,20 @@ export default function AgentTerminal({ role }: { role: string }) {
 
   return (
     <div className="panel" style={{ padding: '0', overflow: 'hidden' }}>
-      <div style={{ background: '#1e1e24', padding: '8px 16px', borderBottom: '1px solid #333', display: 'flex', gap: '6px' }}>
+      <div style={{ background: '#2a2116', padding: '8px 16px', borderBottom: '1px solid #3d3122', display: 'flex', gap: '6px' }}>
         <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#ff5f56' }}></div>
         <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#ffbd2e' }}></div>
         <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#27c93f' }}></div>
-        <span style={{ marginLeft: '12px', color: '#888', fontSize: '0.85rem', fontFamily: 'monospace' }}>agent-logs ~ /usr/bin/advisor</span>
+        <span style={{ marginLeft: '12px', color: '#8a7a5c', fontSize: '0.85rem', fontFamily: "'IBM Plex Mono', monospace" }}>typesetting ~ /usr/bin/advisor</span>
       </div>
-      <div style={{ padding: '20px', background: '#0d0d0d', minHeight: '250px', fontFamily: 'monospace', fontSize: '0.9rem', color: '#00ff00', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ padding: '20px', background: '#1a140c', minHeight: '250px', fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.9rem', color: '#e0a94a', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {lines.map((l, i) => (
           <div key={i} style={{ animation: 'fadeIn 0.3s ease-out' }}>
-            <span style={{ color: '#888' }}>{l.time.toLocaleTimeString('en-GB')}</span> {l.text}
+            <span style={{ color: '#8a7a5c' }}>{l.time.toLocaleTimeString('en-GB')}</span> {l.text}
           </div>
         ))}
         {lines.length < LOGS.length && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px', color: '#888' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px', color: '#8a7a5c' }}>
             <div className="spinner" style={{ width: 16, height: 16, margin: 0, borderWidth: 2 }} />
             Processing...
           </div>

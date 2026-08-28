@@ -35,20 +35,20 @@ export default function CompetencyChart({ historyData, skillNames }: {
       </div>
       {data.length > 0 && (
         <>
-          <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ background: '#f8f9fa', borderRadius: '8px', marginTop: '1rem' }}>
+          <svg width="100%" viewBox={`0 0 ${width} ${height}`} style={{ background: '#fbf5ea', borderRadius: '8px', marginTop: '1rem' }}>
             {[1, 5, 10].map((val) => (
               <g key={val}>
-                <line x1={pad} y1={mapY(val)} x2={width - pad} y2={mapY(val)} stroke="#ddd" strokeDasharray="4 4" />
-                <text x={pad - 5} y={mapY(val) + 4} fontSize="10" textAnchor="end" fill="#666">{val}</text>
+                <line x1={pad} y1={mapY(val)} x2={width - pad} y2={mapY(val)} stroke="#e8dcc4" strokeDasharray="4 4" />
+                <text x={pad - 5} y={mapY(val) + 4} fontSize="10" textAnchor="end" fill="#6e6248">{val}</text>
               </g>
             ))}
-            <polyline points={points} fill="none" stroke="#007bff" strokeWidth="2" />
+            <polyline points={points} fill="none" stroke="#d15633" strokeWidth="2" />
             {data.map((d, i) => {
               const cx = mapX(new Date(d.recorded_at).getTime())
               const cy = mapY(d.depth_score)
               return (
                 <g key={i}>
-                  <circle cx={cx} cy={cy} r="4" fill="#007bff" />
+                  <circle cx={cx} cy={cy} r="4" fill="#d15633" />
                   <title>Depth: {d.depth_score}&#10;{d.rationale}</title>
                 </g>
               )
