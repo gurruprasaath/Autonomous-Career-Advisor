@@ -65,7 +65,7 @@ export default function PathGraph({ path }: { path: LearningPath | null }) {
       <div className="rf-canvas" style={{ width: '100%', height: `${canvasHeight}px` }}>
         <ReactFlow nodes={nodes} edges={edges} nodeTypes={NODE_TYPES} edgeTypes={EDGE_TYPES} fitView>
           <Background color="#e8dcc4" gap={16} />
-          <Controls style={{ background: '#241d12', fill: '#fbf5ea' }} />
+          <Controls />
         </ReactFlow>
       </div>
     </div>

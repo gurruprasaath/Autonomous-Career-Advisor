@@ -570,6 +570,23 @@ select:focus {
   font-weight: 500;
 }
 
+/* Learning-path graph zoom/fit controls (reactflow) */
+.panel .react-flow__controls {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+.panel .react-flow__controls-button {
+  background: var(--primary);
+  border-bottom: 1px solid var(--primary-hover);
+}
+.panel .react-flow__controls-button:hover {
+  background: var(--primary-hover);
+}
+.panel .react-flow__controls-button svg {
+  fill: #fff;
+}
+
 /* Two Column Layout */
 .two-col {
   display: grid;
