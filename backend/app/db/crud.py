@@ -191,3 +191,26 @@ def get_analyzed_repos(db: Session, user_id: int) -> list[models.AnalyzedRepo]:
     return (db.query(models.AnalyzedRepo)
             .filter(models.AnalyzedRepo.user_id == user_id)
             .order_by(models.AnalyzedRepo.analyzed_at.desc()).all())
+
+
+def get_latest_competency_per_skill(db: Session, user_id: int) -> dict[str, models.CompetencyHistory]:
+    """Most recent CompetencyHistory row per skill_id for this user — the
+    'skills you currently have, and how deep' snapshot used by job
+    matching. Unlike get_latest_competency (one skill at a time), this
+    returns the whole current picture in one query."""
+    rows = (db.query(models.CompetencyHistory)
+            .filter(models.CompetencyHistory.user_id == user_id)
+            .order_by(models.CompetencyHistory.recorded_at.desc())
+            .all())
+    latest: dict[str, models.CompetencyHistory] = {}
+    for row in rows:
+        if row.skill_id not in latest:
+            latest[row.skill_id] = row
+    return latest
+
+
+def get_most_recent_journey(db: Session, user_id: int) -> models.LearningJourney | None:
+    return (db.query(models.LearningJourney)
+            .filter(models.LearningJourney.user_id == user_id)
+            .order_by(models.LearningJourney.created_at.desc())
+            .first())

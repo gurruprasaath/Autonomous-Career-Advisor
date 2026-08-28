@@ -56,6 +56,7 @@ class AdzunaJobProvider(JobProvider):
                 location=(item.get("location") or {}).get("display_name", ""),
                 description=item.get("description", ""),
                 skills=[],  # no annotations — extracted downstream
+                url=item.get("redirect_url", ""),
             )
             for item in results
         ]

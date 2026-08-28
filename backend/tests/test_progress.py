@@ -272,3 +272,57 @@ def test_create_competency_history_batch_single_commit():
     ])
     history = crud.get_competency_history(db, user.id)
     assert set(history.keys()) == {"python", "sql"}
+
+
+def test_get_latest_competency_per_skill_returns_most_recent_row_per_skill():
+    db = _db()
+    step = _make_step(db)
+    user_id = step.journey.user_id
+    db.add(models.CompetencyHistory(user_id=user_id, skill_id="python", depth_score=5,
+                                    quiz_score=None, confidence_rating=None,
+                                    has_github_evidence=False, rationale="resume"))
+    db.commit()
+    db.add(models.CompetencyHistory(user_id=user_id, skill_id="python", depth_score=8,
+                                    quiz_score=80, confidence_rating=4,
+                                    has_github_evidence=True, rationale="improved"))
+    db.commit()
+
+    latest = crud.get_latest_competency_per_skill(db, user_id)
+    assert latest["python"].depth_score == 8
+
+
+def test_get_latest_competency_per_skill_covers_multiple_skills():
+    db = _db()
+    step = _make_step(db)
+    user_id = step.journey.user_id
+    db.add(models.CompetencyHistory(user_id=user_id, skill_id="python", depth_score=5,
+                                    quiz_score=None, confidence_rating=None,
+                                    has_github_evidence=False, rationale="a"))
+    db.add(models.CompetencyHistory(user_id=user_id, skill_id="sql", depth_score=3,
+                                    quiz_score=None, confidence_rating=None,
+                                    has_github_evidence=False, rationale="b"))
+    db.commit()
+
+    latest = crud.get_latest_competency_per_skill(db, user_id)
+    assert set(latest.keys()) == {"python", "sql"}
+
+
+def test_get_most_recent_journey_orders_by_created_at_desc():
+    db = _db()
+    step = _make_step(db)
+    user_id = step.journey.user_id
+    second_journey = crud.create_learning_journey(db, user_id, "Full-Stack Developer",
+                                                   gap_report_json="{}", hours_per_week=10)
+
+    most_recent = crud.get_most_recent_journey(db, user_id)
+    assert most_recent.id == second_journey.id
+
+
+def test_get_most_recent_journey_returns_none_for_user_with_no_journeys():
+    db = _db()
+    user = models.User(email="nobody@example.com", hashed_password="x")
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    assert crud.get_most_recent_journey(db, user.id) is None

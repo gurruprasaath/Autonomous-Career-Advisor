@@ -16,6 +16,7 @@ class Posting(TypedDict):
     location: str
     description: str
     skills: list  # optional pre-annotated [{skill_id, level}] (sample data only)
+    url: str  # apply link — empty string when the provider has none (sample data)
 
 
 class JobProvider(ABC):
