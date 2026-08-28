@@ -6,11 +6,27 @@ their document counts drift (cheap at this dataset size).
 """
 import hashlib
 import json
+import threading
+import uuid
 from functools import lru_cache
 
 import chromadb
 
 from ..config import CHROMA_DIR, DATA_DIR
+
+# The bundled chromadb PersistentClient is not safe for concurrent use from
+# multiple threads — reproduced directly: two threads each running
+# create-collection + add + query + delete-collection against it at once
+# corrupt its internal Rust-bindings state (AttributeError on
+# RustBindingsAPI, KeyError on the .chroma path). FastAPI runs sync
+# endpoint functions in a threadpool, so two overlapping requests hit this
+# exact scenario. job_matcher.recommend_jobs serializes its whole
+# create/add/query/delete sequence on this lock.
+# ponytail: one global lock serializes every caller, not just ones sharing
+# a collection — fine at this app's scale (a single-user demo, not a
+# multi-tenant service); narrow it (per-collection lock, or a client per
+# request) if concurrent load ever matters.
+chroma_lock = threading.Lock()
 
 
 @lru_cache
@@ -103,18 +119,28 @@ def reset_repo_collection(user_id: int, username: str, repo_name: str) -> chroma
     return client.get_or_create_collection(name)
 
 
-def job_matching_collection() -> chromadb.Collection:
-    """Ephemeral, reset-per-call collection of the postings scored in one
-    /api/jobs/recommendations request — unlike skills/postings/courses,
-    this is not a stable long-lived collection (live postings differ every
-    call). A single shared name is fine: results are consumed synchronously
-    within the same request, before the next call resets it again."""
-    client = get_client()
+def job_matching_collection() -> tuple[chromadb.Collection, str]:
+    """A fresh, uniquely-named ephemeral collection for one
+    /api/jobs/recommendations request's scored postings.
+
+    Deliberately NOT a single shared name: two /api/jobs/recommendations
+    requests running concurrently (two users, or the same user with two
+    open tabs) would otherwise race on each other's delete/add/query calls
+    against the same underlying Chroma collection — reproduced directly as
+    real chromadb errors (RustBindingsAPI/KeyError) when exercised with two
+    threads. A unique name per call makes that race structurally
+    impossible. Callers must drop the collection via
+    drop_job_matching_collection() once they're done with it, so scratch
+    collections don't accumulate in the persistent Chroma store."""
+    name = f"job_matching_scratch_{uuid.uuid4().hex}"
+    return get_client().get_or_create_collection(name), name
+
+
+def drop_job_matching_collection(name: str) -> None:
     try:
-        client.delete_collection("job_matching_scratch")
+        get_client().delete_collection(name)
     except Exception:
-        pass  # collection didn't exist yet — nothing to drop
-    return client.get_or_create_collection("job_matching_scratch")
+        pass  # already gone — nothing to drop
 
 
 def warm_up() -> dict[str, int]:

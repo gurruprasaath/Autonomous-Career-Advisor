@@ -11,7 +11,7 @@ from the taxonomy still surface. Neither path calls an LLM.
 from sqlalchemy.orm import Session
 
 from ..core.taxonomy import load_taxonomy
-from ..core.vectorstore import job_matching_collection
+from ..core.vectorstore import chroma_lock, drop_job_matching_collection, job_matching_collection
 from ..db import crud, models
 from ..providers import get_job_provider
 from ..providers.base import Posting
@@ -68,15 +68,19 @@ def recommend_jobs(db: Session, user_id: int, journey: models.LearningJourney,
     if not postings:
         return []
 
-    collection = job_matching_collection()
-    collection.add(
-        ids=[p["id"] for p in postings],
-        documents=[f"{p['title']}\n{p['description']}" for p in postings],
-    )
-    # Chroma's default metric returns squared-L2 distance for the
-    # unit-normalized ONNX MiniLM vectors it embeds with; for normalized
-    # vectors that's cos_sim = 1 - distance/2 (clamped for float drift).
-    query = collection.query(query_texts=[profile_text], n_results=len(postings))
+    with chroma_lock:
+        collection, collection_name = job_matching_collection()
+        try:
+            collection.add(
+                ids=[p["id"] for p in postings],
+                documents=[f"{p['title']}\n{p['description']}" for p in postings],
+            )
+            # Chroma's default metric returns squared-L2 distance for the
+            # unit-normalized ONNX MiniLM vectors it embeds with; for normalized
+            # vectors that's cos_sim = 1 - distance/2 (clamped for float drift).
+            query = collection.query(query_texts=[profile_text], n_results=len(postings))
+        finally:
+            drop_job_matching_collection(collection_name)
     semantic_by_id = {
         pid: max(0.0, min(1.0, 1 - dist / 2))
         for pid, dist in zip(query["ids"][0], query["distances"][0])
