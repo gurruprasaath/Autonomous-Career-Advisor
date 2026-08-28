@@ -4,12 +4,13 @@ import type {
   ResumeReviewResult, StudentProfile,
 } from '../api/types'
 
-function Bar({ label, value, max = 1, gap = false, right }: {
-  label: string; value: number; max?: number; gap?: boolean; right?: string
+function Bar({ label, value, max = 1, gap = false, right, rank }: {
+  label: string; value: number; max?: number; gap?: boolean; right?: string; rank?: number
 }) {
   const pct = Math.min(100, Math.round((value / max) * 100))
   return (
     <div className="bar-row">
+      {rank != null && <span className="bar-num">{rank}</span>}
       <span className="bar-label" title={label}>{label}</span>
       <div className="bar-track">
         <div className={`bar-fill ${gap ? 'gap' : ''}`} style={{ width: `${pct}%` }} />
@@ -28,9 +29,9 @@ function DemandChart({ demand }: { demand: MarketDemandProfile }) {
         From {demand.postings_analysed} job postings. Every bar is backed by real
         posting IDs (hover a skill to see them) — nothing here is model guesswork.
       </p>
-      {top.map((s) => (
+      {top.map((s, i) => (
         <div key={s.skill_id} title={`Evidence: ${s.posting_ids.join(', ')}`}>
-          <Bar label={s.name} value={s.share} right={`${Math.round(s.share * 100)}%`} />
+          <Bar rank={i + 1} label={s.name} value={s.share} right={`${Math.round(s.share * 100)}%`} />
         </div>
       ))}
     </div>
@@ -58,8 +59,11 @@ function ResumeReviewView({ review }: { review: ResumeReviewResult | null }) {
   return (
     <div className="panel">
       <h2>Resume Feedback (AI Agent)</h2>
-      <p className="hint">{review.overall_impression}</p>
-      <div className="two-col" style={{ marginTop: '1rem' }}>
+      <div className="pullquote">
+        <p>{review.overall_impression}</p>
+        <cite>Resume Review Agent</cite>
+      </div>
+      <div className="two-col">
         <div>
           <h3 style={{ color: 'var(--success)', marginTop: 0 }}>Strengths</h3>
           <ul>{review.strengths.map((s, i) => <li key={i}>{s}</li>)}</ul>
@@ -82,9 +86,9 @@ function GapView({ report }: { report: GapReport }) {
     <div className="panel">
       <h2>Skill gaps (priority = demand × gap)</h2>
       <p className="hint">Computed deterministically over the taxonomy — auditable, not LLM-guessed.</p>
-      {report.gaps.slice(0, 10).map((g) => (
+      {report.gaps.slice(0, 10).map((g, i) => (
         <div key={g.skill_id} title={`${g.current_level} → ${g.required_level}`}>
-          <Bar label={g.name} value={g.priority} max={maxP} gap right={g.priority.toFixed(2)} />
+          <Bar rank={i + 1} label={g.name} value={g.priority} max={maxP} gap right={g.priority.toFixed(2)} />
         </div>
       ))}
       {report.strengths.length > 0 && (
@@ -139,17 +143,25 @@ function PathTimeline({ path }: { path: LearningPath | null }) {
     <div className="panel">
       <h2>Your learning path — {path.total_weeks} weeks total</h2>
       <p className="hint">{path.rationale}</p>
-      <div className="timeline">
+      <div className="syllabus">
         {path.steps.map((s) => (
-          <div className="tstep" key={s.skill_id}>
-            <h3>{s.order}. {s.skill_name} <span className="weeks">{s.estimated_weeks} wk</span></h3>
-            <p>{s.objective}</p>
-            <p className="milestone">🏁 {s.milestone}</p>
-            {s.resources.map((r) => (
-              <a key={r.course_id} className="resource" href={r.url} target="_blank" rel="noreferrer">
-                📚 {r.title} — {r.provider}{r.free ? ' (free)' : ''}
-              </a>
-            ))}
+          <div className="syl-row" key={s.skill_id}>
+            <div className="syl-num">{s.order}</div>
+            <div>
+              <div className="syl-name">{s.skill_name}</div>
+              <p className="syl-obj">{s.objective}</p>
+              <p className="milestone">🏁 {s.milestone}</p>
+              {s.resources.length > 0 && (
+                <div style={{ marginTop: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                  {s.resources.map((r) => (
+                    <a key={r.course_id} className="resource" href={r.url} target="_blank" rel="noreferrer">
+                      📚 {r.title} — {r.provider}{r.free ? ' (free)' : ''}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="weeks">{s.estimated_weeks} wk</div>
           </div>
         ))}
       </div>
