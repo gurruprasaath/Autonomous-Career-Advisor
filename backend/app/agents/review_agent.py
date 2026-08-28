@@ -16,7 +16,11 @@ Provide a structured, qualitative review highlighting:
 Resume Text:
 \"\"\"{text}\"\"\"
 
-Return ONLY JSON matching this structure:
+Return ONLY JSON matching this structure. Each item in "strengths" and
+"weaknesses" MUST be a single plain sentence string — never a label
+followed by a colon.
+Correct:   "strengths": ["Strong Python and SQL skills relevant to the role."]
+Incorrect: "strengths": ["Technical Skills": "Strong Python and SQL skills."]
 {{
   "strengths": ["...", "..."],
   "weaknesses": ["...", "..."],
@@ -41,5 +45,5 @@ def review_resume(resume_text: str, target_role: str) -> tuple[ResumeReviewResul
         return None, notes
     except Exception as e:
         log.warning("review LLM extraction failed: %s", e)
-        notes.append(f"Review extraction failed ({type(e).__name__}).")
+        notes.append("Resume feedback wasn't available for this run — please try again.")
         return None, notes
