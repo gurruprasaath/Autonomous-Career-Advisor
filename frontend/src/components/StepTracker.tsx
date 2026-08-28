@@ -11,6 +11,11 @@ export default function StepTracker({ step, hoursPerWeek }: {
   const [elapsedSec, setElapsedSec] = useState(0)
   const [quizOpen, setQuizOpen] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  // How much of elapsedSec has already been sent to the server as a
+  // minutes_delta — a pause/resume must keep the visible clock running and
+  // only save the NEW time since the last save, not resend (and double-
+  // count) the whole elapsed total on every subsequent pause.
+  const savedSecRef = useRef(0)
   const recordProgress = useRecordProgress()
 
   useEffect(() => {
@@ -26,11 +31,12 @@ export default function StepTracker({ step, hoursPerWeek }: {
 
   const stopAndSave = async () => {
     setRunning(false)
-    if (elapsedSec > 0) {
-      const minutes = Math.max(1, Math.round(elapsedSec / 60))
+    const deltaSec = elapsedSec - savedSecRef.current
+    if (deltaSec > 0) {
+      const minutes = Math.max(1, Math.round(deltaSec / 60))
       await recordProgress.mutateAsync({ stepId: step.id, update: { minutes_delta: minutes } })
+      savedSecRef.current = elapsedSec
     }
-    setElapsedSec(0)
   }
 
   const rateConfidence = (rating: number) => {
