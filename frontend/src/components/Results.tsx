@@ -1,4 +1,7 @@
+import { Link } from 'react-router-dom'
 import PathGraph from './PathGraph'
+import { useJobRecommendations } from '../api/jobs'
+import { useInterviewTips } from '../api/interview'
 import type {
   AdvisorResult, FGCRCritique, GapReport, LearningPath, MarketDemandProfile,
   ResumeReviewResult, StudentProfile,
@@ -34,6 +37,56 @@ function DemandChart({ demand }: { demand: MarketDemandProfile }) {
           <Bar rank={i + 1} label={s.name} value={s.share} right={`${Math.round(s.share * 100)}%`} />
         </div>
       ))}
+    </div>
+  )
+}
+
+function RecommendedJobsView() {
+  const { data: jobs, error } = useJobRecommendations()
+  return (
+    <div className="panel">
+      <h2>Recommended jobs</h2>
+      <p className="hint">Real postings ranked against this path's skills.</p>
+      {error && <p className="hint">No job matches available for this path yet.</p>}
+      {jobs && jobs.length === 0 && <p className="hint">No matching postings found right now.</p>}
+      {jobs && jobs.length > 0 && (
+        <div className="syllabus">
+          {jobs.slice(0, 5).map((job, i) => (
+            <div className="syl-row" key={job.posting_id}>
+              <div className="syl-num">{i + 1}</div>
+              <div>
+                <div className="syl-name">{job.title} — {job.company}</div>
+                <p className="syl-obj">{job.location}</p>
+              </div>
+              <div className="weeks">{Math.round(job.score * 100)}%</div>
+            </div>
+          ))}
+        </div>
+      )}
+      <Link to="/jobs" className="ghost" style={{ textDecoration: 'none', marginTop: '0.75rem', display: 'inline-block' }}>
+        See all matches →
+      </Link>
+    </div>
+  )
+}
+
+function InterviewTipsView() {
+  const { data: tips, error } = useInterviewTips()
+  return (
+    <div className="panel">
+      <h2>Interview tips</h2>
+      {error && <p className="hint">No interview tips available for this path yet.</p>}
+      {tips && (
+        <>
+          <div className="skill-list">
+            {tips.focus_topics.map((t) => <span key={t} className="tag">{t}</span>)}
+          </div>
+          <ul className="hint" style={{ marginTop: '0.75rem' }}>
+            {tips.common_questions.map((q, i) => <li key={i}>{q}</li>)}
+          </ul>
+          <p style={{ marginTop: '0.75rem' }}>{tips.advice}</p>
+        </>
+      )}
     </div>
   )
 }
@@ -173,13 +226,19 @@ export default function Results({ result, onRestart }: { result: AdvisorResult; 
   return (
     <>
       {result.notes.length > 0 && result.notes.map((n, i) => <div className="note" key={i}>⚠ {n}</div>)}
+      <VerifierBadge critique={result.critique} revisions={result.revisions_used} />
       <div className="two-col">
         <ProfileView profile={result.profile} />
         <GapView report={result.gap_report} />
       </div>
-      <ResumeReviewView review={result.resume_review} />
-      <DemandChart demand={result.demand} />
-      <VerifierBadge critique={result.critique} revisions={result.revisions_used} />
+      <div className="two-col">
+        <DemandChart demand={result.demand} />
+        <RecommendedJobsView />
+      </div>
+      <div className="two-col">
+        <ResumeReviewView review={result.resume_review} />
+        <InterviewTipsView />
+      </div>
       <PathGraph path={result.path} />
       <PathTimeline path={result.path} />
       <button className="ghost" onClick={onRestart}>↺ Start over</button>

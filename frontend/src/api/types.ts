@@ -181,3 +181,10 @@ export interface JobRecommendation {
   score: number
   matched_skills: string[]
 }
+
+export interface InterviewTips {
+  role: string
+  focus_topics: string[]
+  common_questions: string[]
+  advice: string
+}
