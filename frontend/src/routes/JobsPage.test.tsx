@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import JobsPage from './JobsPage'
+import type { JobRecommendation } from '../api/types'
 
 function renderPage() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -13,6 +14,13 @@ function renderPage() {
       </MemoryRouter>
     </QueryClientProvider>
   )
+}
+
+function makeJobs(count: number): JobRecommendation[] {
+  return Array.from({ length: count }, (_, i) => ({
+    posting_id: `job-${i}`, title: `Role ${i}`, company: 'Acme', location: 'Remote',
+    url: `https://example.com/job-${i}`, score: 1 - i * 0.01, matched_skills: [],
+  }))
 }
 
 describe('JobsPage', () => {
@@ -45,5 +53,42 @@ describe('JobsPage', () => {
     expect(screen.getByText('Python')).toBeInTheDocument()
     expect(screen.getByText('Docker')).toBeInTheDocument()
     expect(screen.getByText('🔗 Apply')).toHaveAttribute('href', 'https://example.com/job-a')
+  })
+
+  it('does not show pagination controls when everything fits on one page', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true, status: 200, json: async () => (makeJobs(10)),
+    } as Response))
+
+    renderPage()
+
+    await waitFor(() => expect(screen.getByText(/Role 0 — Acme/)).toBeInTheDocument())
+    expect(screen.queryByText('Next →')).not.toBeInTheDocument()
+  })
+
+  it('paginates 10 per page and Next/Prev move between pages', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true, status: 200, json: async () => (makeJobs(25)),
+    } as Response))
+
+    renderPage()
+
+    await waitFor(() => expect(screen.getByText(/Role 0 — Acme/)).toBeInTheDocument())
+    expect(screen.getByText('Page 1 of 3')).toBeInTheDocument()
+    expect(screen.queryByText(/Role 10 — Acme/)).not.toBeInTheDocument()
+    expect(screen.getByText('← Prev')).toBeDisabled()
+
+    fireEvent.click(screen.getByText('Next →'))
+    await waitFor(() => expect(screen.getByText(/Role 10 — Acme/)).toBeInTheDocument())
+    expect(screen.getByText('Page 2 of 3')).toBeInTheDocument()
+    expect(screen.queryByText(/Role 0 — Acme/)).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByText('Next →'))
+    await waitFor(() => expect(screen.getByText(/Role 20 — Acme/)).toBeInTheDocument())
+    expect(screen.getByText('Page 3 of 3')).toBeInTheDocument()
+    expect(screen.getByText('Next →')).toBeDisabled()
+
+    fireEvent.click(screen.getByText('← Prev'))
+    await waitFor(() => expect(screen.getByText(/Role 10 — Acme/)).toBeInTheDocument())
   })
 })
