@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useAnalyzedRepos, useAnalyzeRepo, useChatRepo } from '../api/github'
@@ -6,6 +6,27 @@ import { useAnalyzedRepos, useAnalyzeRepo, useChatRepo } from '../api/github'
 interface ChatMessage {
   role: 'user' | 'assistant'
   text: string
+}
+
+function chatStorageKey(username: string, repo: string) {
+  return `repo-chat:${username}/${repo}`
+}
+
+function loadChatHistory(username: string, repo: string): ChatMessage[] {
+  try {
+    const raw = localStorage.getItem(chatStorageKey(username, repo))
+    return raw ? (JSON.parse(raw) as ChatMessage[]) : []
+  } catch {
+    return []
+  }
+}
+
+function saveChatHistory(username: string, repo: string, history: ChatMessage[]) {
+  try {
+    localStorage.setItem(chatStorageKey(username, repo), JSON.stringify(history))
+  } catch {
+    // localStorage unavailable (private mode, quota) — chat still works for this session, just won't persist
+  }
 }
 
 export default function RepoAnalysisPage() {
@@ -20,15 +41,32 @@ export default function RepoAnalysisPage() {
   const analyzeRepo = useAnalyzeRepo()
   const chatRepo = useChatRepo()
 
+  // Persist this repo's conversation as it grows, so reopening it later restores it.
+  useEffect(() => {
+    if (analyzed && username && repo) {
+      saveChatHistory(username, repo, chatHistory)
+    }
+  }, [chatHistory, analyzed, username, repo])
+
   const handleAnalyze = () => {
     if (!username || !repo) return
+
+    const existing = analyzedRepos?.find((r) => r.username === username && r.repo_name === repo)
+    if (existing) {
+      // Already analyzed — reuse it instead of re-downloading, and restore the saved chat.
+      setAnalyzed(true)
+      setChatHistory(loadChatHistory(username, repo))
+      setStatus(`Already analyzed (${existing.file_count} files, ${new Date(existing.analyzed_at).toLocaleString()}) — resuming your saved chat.`)
+      return
+    }
+
     setStatus('Downloading and analyzing repository... This might take a minute depending on repo size.')
     setAnalyzed(false)
     analyzeRepo.mutate({ username, repoName: repo }, {
       onSuccess: (res) => {
         setStatus(`Success! Indexed ${res.files_processed} files.`)
         setAnalyzed(true)
-        setChatHistory([])
+        setChatHistory(loadChatHistory(username, repo))
       },
       onError: (e) => setStatus(`Error: ${e instanceof Error ? e.message : String(e)}`),
     })
@@ -38,8 +76,8 @@ export default function RepoAnalysisPage() {
     setUsername(u)
     setRepo(r)
     setAnalyzed(true)
-    setChatHistory([])
-    setStatus(`Reusing previous analysis of ${u}/${r} — ask a question below, or hit Analyze to re-sync.`)
+    setChatHistory(loadChatHistory(u, r))
+    setStatus(`Reusing previous analysis of ${u}/${r} — resuming your saved chat.`)
   }
 
   const handleChat = (e: FormEvent) => {
