@@ -134,6 +134,16 @@ class AdviseRequest(BaseModel):
     hours_per_week: int = 10
     education: str = ""
 
+class JobRecommendation(BaseModel):
+    posting_id: str
+    title: str
+    company: str
+    location: str
+    url: str = ""
+    score: float
+    matched_skills: list[str] = []
+
+
 class UserCreate(BaseModel):
     email: str
     password: str

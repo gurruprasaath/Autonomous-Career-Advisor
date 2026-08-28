@@ -103,6 +103,20 @@ def reset_repo_collection(user_id: int, username: str, repo_name: str) -> chroma
     return client.get_or_create_collection(name)
 
 
+def job_matching_collection() -> chromadb.Collection:
+    """Ephemeral, reset-per-call collection of the postings scored in one
+    /api/jobs/recommendations request — unlike skills/postings/courses,
+    this is not a stable long-lived collection (live postings differ every
+    call). A single shared name is fine: results are consumed synchronously
+    within the same request, before the next call resets it again."""
+    client = get_client()
+    try:
+        client.delete_collection("job_matching_scratch")
+    except Exception:
+        pass  # collection didn't exist yet — nothing to drop
+    return client.get_or_create_collection("job_matching_scratch")
+
+
 def warm_up() -> dict[str, int]:
     """Build all collections eagerly (called on app startup)."""
     return {
