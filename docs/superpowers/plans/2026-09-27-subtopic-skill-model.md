@@ -19,7 +19,7 @@
 - `WEEKS_PER_SUBTOPIC = 0.75`; fallback weeks = `max(n_subtopics, 1) * 0.75 * (10 / hours_per_week)`, rounded to 1 decimal, clamped 0.5–8. `MAX_PATH_SKILLS` stays 8.
 - Verifier: unknown sub-topic id → groundedness capped at 1.0, issue text exactly `Sub-topic '<name>' is not in the curated curriculum for <skill_name>`.
 - Taxonomy expansion keep rule: not already matched by the taxonomy (`match_mention` confidence ≥ 0.6) AND whole-word share ≥ 3% of at least one role's live postings. Every newly added skill gets ≥ 1 free catalog course whose URL returned HTTP 200 (preserves the existing invariant that skills have a catalog course).
-- Attribution line (exact): `Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0), Microsoft Learn`
+- Attribution line (exact): `Sub-topics drafted with LLM assistance and reviewed by the authors; some skills cross-checked against ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0) and Microsoft Learn.`
 - Backend tests: from `backend/`, `.venv/Scripts/python -m pytest`. Frontend tests: from `frontend/`, `npx vitest run --pool=threads` (default forks pool times out on this machine; retry once on "Timeout waiting for worker"). Type check: `npx tsc -b` (delete the generated `frontend/tsconfig.tsbuildinfo` afterwards — it is not tracked).
 - Commit directly on `master` (project practice). Never stage the user's unrelated changes: `frontend/vite.config.ts`, `docs/Research_Paper_Draft.md`, `node_modules/`, `temp_docx_text.txt`, anything under `.superpowers/`. Every commit message ends with exactly one trailer line: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - The suite has pre-existing DeprecationWarnings (datetime.utcnow defaults, PyPDF2); do not add new warning sources.
@@ -1037,7 +1037,7 @@ describe('SubtopicList', () => {
   it('shows the curriculum attribution text', () => {
     render(<CurriculumAttribution />)
     expect(screen.getByText(
-      'Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0), Microsoft Learn',
+      'Sub-topics drafted with LLM assistance and reviewed by the authors; some skills cross-checked against ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0) and Microsoft Learn.',
     )).toBeInTheDocument()
   })
 })
@@ -1110,7 +1110,9 @@ export default function SubtopicList({ subtopics, roadmapUrl }: { subtopics: Sub
 export function CurriculumAttribution() {
   return (
     <p className="hint">
-      Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0), Microsoft Learn
+      Sub-topics drafted with LLM assistance and reviewed by the authors; some skills
+      cross-checked against ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC
+      BY-SA 4.0) and Microsoft Learn.
     </p>
   )
 }

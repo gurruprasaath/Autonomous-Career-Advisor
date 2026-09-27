@@ -20,8 +20,9 @@ from ..schemas import MASTERY_SCORE, MarketDemandProfile, SkillDemand
 log = logging.getLogger(__name__)
 
 
-# terms too ambiguous to scan for in free-flowing text ("go far", "James R.")
-SCAN_STOPLIST = {"go", "r"}
+# terms too ambiguous to scan for in free-flowing text ("go far", "James R.",
+# "maintenance windows")
+SCAN_STOPLIST = {"go", "r", "windows"}
 
 
 def _scan_description(text: str) -> list[dict]:

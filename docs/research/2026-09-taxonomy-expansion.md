@@ -668,6 +668,12 @@ ESCO has no exact occupation for several roles; each role is mapped to the close
 
 Note: 4 of the 18 LLM extraction batches (30 postings per role, 10 per batch) returned empty output (`No parseable JSON in LLM output: ''`) and were skipped, so about 40 of the 180 sampled postings contributed no LLM candidates. Shares are still measured over all 100 postings per role.
 
+Update (2026-09-27): as of the R1 final-review fixes, the near-duplicate terms CI/CD, GitLab CI,
+Azure DevOps, Observability, SQL Server, Agentic AI, Large Language Models, REST API and vector
+databases are recognised as exact (confidence 1.0) aliases on their existing skills (`cicd`,
+`monitoring`, `sql`, `agentic-ai`, `llms`, `rest-api`, `rag` respectively), rather than only via
+the embedding fallback.
+
 ## Limitations
 
 - ESCO has no exact occupation for several roles; each role was mapped by hand to the closest ESCO occupation (see the "Postings analysed" table), so ESCO-sourced candidates reflect those approximations.

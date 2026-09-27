@@ -202,8 +202,10 @@
       "id": "rest-api",
       "name": "REST API Design",
       "aliases": [
-        "restful apis",
+        "rest api",
         "rest apis",
+        "restful apis",
+        "restful",
         "api design"
       ],
       "category": "web-backend",
@@ -419,6 +421,7 @@
       "name": "Large Language Models & Prompting",
       "aliases": [
         "llm",
+        "large language models",
         "generative ai",
         "genai",
         "prompt engineering",
@@ -454,7 +457,9 @@
       "name": "Retrieval-Augmented Generation",
       "aliases": [
         "vector search",
-        "embeddings"
+        "embeddings",
+        "vector database",
+        "vector databases"
       ],
       "category": "machine-learning",
       "prerequisites": [
@@ -465,6 +470,7 @@
       "id": "agentic-ai",
       "name": "Agentic AI & LLM Orchestration",
       "aliases": [
+        "agentic ai",
         "ai agents",
         "langchain",
         "langgraph",
@@ -507,6 +513,7 @@
       "aliases": [
         "postgresql",
         "mysql",
+        "sql server",
         "structured query language"
       ],
       "category": "data-engineering",
@@ -690,6 +697,9 @@
       "id": "cicd",
       "name": "CI/CD Pipelines",
       "aliases": [
+        "ci/cd",
+        "gitlab ci",
+        "azure devops",
         "jenkins",
         "github actions",
         "continuous integration",
@@ -707,6 +717,7 @@
       "id": "monitoring",
       "name": "Monitoring & Observability",
       "aliases": [
+        "observability",
         "prometheus",
         "grafana",
         "logging"
@@ -902,8 +913,7 @@
       "name": "Ansible",
       "aliases": [
         "ansible playbooks",
-        "configuration management",
-        "puppet"
+        "configuration management"
       ],
       "category": "devops-cloud",
       "prerequisites": [
@@ -970,7 +980,6 @@
       "id": "spring-boot",
       "name": "Spring Boot",
       "aliases": [
-        "spring",
         "spring framework",
         "springboot"
       ],
@@ -1000,8 +1009,7 @@
       "id": "dlp",
       "name": "Data Loss Prevention",
       "aliases": [
-        "data loss prevention",
-        "data classification"
+        "data loss prevention"
       ],
       "category": "cybersecurity",
       "prerequisites": [
@@ -1112,8 +1120,7 @@
       "id": "ruby",
       "name": "Ruby",
       "aliases": [
-        "ruby on rails",
-        "rails"
+        "ruby on rails"
       ],
       "category": "programming",
       "prerequisites": []

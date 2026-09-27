@@ -2,7 +2,8 @@
 
 Uses Chroma's built-in ONNX MiniLM embedding function — no torch, no GPU,
 no API key needed. Collections are rebuilt from the JSON data files when
-their document counts drift (cheap at this dataset size).
+their documents or metadata drift from what's stored (cheap at this
+dataset size).
 """
 import hashlib
 import json
@@ -39,10 +40,18 @@ def _load(name: str) -> dict:
 
 
 def _rebuild(collection, ids, documents, metadatas):
-    if collection.count() != len(ids):
-        existing = collection.get(include=[])["ids"]
-        if existing:
-            collection.delete(ids=existing)
+    """Rebuild when the source data changed — not just the count — so alias or
+    text edits also refresh the stored documents and embeddings."""
+    # Chroma returns metadata dicts with keys reordered (alphabetized), so a
+    # repr() comparison would spuriously mismatch every unchanged document —
+    # compare sorted key/value pairs instead.
+    current = collection.get(include=["documents", "metadatas"])
+    to_key = lambda m: tuple(sorted((m or {}).items()))
+    have = sorted(zip(current["ids"], current["documents"], map(to_key, current["metadatas"])))
+    want = sorted(zip(ids, documents, map(to_key, metadatas)))
+    if have != want:
+        if current["ids"]:
+            collection.delete(ids=current["ids"])
         collection.add(ids=ids, documents=documents, metadatas=metadatas)
 
 

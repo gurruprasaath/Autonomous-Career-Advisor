@@ -952,6 +952,14 @@
       "provider": "Red Hat",
       "url": "https://www.redhat.com/en/topics/virtualization/what-is-virtualization",
       "free": true
+    },
+    {
+      "id": "course-120",
+      "skill_id": "speech-recognition",
+      "title": "Audio Course",
+      "provider": "Hugging Face",
+      "url": "https://huggingface.co/learn/audio-course",
+      "free": true
     }
   ]
 }

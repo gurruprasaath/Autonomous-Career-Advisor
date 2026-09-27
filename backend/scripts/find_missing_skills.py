@@ -71,29 +71,15 @@ def share(term: str, descriptions: list[str]) -> float:
 
 def esco_skills(role: str) -> tuple[str, list[str]]:
     """('<occupation title> <uri>', essential + optional skill titles)."""
-    # Use hand-mapped ESCO occupations when available
-    if role in ESCO_OCCUPATIONS:
-        uri = ESCO_OCCUPATIONS[role]
-        detail = httpx.get(f"{ESCO_API}/resource/occupation", timeout=30, params={
-            "uri": uri, "language": "en"}).json()
-        links = detail.get("_links", {})
-        titles = [s["title"] for key in ("hasEssentialSkill", "hasOptionalSkill")
-                  for s in links.get(key, [])]
-        return f"{detail['title']} <{uri}> (closest ESCO occupation)", titles
-
-    # Fallback to free-text search for unmapped roles
-    search = httpx.get(f"{ESCO_API}/search", timeout=30, params={
-        "text": role, "type": "occupation", "language": "en", "limit": 1}).json()
-    results = search.get("_embedded", {}).get("results", [])
-    if not results:
-        return "(no ESCO match)", []
-    occ = results[0]
+    if role not in ESCO_OCCUPATIONS:
+        raise KeyError(f"No ESCO occupation mapped for role {role!r}; add it to ESCO_OCCUPATIONS")
+    uri = ESCO_OCCUPATIONS[role]
     detail = httpx.get(f"{ESCO_API}/resource/occupation", timeout=30, params={
-        "uri": occ["uri"], "language": "en"}).json()
+        "uri": uri, "language": "en"}).json()
     links = detail.get("_links", {})
     titles = [s["title"] for key in ("hasEssentialSkill", "hasOptionalSkill")
               for s in links.get(key, [])]
-    return f"{occ['title']} <{occ['uri']}>", titles
+    return f"{detail['title']} <{uri}> (closest ESCO occupation)", titles
 
 
 def llm_terms(descriptions: list[str]) -> list[str]:

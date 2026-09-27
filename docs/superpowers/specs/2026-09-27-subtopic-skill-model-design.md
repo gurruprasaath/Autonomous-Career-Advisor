@@ -16,9 +16,11 @@ resources, and visually poor. Root causes in code:
   the market scan and gap analysis.
 - Two learners with the same target role get near-identical steps.
 
-R1 fixes depth and coverage and makes step content depend on the learner's level. Per-sub-topic
-progress and adaptive re-planning (R2), new resource sources (R3) and the new visual (R4) are out of
-scope.
+R1 fixes depth and coverage and makes each step's sub-topics depend on the learner's current level,
+within the required level the market scan reports (see "Known limitations" — with the live provider
+that required level is always `intermediate`, so the level-dependence in practice is a two-value
+window, not the full beginner→advanced range). Per-sub-topic progress and adaptive re-planning (R2),
+new resource sources (R3) and the new visual (R4) are out of scope.
 
 ## Licensing constraint (decided)
 
@@ -86,9 +88,11 @@ Loaded via `core/taxonomy.py` with `@lru_cache` (same pattern as `load_taxonomy`
 A one-off, committed, re-runnable research script `backend/scripts/find_missing_skills.py`:
 1. For each of the app's roles (`get_job_provider().available_roles()`), fetch live postings with the
    configured provider (JobSpy, up to 100 per role).
-2. Candidates = (a) ESCO essential + optional skills of the best-matching ESCO occupation per role
-   (via `/search?type=occupation` then `/resource/occupation`), plus (b) technology terms extracted
-   by the LLM from a sample of 30 postings per role.
+2. Candidates = (a) ESCO essential + optional skills of the closest ESCO occupation per role — each
+   app role is hand-mapped to an ESCO occupation URI (`ESCO_OCCUPATIONS` in the script) because
+   free-text `/search?type=occupation` matched unrelated occupations (e.g. "Full-Stack Developer" →
+   "property developer"); the mapped URI is then resolved via `/resource/occupation` — plus (b)
+   technology terms extracted by the LLM from a sample of 30 postings per role.
 3. Drop candidates that `match_mention` already maps to an existing skill (confidence ≥ 0.6).
 4. For each remaining candidate, count whole-word mentions (case-insensitive) across that role's
    postings. **Keep a candidate if it appears in ≥ 3% of postings for at least one role.**
@@ -139,8 +143,9 @@ sub-topics as it already is for resources.)
 - Types: `Subtopic`, and `subtopics` / `roadmap_url` on `PathStep` and `TrackerStep`.
 - `Results` path step cards and `TrackerPage` steps show an ordered sub-topic list with a small level
   tag, and a "See on roadmap.sh ↗" link when `roadmap_url` is non-empty.
-- The attribution line "Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University
-  (CC BY-SA 4.0), Microsoft Learn" appears under the learning path.
+- The attribution line "Sub-topics drafted with LLM assistance and reviewed by the authors; some
+  skills cross-checked against ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA
+  4.0) and Microsoft Learn." appears under the learning path.
 
 ## Out of scope (deliberate)
 
@@ -148,6 +153,22 @@ sub-topics as it already is for resources.)
 - New resource sources per sub-topic — R3 (resources stay per skill).
 - New graph visual — R4 (`PathGraph` unchanged).
 - Adding new target roles.
+
+## Known limitations
+
+- With the live JobSpy provider, `market_agent.py::_scan_description` labels every skill it detects
+  in a posting `"intermediate"` (there's no signal in a free-text description to distinguish
+  beginner/intermediate/advanced demand), so `required_level` computed from live postings is always
+  `intermediate`. A learner's `select_subtopics` window is therefore either beginner+intermediate
+  (when `current_level == "none"`) or intermediate-only (when `current_level == "beginner"`) —
+  `advanced` sub-topics are only reachable with the annotated sample job provider, which does carry
+  per-skill levels.
+- `recalculate_journey` rebuilds the path from the stored gap report's `current_level`, so
+  reassessing a learner's competency (e.g. via GitHub/LeetCode analysis) does not move this window
+  unless a fresh `/api/advise` run also produces a new gap report.
+
+  Both are deferred to R2: seniority-aware required levels for the live provider, and mapping a
+  reassessed depth score back onto `current_level` so recalculation can widen the window.
 
 ## Testing
 
