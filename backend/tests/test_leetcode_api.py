@@ -76,8 +76,14 @@ def test_get_leetcode_never_synced_is_none():
 def test_interview_focus_topics_appends_weak_topics_after_gaps_without_duplicates():
     gap_json = json.dumps({"gaps": [{"name": "Docker"}, {"name": "Array"}]})
     snapshot = {"easy": 1, "medium": 0, "hard": 0, "topics": {}, "last_accepted_at": None}
-    # weak topics for an empty topic map are Array, String, Hash Table
-    assert _interview_focus_topics(gap_json, snapshot) == ["Docker", "Array", "String", "Hash Table"]
+    # weak topics for an empty topic map are Array, String, Hash Table (labeled with DSA suffix)
+    assert _interview_focus_topics(gap_json, snapshot) == ["Docker", "Array", "Array (DSA)", "String (DSA)", "Hash Table (DSA)"]
+
+
+def test_interview_focus_topics_does_not_repeat_an_existing_labeled_topic():
+    gap_json = json.dumps({"gaps": [{"name": "Array (DSA)"}]})
+    snapshot = {"easy": 1, "medium": 0, "hard": 0, "topics": {}, "last_accepted_at": None}
+    assert _interview_focus_topics(gap_json, snapshot) == ["Array (DSA)", "String (DSA)", "Hash Table (DSA)"]
 
 
 def test_interview_focus_topics_without_leetcode_is_gap_names_only():

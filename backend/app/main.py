@@ -315,7 +315,10 @@ def get_job_recommendations(db: Session = Depends(get_db),
 
 
 def _interview_focus_topics(gap_report_json: str | None, snapshot: dict | None) -> list[str]:
-    """Top-5 gap skills, then LeetCode weak topics (if synced), de-duplicated."""
+    """Top-5 gap skills, then LeetCode weak topics labeled as DSA (if synced), de-duplicated.
+
+    LeetCode weak topics are appended with " (DSA)" suffix to disambiguate ambiguous tag names
+    (e.g. "Heap" the data structure vs memory heap/garbage collection) for the LLM."""
     topics: list[str] = []
     if gap_report_json:
         try:
@@ -324,7 +327,7 @@ def _interview_focus_topics(gap_report_json: str | None, snapshot: dict | None) 
         except (ValueError, KeyError, AttributeError):
             pass
     if snapshot:
-        topics += [t for t in leetcode.weak_topics(snapshot) if t not in topics]
+        topics += [f"{t} (DSA)" for t in leetcode.weak_topics(snapshot) if f"{t} (DSA)" not in topics]
     return topics
 
 
