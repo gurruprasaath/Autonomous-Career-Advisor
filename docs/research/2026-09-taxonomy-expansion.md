@@ -667,3 +667,11 @@ ESCO has no exact occupation for several roles; each role is mapped to the close
 | Unsupervised Learning | Near-duplicate of `ml-fundamentals`. |
 
 Note: 4 of the 18 LLM extraction batches (30 postings per role, 10 per batch) returned empty output (`No parseable JSON in LLM output: ''`) and were skipped, so about 40 of the 180 sampled postings contributed no LLM candidates. Shares are still measured over all 100 postings per role.
+
+## Limitations
+
+- ESCO has no exact occupation for several roles; each role was mapped by hand to the closest ESCO occupation (see the "Postings analysed" table), so ESCO-sourced candidates reflect those approximations.
+- 4 of 18 LLM term-extraction batches returned no parseable output and were skipped, so some postings in the LLM samples contributed no candidate terms.
+- Postings were not de-duplicated. Job boards often repeat templated postings, so a candidate's share can be inflated. In the Cybersecurity Analyst sample several phrases cluster at 12–15% ("audit readiness", "cyber security regulatory frameworks", "disaster recovery measures", "attack patterns", "incident response plans"), consistent with one templated posting repeated; the evidence for the added skills `security-compliance` and `disaster-recovery` may therefore be overstated. Postings were not persisted, so this cannot be re-checked after the fact.
+- Some added skills rest on thin evidence (3–6% max share): figma (3%), ruby (3%), edge-ai (4%), elasticsearch (4%), scala (5%), sap (5%), perl (6%).
+- Samples are single snapshots of 100 postings per role from one provider run on the date shown in the header.

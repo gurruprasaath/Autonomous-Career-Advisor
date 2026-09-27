@@ -26,6 +26,8 @@ def test_normalize_converts_unicode_hyphens_and_nbsp():
     assert normalize("Time‑Series Analysis") == "Time-Series Analysis"
     assert normalize("real‐time systems") == "real-time systems"
     assert normalize("A−B") == "A-B"
+    assert normalize("Power BI") == "Power BI"
+    assert normalize("Power BI") == "Power BI"
 
 
 def test_every_app_role_has_a_hand_mapped_esco_occupation():
