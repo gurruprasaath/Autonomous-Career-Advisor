@@ -38,6 +38,13 @@ class StudentProfile(BaseModel):
     target_role: str = ""
 
 
+class Subtopic(BaseModel):
+    """One curated, ordered sub-topic of a taxonomy skill (skill_subtopics.json)."""
+    id: str
+    name: str
+    level: Literal["beginner", "intermediate", "advanced"]
+
+
 class SkillDemand(BaseModel):
     """One skill demanded by the market, with evidence from real postings."""
     skill_id: str

@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 
 from ..config import DATA_DIR
+from ..schemas import Subtopic
 from .vectorstore import skills_collection
 
 # Chroma returns squared-L2 distance for unit-normalized ONNX MiniLM vectors.
@@ -99,3 +100,37 @@ def prerequisite_order(skill_ids: list[str]) -> list[str]:
     for sid in skill_ids:
         visit(sid)
     return order
+
+
+# ---- curated sub-topics (skill_subtopics.json) ----
+
+LEVEL_RANK = {"none": 0, "beginner": 1, "intermediate": 2, "advanced": 3}
+
+
+@lru_cache
+def load_subtopics() -> dict:
+    return json.loads((DATA_DIR / "skill_subtopics.json").read_text(encoding="utf-8"))
+
+
+def subtopics_for(skill_id: str) -> list[Subtopic]:
+    entry = load_subtopics()["skills"].get(skill_id)
+    return [Subtopic(**t) for t in entry["subtopics"]] if entry else []
+
+
+def roadmap_url_for(skill_id: str) -> str:
+    entry = load_subtopics()["skills"].get(skill_id)
+    return entry["roadmap_url"] if entry else ""
+
+
+def select_subtopics(skill_id: str, current_level: str, required_level: str) -> list[Subtopic]:
+    """Sub-topics strictly above what the learner already has, up to what the
+    role requires. Falls back to the required level's sub-topics, then to all
+    of them, so a gap step is never left without a curriculum."""
+    subs = subtopics_for(skill_id)
+    current = LEVEL_RANK.get(current_level, 0)
+    required = LEVEL_RANK.get(required_level, 0)
+    window = [t for t in subs if current < LEVEL_RANK[t.level] <= required]
+    if window:
+        return window
+    at_required = [t for t in subs if t.level == required_level]
+    return at_required or subs
