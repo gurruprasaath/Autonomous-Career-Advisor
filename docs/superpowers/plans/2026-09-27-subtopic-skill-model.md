@@ -16,7 +16,7 @@
 - Per skill: 4–8 sub-topics; ids kebab-case, globally unique, prefixed `<skill_id>-`; `level` ∈ {beginner, intermediate, advanced}; ordered by learning sequence with non-decreasing level; at least one beginner and at least one intermediate-or-advanced.
 - `references` ⊆ {esco, ossu, ciu, mslearn} and lists only sources actually consulted (may be empty). `roadmap_url` is `""` or `https://roadmap.sh/...` and every non-empty URL must have returned HTTP 200 when authored (roadmap.sh returns a real 404 for unknown pages — verified).
 - Level ranks: none=0, beginner=1, intermediate=2, advanced=3. Window: `rank(current) < rank(level) ≤ rank(required)`; else `level == required`; else all.
-- `WEEKS_PER_SUBTOPIC = 0.75`; fallback weeks = `n_subtopics * 0.75 * (10 / hours_per_week)`, rounded to 1 decimal, clamped 0.5–8. `MAX_PATH_SKILLS` stays 8.
+- `WEEKS_PER_SUBTOPIC = 0.75`; fallback weeks = `max(n_subtopics, 1) * 0.75 * (10 / hours_per_week)`, rounded to 1 decimal, clamped 0.5–8. `MAX_PATH_SKILLS` stays 8.
 - Verifier: unknown sub-topic id → groundedness capped at 1.0, issue text exactly `Sub-topic '<name>' is not in the curated curriculum for <skill_name>`.
 - Taxonomy expansion keep rule: not already matched by the taxonomy (`match_mention` confidence ≥ 0.6) AND whole-word share ≥ 3% of at least one role's live postings. Every newly added skill gets ≥ 1 free catalog course whose URL returned HTTP 200 (preserves the existing invariant that skills have a catalog course).
 - Attribution line (exact): `Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0), Microsoft Learn`

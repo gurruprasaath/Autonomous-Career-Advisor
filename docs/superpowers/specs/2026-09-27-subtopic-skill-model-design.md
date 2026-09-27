@@ -114,8 +114,8 @@ paper. The script is not run by the app.
   - adds the selected sub-topic names to each skill line in `PLAN_PROMPT` and instructs the LLM that
     the objective and milestone must cover those sub-topics;
   - fallback week estimate becomes
-    `n_subtopics * WEEKS_PER_SUBTOPIC * (10 / hours_per_week)` with `WEEKS_PER_SUBTOPIC = 0.75`,
-    clamped to 0.5–8 (the LLM estimate is still used when it is within 0.5–8).
+    `max(n_subtopics, 1) * WEEKS_PER_SUBTOPIC * (10 / hours_per_week)` with `WEEKS_PER_SUBTOPIC = 0.75`,
+    clamped to 0.5–8 (the max() guards the zero-sub-topic case, which the curated data makes unreachable) (the LLM estimate is still used when it is within 0.5–8).
 - `MAX_PATH_SKILLS` stays 8.
 
 ### 4. Verifier

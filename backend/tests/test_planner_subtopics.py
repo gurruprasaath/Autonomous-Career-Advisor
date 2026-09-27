@@ -50,3 +50,12 @@ def test_prompt_lists_each_steps_subtopics():
     for sid, cur, req in (("python", "none", "advanced"), ("sql", "beginner", "intermediate")):
         for t in select_subtopics(sid, cur, req):
             assert t.name in prompt
+
+
+def test_step_without_subtopics_is_estimated_as_one_subtopic():
+    # Unreachable with real data (every skill has 4-8 curated sub-topics); pins
+    # the max(n, 1) guard the project chose over a literal zero.
+    with patch("app.agents.planner_agent.select_subtopics", return_value=[]):
+        path, _ = _build(hours=5)
+    assert path.steps
+    assert all(s.estimated_weeks == 1.5 and s.subtopics == [] for s in path.steps)
