@@ -981,7 +981,10 @@
       "name": "Spring Boot",
       "aliases": [
         "spring framework",
-        "springboot"
+        "springboot",
+        "spring mvc",
+        "spring security",
+        "spring data"
       ],
       "category": "web-backend",
       "prerequisites": [

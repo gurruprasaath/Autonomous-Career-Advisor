@@ -672,7 +672,7 @@ Update (2026-09-27): as of the R1 final-review fixes, the near-duplicate terms C
 Azure DevOps, Observability, SQL Server, Agentic AI, Large Language Models, REST API and vector
 databases are recognised as exact (confidence 1.0) aliases on their existing skills (`cicd`,
 `monitoring`, `sql`, `agentic-ai`, `llms`, `rest-api`, `rag` respectively), rather than only via
-the embedding fallback.
+the embedding fallback. In the same update, four aliases listed in the table above were removed because they produced false matches in job postings: `puppet` (a different product, previously counted as Ansible), `spring` (matched phrases like "Spring 2027 internship"), `data classification` (a generic phrase, previously counted as DLP) and `rails` (matched "guard rails"); `spring mvc`, `spring security` and `spring data` were added instead. The bare term `windows` is no longer scanned (it matched "maintenance windows"); the Windows skill is now detected only through its specific aliases (e.g. "windows server", "active directory", "powershell", "group policy"), so its measured demand in the application is lower than the 19% evidence figure above, which counted bare "Windows".
 
 ## Limitations
 
