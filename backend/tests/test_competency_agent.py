@@ -66,3 +66,37 @@ def test_rationale_falls_back_when_llm_unavailable():
         score, rationale = assess_competency("Python", 4, 90, None, False)
     assert score == 7
     assert "Depth assessed at 7/10" in rationale
+
+
+def _no_llm():
+    return patch("app.agents.competency_agent.get_llm", side_effect=RuntimeError("no llm"))
+
+
+def test_leetcode_only_signal_blends_instead_of_returning_resume_depth():
+    # (4*0.30 + 8*0.35) / 0.65 = 6.15 -> 6
+    with _no_llm():
+        score, rationale = assess_competency("Problem Solving & DSA", 4, None, None, False,
+                                             leetcode_depth=8)
+    assert score == 6
+    assert "leetcode: 8/10" in rationale
+
+
+def test_leetcode_can_lower_an_overstated_resume_depth():
+    # (8*0.30 + 2*0.35) / 0.65 = 4.77 -> 5
+    with _no_llm():
+        score, _ = assess_competency("Problem Solving & DSA", 8, None, None, False,
+                                     leetcode_depth=2)
+    assert score == 5
+
+
+def test_leetcode_blends_with_quiz_and_confidence():
+    base = (4 * 0.30 + 9.0 * 0.40 + 8 * 0.15 + 10 * 0.35) / 1.20
+    with _no_llm():
+        score, _ = assess_competency("Problem Solving & DSA", 4, 90, 4, False, leetcode_depth=10)
+    assert score == round(base) == 8
+
+
+def test_no_leetcode_leaves_fallback_rationale_unchanged():
+    with _no_llm():
+        _, rationale = assess_competency("Python", 4, 90, None, False)
+    assert rationale == "Depth assessed at 7/10 (resume: 4, quiz: 90%, conf: None, github: No)."
