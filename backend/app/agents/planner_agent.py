@@ -10,19 +10,19 @@ import logging
 
 from ..config import get_settings
 from ..core.llm import LLMUnavailable, extract_json, get_llm, invoke_llm
-from ..core.taxonomy import prerequisite_order
+from ..core.taxonomy import prerequisite_order, roadmap_url_for, select_subtopics
 from ..schemas import GapReport, LearningPath, PathResource, PathStep, StudentProfile
 from .resource_curator_agent import curate_resources
 
 log = logging.getLogger(__name__)
 
 MAX_PATH_SKILLS = 8
-# fallback weeks per unit of gap_size at 10 h/week
-BASE_WEEKS_PER_GAP_UNIT = 1.5
+# fallback weeks per curated sub-topic at 10 h/week
+WEEKS_PER_SUBTOPIC = 0.75
 
 PLAN_PROMPT = """You are a curriculum planner for a career-advisor system. A student targeting the role "{role}" can study {hours} hours/week.
 
-For each skill below, write:
+For each skill below, write (the objective and milestone must cover that skill's listed sub-topics):
 - "objective": one concrete, measurable learning objective (what they can DO afterwards)
 - "milestone": a small verifiable deliverable (e.g., "build and deploy X", "solve N problems")
 - "estimated_weeks": realistic weeks at {hours} h/week given the gap shown (0.5 to 8 per skill)
@@ -58,11 +58,16 @@ def build_path(profile: StudentProfile, gap_report: GapReport,
 
     gap_by_id = {g.skill_id: g for g in top_gaps}
     ordered_ids = prerequisite_order(list(gap_by_id.keys()))
+    subtopics_by_id = {
+        sid: select_subtopics(sid, gap_by_id[sid].current_level, gap_by_id[sid].required_level)
+        for sid in ordered_ids
+    }
 
     skills_block = "\n".join(
         f"- {gap_by_id[sid].name} (skill_id: {sid}; current: {gap_by_id[sid].current_level}; "
         f"required: {gap_by_id[sid].required_level}; demanded by "
-        f"{gap_by_id[sid].demand_share:.0%} of postings)"
+        f"{gap_by_id[sid].demand_share:.0%} of postings; sub-topics: "
+        f"{', '.join(t.name for t in subtopics_by_id[sid]) or 'none listed'})"
         for sid in ordered_ids
     )
     revision_block = (
@@ -97,9 +102,11 @@ def build_path(profile: StudentProfile, gap_report: GapReport,
             weeks = float(llm_step.get("estimated_weeks", 0)) or 0.0
         except (TypeError, ValueError):
             weeks = 0.0
+        subtopics = subtopics_by_id[sid]
         if not 0.5 <= weeks <= 8:
-            # deterministic estimate scaled by study hours
-            weeks = round(gap.gap_size * BASE_WEEKS_PER_GAP_UNIT * (10 / max(profile.hours_per_week, 1)), 1)
+            # deterministic estimate: curated sub-topic count, scaled by study hours
+            weeks = round(max(len(subtopics), 1) * WEEKS_PER_SUBTOPIC
+                          * (10 / max(profile.hours_per_week, 1)), 1)
             weeks = min(max(weeks, 0.5), 8)
         # Extract depth score if available
         depth_score = 1
@@ -120,6 +127,8 @@ def build_path(profile: StudentProfile, gap_report: GapReport,
                 or f"Complete a hands-on exercise or mini-project using {gap.name}.",
             resources=curate_resources(sid, gap.name, depth_score, obj_text),
             estimated_weeks=weeks,
+            subtopics=subtopics,
+            roadmap_url=roadmap_url_for(sid),
         ))
 
     path = LearningPath(

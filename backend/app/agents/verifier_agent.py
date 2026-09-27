@@ -1,8 +1,9 @@
 """Verifier / Critic Agent — FGCR rubric.
 
   F  Feasibility   prerequisite order respected in the step sequence
-  G  Groundedness  every resource exists in the course catalog and
-                   actually teaches that step's skill
+  G  Groundedness  every resource exists in the course catalog and actually
+                   teaches that step's skill; every sub-topic is in the
+                   curated curriculum
   C  Coverage      the top-priority gaps all appear in the path
   R  Realism       week estimates sane per-step and in total
 
@@ -16,7 +17,7 @@ from urllib.parse import urlparse
 
 from ..config import get_settings
 from ..core.llm import LLMUnavailable, extract_json, get_llm, invoke_llm
-from ..core.taxonomy import load_taxonomy
+from ..core.taxonomy import load_taxonomy, subtopics_for
 from ..core.vectorstore import courses_collection
 from ..schemas import FGCRCritique, GapReport, LearningPath, StudentProfile
 
@@ -71,6 +72,15 @@ def _hard_checks(path: LearningPath, gap_report: GapReport,
                 caps["groundedness"] = 1.0
                 issues.append(f"Resource '{r.title}' is not a catalog course for "
                               f"'{step.skill_name}' (possible hallucination).")
+
+    # G: sub-topics must come from the curated curriculum (nothing invented)
+    for step in path.steps:
+        curated = {t.id for t in subtopics_for(step.skill_id)}
+        for t in step.subtopics:
+            if t.id not in curated:
+                caps["groundedness"] = 1.0
+                issues.append(f"Sub-topic '{t.name}' is not in the curated curriculum "
+                              f"for {step.skill_name}")
 
     # C: top-priority gaps must be covered
     top = [g for g in gap_report.gaps[:COVERAGE_TOP_N]]

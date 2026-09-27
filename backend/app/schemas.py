@@ -92,6 +92,8 @@ class PathStep(BaseModel):
     resources: list[PathResource] = []
     estimated_weeks: float = 1.0
     milestone: str = ""
+    subtopics: list[Subtopic] = []
+    roadmap_url: str = ""
 
 
 class RepoChatRequest(BaseModel):
