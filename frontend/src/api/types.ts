@@ -188,3 +188,15 @@ export interface InterviewTips {
   common_questions: string[]
   advice: string
 }
+
+export interface LeetcodeSummary {
+  username: string
+  easy: number
+  medium: number
+  hard: number
+  total: number
+  dsa_depth: number | null
+  weak_topics: string[]
+  last_accepted_at: string | null
+  synced_at: string | null
+}

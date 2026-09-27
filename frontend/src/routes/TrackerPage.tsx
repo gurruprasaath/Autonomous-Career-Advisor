@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useCompetencyHistory, useJourneys, useRecalculateJourney } from '../api/tracker'
 import GithubConnect from '../components/GithubConnect'
+import LeetcodeConnect from '../components/LeetcodeConnect'
 import CompetencyChart from '../components/CompetencyChart'
 import StepTracker from '../components/StepTracker'
 
@@ -37,6 +38,7 @@ export default function TrackerPage() {
   return (
     <div className="tracker">
       <GithubConnect />
+      <LeetcodeConnect />
       <CompetencyChart historyData={historyData ?? {}} skillNames={skillNames} />
       {journeys?.length === 0 && <div>No learning paths generated yet. Go to Generate Path!</div>}
       {journeys?.map((j) => {
