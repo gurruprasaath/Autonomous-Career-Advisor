@@ -896,6 +896,243 @@
       ],
       "category": "professional",
       "prerequisites": []
+    },
+    {
+      "id": "ansible",
+      "name": "Ansible",
+      "aliases": [
+        "ansible playbooks",
+        "configuration management",
+        "puppet"
+      ],
+      "category": "devops-cloud",
+      "prerequisites": [
+        "linux"
+      ]
+    },
+    {
+      "id": "dotnet",
+      "name": "C# / .NET",
+      "aliases": [
+        ".net",
+        "c#",
+        "csharp",
+        "asp.net",
+        "asp.net core",
+        ".net core",
+        "linq"
+      ],
+      "category": "programming",
+      "prerequisites": []
+    },
+    {
+      "id": "databricks",
+      "name": "Databricks",
+      "aliases": [
+        "azure databricks",
+        "delta lake",
+        "unity catalog",
+        "databricks workflows",
+        "lakehouse"
+      ],
+      "category": "data-engineering",
+      "prerequisites": [
+        "spark"
+      ]
+    },
+    {
+      "id": "endpoint-security",
+      "name": "Endpoint Security & EDR",
+      "aliases": [
+        "edr",
+        "endpoint security",
+        "endpoint detection and response",
+        "antivirus"
+      ],
+      "category": "cybersecurity",
+      "prerequisites": [
+        "network-security"
+      ]
+    },
+    {
+      "id": "windows",
+      "name": "Windows Administration",
+      "aliases": [
+        "windows server",
+        "active directory",
+        "powershell",
+        "group policy"
+      ],
+      "category": "devops-cloud",
+      "prerequisites": []
+    },
+    {
+      "id": "spring-boot",
+      "name": "Spring Boot",
+      "aliases": [
+        "spring",
+        "spring framework",
+        "springboot"
+      ],
+      "category": "web-backend",
+      "prerequisites": [
+        "java",
+        "rest-api"
+      ]
+    },
+    {
+      "id": "security-compliance",
+      "name": "Security Compliance & GRC",
+      "aliases": [
+        "grc",
+        "iso 27001",
+        "nist csf",
+        "soc 2",
+        "audit readiness",
+        "security audits",
+        "cyber security regulatory frameworks",
+        "compliance frameworks"
+      ],
+      "category": "cybersecurity",
+      "prerequisites": []
+    },
+    {
+      "id": "dlp",
+      "name": "Data Loss Prevention",
+      "aliases": [
+        "data loss prevention",
+        "data classification"
+      ],
+      "category": "cybersecurity",
+      "prerequisites": [
+        "network-security"
+      ]
+    },
+    {
+      "id": "php",
+      "name": "PHP",
+      "aliases": [
+        "laravel"
+      ],
+      "category": "programming",
+      "prerequisites": [
+        "html-css"
+      ]
+    },
+    {
+      "id": "disaster-recovery",
+      "name": "Backup & Disaster Recovery",
+      "aliases": [
+        "disaster recovery",
+        "disaster recovery measures",
+        "backups",
+        "backup and recovery",
+        "business continuity"
+      ],
+      "category": "devops-cloud",
+      "prerequisites": []
+    },
+    {
+      "id": "flutter",
+      "name": "Flutter",
+      "aliases": [
+        "dart"
+      ],
+      "category": "web-frontend",
+      "prerequisites": []
+    },
+    {
+      "id": "elasticsearch",
+      "name": "Elasticsearch",
+      "aliases": [
+        "elastic stack",
+        "elk stack",
+        "opensearch",
+        "kibana"
+      ],
+      "category": "data-engineering",
+      "prerequisites": [
+        "nosql"
+      ]
+    },
+    {
+      "id": "edge-ai",
+      "name": "Edge AI & Embedded Devices",
+      "aliases": [
+        "edge ai",
+        "jetson",
+        "nvidia jetson",
+        "raspberry pi",
+        "tinyml"
+      ],
+      "category": "machine-learning",
+      "prerequisites": [
+        "deep-learning"
+      ]
+    },
+    {
+      "id": "sap",
+      "name": "SAP S/4HANA & ABAP",
+      "aliases": [
+        "sap s/4hana",
+        "s/4hana",
+        "abap",
+        "sap abap"
+      ],
+      "category": "programming",
+      "prerequisites": [
+        "sql"
+      ]
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "aliases": [
+        "wireframing",
+        "ui prototyping"
+      ],
+      "category": "web-frontend",
+      "prerequisites": []
+    },
+    {
+      "id": "scala",
+      "name": "Scala",
+      "aliases": [],
+      "category": "programming",
+      "prerequisites": []
+    },
+    {
+      "id": "perl",
+      "name": "Perl",
+      "aliases": [],
+      "category": "programming",
+      "prerequisites": []
+    },
+    {
+      "id": "ruby",
+      "name": "Ruby",
+      "aliases": [
+        "ruby on rails",
+        "rails"
+      ],
+      "category": "programming",
+      "prerequisites": []
+    },
+    {
+      "id": "virtualization",
+      "name": "Virtualization & Hypervisors",
+      "aliases": [
+        "virtualization",
+        "vmware",
+        "hyper-v",
+        "hypervisors",
+        "virtual machines",
+        "kvm"
+      ],
+      "category": "devops-cloud",
+      "prerequisites": [
+        "linux"
+      ]
     }
   ]
 }

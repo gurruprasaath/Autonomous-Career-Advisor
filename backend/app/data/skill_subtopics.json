@@ -3681,6 +3681,815 @@
           "level": "advanced"
         }
       ]
+    },
+    "ansible": {
+      "roadmap_url": "https://roadmap.sh/devops",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "ansible-architecture",
+          "name": "Agentless architecture, inventory & SSH",
+          "level": "beginner"
+        },
+        {
+          "id": "ansible-ad-hoc",
+          "name": "Ad-hoc commands & core modules",
+          "level": "beginner"
+        },
+        {
+          "id": "ansible-playbooks",
+          "name": "Writing playbooks, tasks & handlers",
+          "level": "beginner"
+        },
+        {
+          "id": "ansible-variables-templates",
+          "name": "Variables, facts & Jinja2 templates",
+          "level": "intermediate"
+        },
+        {
+          "id": "ansible-roles",
+          "name": "Roles & Ansible Galaxy collections",
+          "level": "intermediate"
+        },
+        {
+          "id": "ansible-vault",
+          "name": "Secrets with Ansible Vault",
+          "level": "intermediate"
+        },
+        {
+          "id": "ansible-idempotency-testing",
+          "name": "Idempotency, check mode & Molecule testing",
+          "level": "advanced"
+        },
+        {
+          "id": "ansible-at-scale",
+          "name": "Dynamic inventory & running at scale",
+          "level": "advanced"
+        }
+      ]
+    },
+    "dotnet": {
+      "roadmap_url": "https://roadmap.sh/aspnet-core",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "dotnet-csharp-basics",
+          "name": "C# syntax, types & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "dotnet-oop",
+          "name": "Classes, interfaces & OOP in C#",
+          "level": "beginner"
+        },
+        {
+          "id": "dotnet-cli-projects",
+          "name": "The .NET CLI, projects & NuGet packages",
+          "level": "beginner"
+        },
+        {
+          "id": "dotnet-collections-linq",
+          "name": "Collections, generics & LINQ",
+          "level": "intermediate"
+        },
+        {
+          "id": "dotnet-async",
+          "name": "Async/await & the Task model",
+          "level": "intermediate"
+        },
+        {
+          "id": "dotnet-aspnet-core-apis",
+          "name": "Building web APIs with ASP.NET Core",
+          "level": "intermediate"
+        },
+        {
+          "id": "dotnet-ef-core",
+          "name": "Data access with Entity Framework Core",
+          "level": "intermediate"
+        },
+        {
+          "id": "dotnet-di-testing",
+          "name": "Dependency injection, testing & performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "databricks": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "databricks-workspace",
+          "name": "Workspace, clusters & notebooks",
+          "level": "beginner"
+        },
+        {
+          "id": "databricks-spark-dataframes",
+          "name": "Working with Spark DataFrames on Databricks",
+          "level": "beginner"
+        },
+        {
+          "id": "databricks-delta-lake",
+          "name": "Delta Lake tables & ACID transactions",
+          "level": "intermediate"
+        },
+        {
+          "id": "databricks-medallion",
+          "name": "Medallion (bronze/silver/gold) architecture",
+          "level": "intermediate"
+        },
+        {
+          "id": "databricks-workflows",
+          "name": "Scheduling jobs with Databricks Workflows",
+          "level": "intermediate"
+        },
+        {
+          "id": "databricks-unity-catalog",
+          "name": "Governance with Unity Catalog",
+          "level": "advanced"
+        },
+        {
+          "id": "databricks-performance",
+          "name": "Performance tuning & cost control",
+          "level": "advanced"
+        }
+      ]
+    },
+    "endpoint-security": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "endpoint-security-threats",
+          "name": "Endpoint threats & attack surface",
+          "level": "beginner"
+        },
+        {
+          "id": "endpoint-security-antivirus-edr",
+          "name": "Antivirus vs EDR: how detection works",
+          "level": "beginner"
+        },
+        {
+          "id": "endpoint-security-hardening",
+          "name": "OS hardening & patch baselines",
+          "level": "intermediate"
+        },
+        {
+          "id": "endpoint-security-edr-triage",
+          "name": "EDR telemetry, alerts & triage",
+          "level": "intermediate"
+        },
+        {
+          "id": "endpoint-security-isolation",
+          "name": "Host isolation & remediation actions",
+          "level": "intermediate"
+        },
+        {
+          "id": "endpoint-security-hunting",
+          "name": "Threat hunting across endpoints",
+          "level": "advanced"
+        },
+        {
+          "id": "endpoint-security-policy-tuning",
+          "name": "Tuning detection policies & exclusions",
+          "level": "advanced"
+        }
+      ]
+    },
+    "windows": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "windows-install-config",
+          "name": "Installing & configuring Windows Server",
+          "level": "beginner"
+        },
+        {
+          "id": "windows-users-permissions",
+          "name": "Local users, groups & NTFS permissions",
+          "level": "beginner"
+        },
+        {
+          "id": "windows-powershell",
+          "name": "Administration with PowerShell",
+          "level": "beginner"
+        },
+        {
+          "id": "windows-active-directory",
+          "name": "Active Directory domains, users & OUs",
+          "level": "intermediate"
+        },
+        {
+          "id": "windows-group-policy",
+          "name": "Group Policy management",
+          "level": "intermediate"
+        },
+        {
+          "id": "windows-network-services",
+          "name": "DNS, DHCP & file services",
+          "level": "intermediate"
+        },
+        {
+          "id": "windows-updates-monitoring",
+          "name": "Updates, event logs & performance monitoring",
+          "level": "intermediate"
+        },
+        {
+          "id": "windows-hardening",
+          "name": "Security hardening & remote management",
+          "level": "advanced"
+        }
+      ]
+    },
+    "spring-boot": {
+      "roadmap_url": "https://roadmap.sh/spring-boot",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "spring-boot-setup",
+          "name": "Project setup with Spring Initializr",
+          "level": "beginner"
+        },
+        {
+          "id": "spring-boot-ioc-di",
+          "name": "Spring IoC container & dependency injection",
+          "level": "beginner"
+        },
+        {
+          "id": "spring-boot-rest-controllers",
+          "name": "REST controllers & request mapping",
+          "level": "beginner"
+        },
+        {
+          "id": "spring-boot-data-jpa",
+          "name": "Persistence with Spring Data JPA",
+          "level": "intermediate"
+        },
+        {
+          "id": "spring-boot-config-profiles",
+          "name": "Configuration properties & profiles",
+          "level": "intermediate"
+        },
+        {
+          "id": "spring-boot-validation-errors",
+          "name": "Validation & exception handling",
+          "level": "intermediate"
+        },
+        {
+          "id": "spring-boot-security",
+          "name": "Securing APIs with Spring Security",
+          "level": "advanced"
+        },
+        {
+          "id": "spring-boot-testing-actuator",
+          "name": "Testing & production monitoring with Actuator",
+          "level": "advanced"
+        }
+      ]
+    },
+    "security-compliance": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "security-compliance-grc-basics",
+          "name": "Governance, risk & compliance basics",
+          "level": "beginner"
+        },
+        {
+          "id": "security-compliance-frameworks",
+          "name": "Frameworks: ISO 27001, NIST CSF & SOC 2",
+          "level": "beginner"
+        },
+        {
+          "id": "security-compliance-risk-assessment",
+          "name": "Risk assessment & risk registers",
+          "level": "intermediate"
+        },
+        {
+          "id": "security-compliance-controls",
+          "name": "Mapping security controls to requirements",
+          "level": "intermediate"
+        },
+        {
+          "id": "security-compliance-policies",
+          "name": "Writing security policies & procedures",
+          "level": "intermediate"
+        },
+        {
+          "id": "security-compliance-audit-evidence",
+          "name": "Audit readiness & evidence collection",
+          "level": "intermediate"
+        },
+        {
+          "id": "security-compliance-continuous",
+          "name": "Continuous compliance monitoring",
+          "level": "advanced"
+        }
+      ]
+    },
+    "dlp": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "dlp-concepts",
+          "name": "Data loss channels & DLP concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "dlp-classification",
+          "name": "Data classification & sensitivity labels",
+          "level": "beginner"
+        },
+        {
+          "id": "dlp-policies",
+          "name": "Designing DLP policies & rules",
+          "level": "intermediate"
+        },
+        {
+          "id": "dlp-channels",
+          "name": "Endpoint, network & cloud DLP",
+          "level": "intermediate"
+        },
+        {
+          "id": "dlp-incidents",
+          "name": "Investigating DLP alerts & incidents",
+          "level": "intermediate"
+        },
+        {
+          "id": "dlp-tuning",
+          "name": "Tuning false positives & policy exceptions",
+          "level": "advanced"
+        }
+      ]
+    },
+    "php": {
+      "roadmap_url": "https://roadmap.sh/php",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "php-syntax",
+          "name": "PHP syntax, variables & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "php-functions-arrays",
+          "name": "Functions & arrays",
+          "level": "beginner"
+        },
+        {
+          "id": "php-forms-sessions",
+          "name": "Handling forms, cookies & sessions",
+          "level": "beginner"
+        },
+        {
+          "id": "php-oop",
+          "name": "Object-oriented PHP & namespaces",
+          "level": "intermediate"
+        },
+        {
+          "id": "php-composer",
+          "name": "Dependencies with Composer",
+          "level": "intermediate"
+        },
+        {
+          "id": "php-pdo",
+          "name": "Database access with PDO",
+          "level": "intermediate"
+        },
+        {
+          "id": "php-laravel",
+          "name": "Building apps with Laravel",
+          "level": "intermediate"
+        },
+        {
+          "id": "php-security-testing",
+          "name": "Security practices & PHPUnit testing",
+          "level": "advanced"
+        }
+      ]
+    },
+    "disaster-recovery": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "disaster-recovery-rto-rpo",
+          "name": "RTO, RPO & business impact analysis",
+          "level": "beginner"
+        },
+        {
+          "id": "disaster-recovery-backup-types",
+          "name": "Full, incremental & differential backups",
+          "level": "beginner"
+        },
+        {
+          "id": "disaster-recovery-storage-retention",
+          "name": "Backup storage, retention & the 3-2-1 rule",
+          "level": "intermediate"
+        },
+        {
+          "id": "disaster-recovery-restore-testing",
+          "name": "Restore testing & backup verification",
+          "level": "intermediate"
+        },
+        {
+          "id": "disaster-recovery-strategies",
+          "name": "DR strategies: backup-restore to multi-site",
+          "level": "intermediate"
+        },
+        {
+          "id": "disaster-recovery-plans",
+          "name": "Writing & exercising DR plans",
+          "level": "advanced"
+        },
+        {
+          "id": "disaster-recovery-immutable-backups",
+          "name": "Ransomware-resilient, immutable backups",
+          "level": "advanced"
+        }
+      ]
+    },
+    "flutter": {
+      "roadmap_url": "https://roadmap.sh/flutter",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "flutter-dart-basics",
+          "name": "Dart language basics",
+          "level": "beginner"
+        },
+        {
+          "id": "flutter-widgets",
+          "name": "Widgets & the widget tree",
+          "level": "beginner"
+        },
+        {
+          "id": "flutter-layouts",
+          "name": "Layouts & responsive UI",
+          "level": "beginner"
+        },
+        {
+          "id": "flutter-navigation",
+          "name": "Navigation & routing",
+          "level": "intermediate"
+        },
+        {
+          "id": "flutter-state",
+          "name": "State management (Provider, Riverpod, BLoC)",
+          "level": "intermediate"
+        },
+        {
+          "id": "flutter-networking",
+          "name": "Networking, JSON & local storage",
+          "level": "intermediate"
+        },
+        {
+          "id": "flutter-platform",
+          "name": "Platform channels & native integration",
+          "level": "advanced"
+        },
+        {
+          "id": "flutter-release",
+          "name": "Testing & releasing to app stores",
+          "level": "advanced"
+        }
+      ]
+    },
+    "elasticsearch": {
+      "roadmap_url": "https://roadmap.sh/elasticsearch",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "elasticsearch-concepts",
+          "name": "Documents, indices & shards",
+          "level": "beginner"
+        },
+        {
+          "id": "elasticsearch-crud",
+          "name": "Indexing & CRUD via the REST API",
+          "level": "beginner"
+        },
+        {
+          "id": "elasticsearch-mappings",
+          "name": "Mappings & text analysis",
+          "level": "intermediate"
+        },
+        {
+          "id": "elasticsearch-query-dsl",
+          "name": "Query DSL: full-text & filter queries",
+          "level": "intermediate"
+        },
+        {
+          "id": "elasticsearch-aggregations",
+          "name": "Aggregations for analytics",
+          "level": "intermediate"
+        },
+        {
+          "id": "elasticsearch-elastic-stack",
+          "name": "Logs with the Elastic Stack (Logstash, Kibana)",
+          "level": "intermediate"
+        },
+        {
+          "id": "elasticsearch-scaling",
+          "name": "Cluster sizing, replication & performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "edge-ai": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "edge-ai-hardware",
+          "name": "Edge hardware: Jetson, Raspberry Pi & NPUs",
+          "level": "beginner"
+        },
+        {
+          "id": "edge-ai-setup-inference",
+          "name": "Device setup & running inference",
+          "level": "beginner"
+        },
+        {
+          "id": "edge-ai-model-conversion",
+          "name": "Converting models (ONNX, TFLite)",
+          "level": "intermediate"
+        },
+        {
+          "id": "edge-ai-quantization",
+          "name": "Quantization & pruning for small devices",
+          "level": "intermediate"
+        },
+        {
+          "id": "edge-ai-tensorrt",
+          "name": "GPU acceleration with TensorRT",
+          "level": "intermediate"
+        },
+        {
+          "id": "edge-ai-camera-pipelines",
+          "name": "Real-time camera & sensor pipelines",
+          "level": "intermediate"
+        },
+        {
+          "id": "edge-ai-fleet",
+          "name": "Deploying & updating models on device fleets",
+          "level": "advanced"
+        }
+      ]
+    },
+    "sap": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "sap-erp-concepts",
+          "name": "SAP ERP & S/4HANA concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "sap-navigation-modules",
+          "name": "Navigating SAP & core business modules",
+          "level": "beginner"
+        },
+        {
+          "id": "sap-abap-basics",
+          "name": "ABAP syntax, data types & internal tables",
+          "level": "beginner"
+        },
+        {
+          "id": "sap-abap-sql",
+          "name": "Database access with ABAP SQL",
+          "level": "intermediate"
+        },
+        {
+          "id": "sap-abap-oop",
+          "name": "Object-oriented ABAP",
+          "level": "intermediate"
+        },
+        {
+          "id": "sap-cds-views",
+          "name": "Core Data Services (CDS) views",
+          "level": "intermediate"
+        },
+        {
+          "id": "sap-data-integration",
+          "name": "Extracting & integrating SAP data",
+          "level": "advanced"
+        },
+        {
+          "id": "sap-rap",
+          "name": "RESTful Application Programming model (RAP)",
+          "level": "advanced"
+        }
+      ]
+    },
+    "figma": {
+      "roadmap_url": "https://roadmap.sh/ux-design",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "figma-interface",
+          "name": "Figma interface, frames & shapes",
+          "level": "beginner"
+        },
+        {
+          "id": "figma-auto-layout",
+          "name": "Auto layout & constraints",
+          "level": "beginner"
+        },
+        {
+          "id": "figma-components",
+          "name": "Components & variants",
+          "level": "intermediate"
+        },
+        {
+          "id": "figma-styles-variables",
+          "name": "Styles, variables & design tokens",
+          "level": "intermediate"
+        },
+        {
+          "id": "figma-prototyping",
+          "name": "Interactive prototyping",
+          "level": "intermediate"
+        },
+        {
+          "id": "figma-dev-handoff",
+          "name": "Developer handoff & Dev Mode",
+          "level": "intermediate"
+        },
+        {
+          "id": "figma-design-systems",
+          "name": "Building shared design systems",
+          "level": "advanced"
+        }
+      ]
+    },
+    "scala": {
+      "roadmap_url": "https://roadmap.sh/scala",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "scala-basics",
+          "name": "Scala syntax, values & types",
+          "level": "beginner"
+        },
+        {
+          "id": "scala-functions",
+          "name": "Functions, closures & higher-order functions",
+          "level": "beginner"
+        },
+        {
+          "id": "scala-classes-traits",
+          "name": "Classes, case classes & traits",
+          "level": "beginner"
+        },
+        {
+          "id": "scala-pattern-matching",
+          "name": "Pattern matching",
+          "level": "intermediate"
+        },
+        {
+          "id": "scala-collections",
+          "name": "Immutable collections & transformations",
+          "level": "intermediate"
+        },
+        {
+          "id": "scala-sbt",
+          "name": "Building projects with sbt",
+          "level": "intermediate"
+        },
+        {
+          "id": "scala-futures",
+          "name": "Concurrency with Futures",
+          "level": "advanced"
+        },
+        {
+          "id": "scala-spark",
+          "name": "Scala for Apache Spark",
+          "level": "advanced"
+        }
+      ]
+    },
+    "perl": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "perl-basics",
+          "name": "Perl syntax, scalars & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "perl-arrays-hashes",
+          "name": "Arrays, hashes & references",
+          "level": "beginner"
+        },
+        {
+          "id": "perl-regex",
+          "name": "Regular expressions & text processing",
+          "level": "intermediate"
+        },
+        {
+          "id": "perl-files",
+          "name": "File I/O & command-line scripts",
+          "level": "intermediate"
+        },
+        {
+          "id": "perl-modules",
+          "name": "Subroutines, modules & CPAN",
+          "level": "intermediate"
+        },
+        {
+          "id": "perl-oop",
+          "name": "Object-oriented Perl",
+          "level": "advanced"
+        }
+      ]
+    },
+    "ruby": {
+      "roadmap_url": "https://roadmap.sh/ruby",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "ruby-basics",
+          "name": "Ruby syntax, types & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "ruby-collections-blocks",
+          "name": "Arrays, hashes, blocks & iterators",
+          "level": "beginner"
+        },
+        {
+          "id": "ruby-classes-modules",
+          "name": "Classes, modules & mixins",
+          "level": "intermediate"
+        },
+        {
+          "id": "ruby-gems-bundler",
+          "name": "Gems & Bundler",
+          "level": "intermediate"
+        },
+        {
+          "id": "ruby-testing",
+          "name": "Testing with RSpec/Minitest",
+          "level": "intermediate"
+        },
+        {
+          "id": "ruby-rails",
+          "name": "Web apps with Ruby on Rails",
+          "level": "intermediate"
+        },
+        {
+          "id": "ruby-metaprogramming",
+          "name": "Metaprogramming basics",
+          "level": "advanced"
+        }
+      ]
+    },
+    "virtualization": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "virtualization-concepts",
+          "name": "Virtualization concepts & hypervisor types",
+          "level": "beginner"
+        },
+        {
+          "id": "virtualization-vm-lifecycle",
+          "name": "Creating & managing virtual machines",
+          "level": "beginner"
+        },
+        {
+          "id": "virtualization-networking-storage",
+          "name": "Virtual networking & storage",
+          "level": "intermediate"
+        },
+        {
+          "id": "virtualization-snapshots-migration",
+          "name": "Snapshots, cloning & live migration",
+          "level": "intermediate"
+        },
+        {
+          "id": "virtualization-platforms",
+          "name": "Platforms: VMware vSphere, Hyper-V & KVM",
+          "level": "intermediate"
+        },
+        {
+          "id": "virtualization-ha-capacity",
+          "name": "High availability & capacity planning",
+          "level": "advanced"
+        },
+        {
+          "id": "virtualization-vms-vs-containers",
+          "name": "VMs vs containers & hybrid designs",
+          "level": "advanced"
+        }
+      ]
     }
   }
 }

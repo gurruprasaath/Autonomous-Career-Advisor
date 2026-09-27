@@ -768,6 +768,190 @@
       "provider": "Auth0",
       "url": "https://auth0.com/docs/quickstart/spa",
       "free": true
+    },
+    {
+      "id": "course-097",
+      "skill_id": "ansible",
+      "title": "Getting started with Ansible",
+      "provider": "Ansible Community Documentation",
+      "url": "https://docs.ansible.com/projects/ansible/latest/getting_started/index.html",
+      "free": true
+    },
+    {
+      "id": "course-098",
+      "skill_id": "dotnet",
+      "title": "Get started with C#, Part 1",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/paths/get-started-c-sharp-part-1/",
+      "free": true
+    },
+    {
+      "id": "course-099",
+      "skill_id": "dotnet",
+      "title": "Learn .NET",
+      "provider": "Microsoft .NET",
+      "url": "https://dotnet.microsoft.com/en-us/learn",
+      "free": true
+    },
+    {
+      "id": "course-100",
+      "skill_id": "databricks",
+      "title": "Implement a Data Analytics Solution with Azure Databricks",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/paths/data-engineer-azure-databricks/",
+      "free": true
+    },
+    {
+      "id": "course-101",
+      "skill_id": "databricks",
+      "title": "Get started tutorials on Databricks",
+      "provider": "Databricks",
+      "url": "https://docs.databricks.com/aws/en/getting-started",
+      "free": true
+    },
+    {
+      "id": "course-102",
+      "skill_id": "endpoint-security",
+      "title": "Mitigate threats using Microsoft Defender for Endpoint",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/paths/sc-200-mitigate-threats-using-microsoft-defender-for-endpoint/",
+      "free": true
+    },
+    {
+      "id": "course-103",
+      "skill_id": "windows",
+      "title": "Windows Server deployment, configuration, and administration",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/paths/windows-server-deployment-configuration-administration/",
+      "free": true
+    },
+    {
+      "id": "course-104",
+      "skill_id": "spring-boot",
+      "title": "Building an Application with Spring Boot",
+      "provider": "Spring",
+      "url": "https://spring.io/guides/gs/spring-boot/",
+      "free": true
+    },
+    {
+      "id": "course-105",
+      "skill_id": "security-compliance",
+      "title": "Introduction to security, compliance, and identity concepts",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/paths/describe-concepts-of-security-compliance-identity/",
+      "free": true
+    },
+    {
+      "id": "course-106",
+      "skill_id": "security-compliance",
+      "title": "NIST Cybersecurity Framework",
+      "provider": "NIST",
+      "url": "https://www.nist.gov/cyberframework",
+      "free": true
+    },
+    {
+      "id": "course-107",
+      "skill_id": "dlp",
+      "title": "Learn about data loss prevention",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp",
+      "free": true
+    },
+    {
+      "id": "course-108",
+      "skill_id": "php",
+      "title": "PHP: A simple tutorial",
+      "provider": "PHP.net",
+      "url": "https://www.php.net/manual/en/tutorial.php",
+      "free": true
+    },
+    {
+      "id": "course-109",
+      "skill_id": "disaster-recovery",
+      "title": "Disaster Recovery of Workloads on AWS",
+      "provider": "AWS Whitepapers",
+      "url": "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html",
+      "free": true
+    },
+    {
+      "id": "course-110",
+      "skill_id": "flutter",
+      "title": "Flutter learning pathway",
+      "provider": "Flutter",
+      "url": "https://docs.flutter.dev/learn/pathway",
+      "free": true
+    },
+    {
+      "id": "course-111",
+      "skill_id": "elasticsearch",
+      "title": "Get started with search",
+      "provider": "Elastic",
+      "url": "https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html",
+      "free": true
+    },
+    {
+      "id": "course-112",
+      "skill_id": "edge-ai",
+      "title": "Hello AI World (jetson-inference)",
+      "provider": "NVIDIA",
+      "url": "https://github.com/dusty-nv/jetson-inference",
+      "free": true
+    },
+    {
+      "id": "course-113",
+      "skill_id": "sap",
+      "title": "Acquire Core ABAP Skills",
+      "provider": "SAP Learning",
+      "url": "https://learning.sap.com/learning-journeys/acquire-core-abap-skills",
+      "free": true
+    },
+    {
+      "id": "course-114",
+      "skill_id": "figma",
+      "title": "Figma Learn: Get started",
+      "provider": "Figma",
+      "url": "https://help.figma.com/hc/en-us/categories/360002051613-Get-started",
+      "free": true
+    },
+    {
+      "id": "course-115",
+      "skill_id": "scala",
+      "title": "Tour of Scala",
+      "provider": "Scala Documentation",
+      "url": "https://docs.scala-lang.org/tour/tour-of-scala.html",
+      "free": true
+    },
+    {
+      "id": "course-116",
+      "skill_id": "perl",
+      "title": "perlintro: a brief introduction to Perl",
+      "provider": "Perldoc",
+      "url": "https://perldoc.perl.org/perlintro",
+      "free": true
+    },
+    {
+      "id": "course-117",
+      "skill_id": "ruby",
+      "title": "Ruby in Twenty Minutes",
+      "provider": "ruby-lang.org",
+      "url": "https://www.ruby-lang.org/en/documentation/quickstart/",
+      "free": true
+    },
+    {
+      "id": "course-118",
+      "skill_id": "virtualization",
+      "title": "Configure and manage Hyper-V",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/modules/configure-manage-hyper-v/",
+      "free": true
+    },
+    {
+      "id": "course-119",
+      "skill_id": "virtualization",
+      "title": "What is virtualization?",
+      "provider": "Red Hat",
+      "url": "https://www.redhat.com/en/topics/virtualization/what-is-virtualization",
+      "free": true
     }
   ]
 }
