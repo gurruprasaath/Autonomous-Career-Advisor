@@ -106,13 +106,13 @@
           "level": "beginner"
         },
         {
-          "id": "javascript-promises-async",
-          "name": "Promises & async/await",
+          "id": "javascript-closures",
+          "name": "Closures & higher-order functions",
           "level": "intermediate"
         },
         {
-          "id": "javascript-fetch-json",
-          "name": "Fetch API & working with JSON",
+          "id": "javascript-promises-async",
+          "name": "Promises, async/await & fetching JSON",
           "level": "intermediate"
         },
         {
@@ -122,7 +122,7 @@
         },
         {
           "id": "javascript-event-loop-internals",
-          "name": "Event loop, closures & prototypes",
+          "name": "Event loop & prototype internals",
           "level": "advanced"
         }
       ]
@@ -2082,13 +2082,8 @@
       ],
       "subtopics": [
         {
-          "id": "sql-select-filter",
-          "name": "SELECT, WHERE & ORDER BY",
-          "level": "beginner"
-        },
-        {
-          "id": "sql-aggregates",
-          "name": "Aggregate functions & GROUP BY",
+          "id": "sql-select-group-by",
+          "name": "SELECT queries: filtering, sorting & GROUP BY",
           "level": "beginner"
         },
         {
@@ -2100,6 +2095,11 @@
           "id": "sql-dml",
           "name": "INSERT, UPDATE & DELETE",
           "level": "beginner"
+        },
+        {
+          "id": "sql-transactions",
+          "name": "Transactions: BEGIN, COMMIT, ROLLBACK & atomicity",
+          "level": "intermediate"
         },
         {
           "id": "sql-subqueries-ctes",
@@ -2117,8 +2117,8 @@
           "level": "intermediate"
         },
         {
-          "id": "sql-transactions",
-          "name": "Transactions & isolation levels",
+          "id": "sql-isolation-levels",
+          "name": "Isolation levels & concurrency anomalies",
           "level": "advanced"
         }
       ]
