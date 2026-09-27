@@ -1,0 +1,3686 @@
+{
+  "version": 1,
+  "provenance": "Drafted with LLM assistance using the references listed per skill; reviewed by the project team. Sub-topic names are generic technical topic labels; no source text is reproduced.",
+  "sources": [
+    {
+      "id": "esco",
+      "name": "ESCO",
+      "license": "CC BY 4.0",
+      "url": "https://esco.ec.europa.eu",
+      "attribution": "ESCO classification, European Commission, CC BY 4.0"
+    },
+    {
+      "id": "ossu",
+      "name": "OSSU Computer Science",
+      "license": "MIT",
+      "url": "https://github.com/ossu/computer-science",
+      "attribution": "Open Source Society University, Computer Science curriculum, MIT License"
+    },
+    {
+      "id": "ciu",
+      "name": "Coding Interview University",
+      "license": "CC BY-SA 4.0",
+      "url": "https://github.com/jwasham/coding-interview-university",
+      "attribution": "John Washam, Coding Interview University, CC BY-SA 4.0"
+    },
+    {
+      "id": "mslearn",
+      "name": "Microsoft Learn",
+      "license": "Microsoft Learn Catalog API",
+      "url": "https://learn.microsoft.com/training/",
+      "attribution": "Microsoft Learn training catalog (topic references only)"
+    }
+  ],
+  "skills": {
+    "python": {
+      "roadmap_url": "https://roadmap.sh/python",
+      "references": [
+        "mslearn",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "python-syntax-types",
+          "name": "Syntax, variables & core data types",
+          "level": "beginner"
+        },
+        {
+          "id": "python-control-functions",
+          "name": "Control flow & functions",
+          "level": "beginner"
+        },
+        {
+          "id": "python-collections",
+          "name": "Lists, dicts, sets & comprehensions",
+          "level": "beginner"
+        },
+        {
+          "id": "python-files-exceptions",
+          "name": "File I/O & exception handling",
+          "level": "beginner"
+        },
+        {
+          "id": "python-oop",
+          "name": "Object-oriented programming",
+          "level": "intermediate"
+        },
+        {
+          "id": "python-modules-packaging",
+          "name": "Modules, packaging & virtual environments",
+          "level": "intermediate"
+        },
+        {
+          "id": "python-iterators-decorators",
+          "name": "Generators, decorators & context managers",
+          "level": "intermediate"
+        },
+        {
+          "id": "python-async-concurrency",
+          "name": "Async I/O, threading & multiprocessing",
+          "level": "advanced"
+        }
+      ]
+    },
+    "javascript": {
+      "roadmap_url": "https://roadmap.sh/javascript",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "javascript-syntax-types",
+          "name": "Variables, types & operators",
+          "level": "beginner"
+        },
+        {
+          "id": "javascript-functions-scope",
+          "name": "Functions & scope",
+          "level": "beginner"
+        },
+        {
+          "id": "javascript-arrays-objects",
+          "name": "Arrays, objects & destructuring",
+          "level": "beginner"
+        },
+        {
+          "id": "javascript-dom-events",
+          "name": "DOM manipulation & events",
+          "level": "beginner"
+        },
+        {
+          "id": "javascript-promises-async",
+          "name": "Promises & async/await",
+          "level": "intermediate"
+        },
+        {
+          "id": "javascript-fetch-json",
+          "name": "Fetch API & working with JSON",
+          "level": "intermediate"
+        },
+        {
+          "id": "javascript-modules-tooling",
+          "name": "ES modules, npm & bundlers",
+          "level": "intermediate"
+        },
+        {
+          "id": "javascript-event-loop-internals",
+          "name": "Event loop, closures & prototypes",
+          "level": "advanced"
+        }
+      ]
+    },
+    "typescript": {
+      "roadmap_url": "https://roadmap.sh/typescript",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "typescript-setup-annotations",
+          "name": "Compiler setup, tsconfig & basic annotations",
+          "level": "beginner"
+        },
+        {
+          "id": "typescript-interfaces-aliases",
+          "name": "Interfaces & type aliases",
+          "level": "beginner"
+        },
+        {
+          "id": "typescript-unions-narrowing",
+          "name": "Union types & type narrowing",
+          "level": "intermediate"
+        },
+        {
+          "id": "typescript-generics",
+          "name": "Generic functions & types",
+          "level": "intermediate"
+        },
+        {
+          "id": "typescript-declaration-files",
+          "name": "Typing libraries & declaration files",
+          "level": "intermediate"
+        },
+        {
+          "id": "typescript-utility-mapped",
+          "name": "Utility types & mapped types",
+          "level": "advanced"
+        },
+        {
+          "id": "typescript-conditional-types",
+          "name": "Conditional types & infer",
+          "level": "advanced"
+        }
+      ]
+    },
+    "java": {
+      "roadmap_url": "https://roadmap.sh/java",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "java-syntax-control",
+          "name": "Syntax, primitive types & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "java-classes-objects",
+          "name": "Classes, objects & methods",
+          "level": "beginner"
+        },
+        {
+          "id": "java-inheritance-interfaces",
+          "name": "Inheritance, interfaces & polymorphism",
+          "level": "beginner"
+        },
+        {
+          "id": "java-exceptions-io",
+          "name": "Exception handling & file I/O",
+          "level": "beginner"
+        },
+        {
+          "id": "java-collections-generics",
+          "name": "Collections framework & generics",
+          "level": "intermediate"
+        },
+        {
+          "id": "java-streams-lambdas",
+          "name": "Lambdas & the Streams API",
+          "level": "intermediate"
+        },
+        {
+          "id": "java-build-testing",
+          "name": "Maven/Gradle builds & JUnit testing",
+          "level": "intermediate"
+        },
+        {
+          "id": "java-concurrency-jvm",
+          "name": "Concurrency & JVM performance basics",
+          "level": "advanced"
+        }
+      ]
+    },
+    "go": {
+      "roadmap_url": "https://roadmap.sh/golang",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "go-syntax-types",
+          "name": "Syntax, types & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "go-slices-maps",
+          "name": "Slices, maps & strings",
+          "level": "beginner"
+        },
+        {
+          "id": "go-functions-structs",
+          "name": "Functions, structs & methods",
+          "level": "beginner"
+        },
+        {
+          "id": "go-interfaces",
+          "name": "Interfaces & composition",
+          "level": "intermediate"
+        },
+        {
+          "id": "go-errors",
+          "name": "Error handling idioms",
+          "level": "intermediate"
+        },
+        {
+          "id": "go-modules-testing",
+          "name": "Go modules & the testing package",
+          "level": "intermediate"
+        },
+        {
+          "id": "go-goroutines-channels",
+          "name": "Goroutines & channels",
+          "level": "intermediate"
+        },
+        {
+          "id": "go-concurrency-patterns",
+          "name": "Context, sync & concurrency patterns",
+          "level": "advanced"
+        }
+      ]
+    },
+    "cpp": {
+      "roadmap_url": "https://roadmap.sh/cpp",
+      "references": [
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "cpp-syntax-types",
+          "name": "Syntax, types & control flow",
+          "level": "beginner"
+        },
+        {
+          "id": "cpp-functions-pointers",
+          "name": "Functions, references & pointers",
+          "level": "beginner"
+        },
+        {
+          "id": "cpp-arrays-strings-vector",
+          "name": "Arrays, std::string & std::vector",
+          "level": "beginner"
+        },
+        {
+          "id": "cpp-classes-oop",
+          "name": "Classes, inheritance & polymorphism",
+          "level": "intermediate"
+        },
+        {
+          "id": "cpp-memory-raii",
+          "name": "Manual memory management & RAII",
+          "level": "intermediate"
+        },
+        {
+          "id": "cpp-stl",
+          "name": "STL containers & algorithms",
+          "level": "intermediate"
+        },
+        {
+          "id": "cpp-move-smart-pointers",
+          "name": "Move semantics & smart pointers",
+          "level": "advanced"
+        },
+        {
+          "id": "cpp-templates",
+          "name": "Templates & generic programming",
+          "level": "advanced"
+        }
+      ]
+    },
+    "bash": {
+      "roadmap_url": "https://roadmap.sh/shell-bash",
+      "references": [
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "bash-cli-navigation",
+          "name": "Command-line navigation & file commands",
+          "level": "beginner"
+        },
+        {
+          "id": "bash-pipes-redirection",
+          "name": "Pipes, redirection & exit codes",
+          "level": "beginner"
+        },
+        {
+          "id": "bash-variables-quoting",
+          "name": "Variables, quoting & parameter expansion",
+          "level": "beginner"
+        },
+        {
+          "id": "bash-control-functions",
+          "name": "Conditionals, loops & functions in scripts",
+          "level": "intermediate"
+        },
+        {
+          "id": "bash-text-processing",
+          "name": "Text processing with grep, sed & awk",
+          "level": "intermediate"
+        },
+        {
+          "id": "bash-script-arguments",
+          "name": "Script arguments & safe defaults (set -euo pipefail)",
+          "level": "intermediate"
+        },
+        {
+          "id": "bash-signals-traps",
+          "name": "Signals, traps & process management",
+          "level": "advanced"
+        },
+        {
+          "id": "bash-portability-linting",
+          "name": "Portability, debugging & ShellCheck",
+          "level": "advanced"
+        }
+      ]
+    },
+    "r-lang": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "r-lang-syntax-vectors",
+          "name": "R syntax, vectors & data types",
+          "level": "beginner"
+        },
+        {
+          "id": "r-lang-data-frames-lists",
+          "name": "Data frames & lists",
+          "level": "beginner"
+        },
+        {
+          "id": "r-lang-data-import",
+          "name": "Importing data (CSV, Excel, databases)",
+          "level": "beginner"
+        },
+        {
+          "id": "r-lang-functions-apply",
+          "name": "Writing functions & the apply family",
+          "level": "intermediate"
+        },
+        {
+          "id": "r-lang-dplyr-tidyr",
+          "name": "Data wrangling with dplyr & tidyr",
+          "level": "intermediate"
+        },
+        {
+          "id": "r-lang-ggplot2",
+          "name": "Plotting with ggplot2",
+          "level": "intermediate"
+        },
+        {
+          "id": "r-lang-stat-models",
+          "name": "Statistical modelling with lm & glm",
+          "level": "intermediate"
+        },
+        {
+          "id": "r-lang-reports-shiny",
+          "name": "Reproducible reports & Shiny apps",
+          "level": "advanced"
+        }
+      ]
+    },
+    "html-css": {
+      "roadmap_url": "https://roadmap.sh/frontend",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "html-css-semantic-html",
+          "name": "HTML document structure & semantic elements",
+          "level": "beginner"
+        },
+        {
+          "id": "html-css-forms",
+          "name": "Forms & input elements",
+          "level": "beginner"
+        },
+        {
+          "id": "html-css-selectors-cascade",
+          "name": "CSS selectors, cascade & specificity",
+          "level": "beginner"
+        },
+        {
+          "id": "html-css-box-model",
+          "name": "Box model, units & typography",
+          "level": "beginner"
+        },
+        {
+          "id": "html-css-flexbox-grid",
+          "name": "Flexbox & CSS Grid layouts",
+          "level": "intermediate"
+        },
+        {
+          "id": "html-css-responsive",
+          "name": "Responsive design & media queries",
+          "level": "intermediate"
+        },
+        {
+          "id": "html-css-transitions-animations",
+          "name": "Transitions & animations",
+          "level": "intermediate"
+        },
+        {
+          "id": "html-css-css-architecture",
+          "name": "Custom properties & scalable CSS architecture",
+          "level": "advanced"
+        }
+      ]
+    },
+    "react": {
+      "roadmap_url": "https://roadmap.sh/react",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "react-jsx-components",
+          "name": "JSX & function components",
+          "level": "beginner"
+        },
+        {
+          "id": "react-props-state",
+          "name": "Props & state with useState",
+          "level": "beginner"
+        },
+        {
+          "id": "react-events-lists-forms",
+          "name": "Events, lists, keys & controlled forms",
+          "level": "beginner"
+        },
+        {
+          "id": "react-effects-fetching",
+          "name": "useEffect & data fetching",
+          "level": "intermediate"
+        },
+        {
+          "id": "react-context-custom-hooks",
+          "name": "Context & custom hooks",
+          "level": "intermediate"
+        },
+        {
+          "id": "react-routing",
+          "name": "Client-side routing",
+          "level": "intermediate"
+        },
+        {
+          "id": "react-component-testing",
+          "name": "Component testing with React Testing Library",
+          "level": "intermediate"
+        },
+        {
+          "id": "react-performance",
+          "name": "Memoisation & render performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "nextjs": {
+      "roadmap_url": "https://roadmap.sh/nextjs",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "nextjs-project-routing",
+          "name": "Project setup & file-based routing",
+          "level": "beginner"
+        },
+        {
+          "id": "nextjs-layouts-navigation",
+          "name": "Layouts, pages & navigation",
+          "level": "beginner"
+        },
+        {
+          "id": "nextjs-server-client-components",
+          "name": "Server vs client components",
+          "level": "beginner"
+        },
+        {
+          "id": "nextjs-data-fetching",
+          "name": "Data fetching in server components",
+          "level": "intermediate"
+        },
+        {
+          "id": "nextjs-route-handlers-actions",
+          "name": "Route handlers & server actions",
+          "level": "intermediate"
+        },
+        {
+          "id": "nextjs-rendering-strategies",
+          "name": "Static, dynamic & streaming rendering",
+          "level": "intermediate"
+        },
+        {
+          "id": "nextjs-middleware-auth",
+          "name": "Middleware & authentication",
+          "level": "advanced"
+        },
+        {
+          "id": "nextjs-caching-revalidation",
+          "name": "Caching & revalidation strategies",
+          "level": "advanced"
+        }
+      ]
+    },
+    "vue": {
+      "roadmap_url": "https://roadmap.sh/vue",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "vue-template-syntax",
+          "name": "Template syntax & directives",
+          "level": "beginner"
+        },
+        {
+          "id": "vue-reactivity",
+          "name": "Reactivity with ref & reactive",
+          "level": "beginner"
+        },
+        {
+          "id": "vue-computed-watchers",
+          "name": "Computed properties & watchers",
+          "level": "beginner"
+        },
+        {
+          "id": "vue-components-props",
+          "name": "Components, props & emits",
+          "level": "beginner"
+        },
+        {
+          "id": "vue-composition-api",
+          "name": "Composition API & composables",
+          "level": "intermediate"
+        },
+        {
+          "id": "vue-router",
+          "name": "Routing with Vue Router",
+          "level": "intermediate"
+        },
+        {
+          "id": "vue-pinia",
+          "name": "State management with Pinia",
+          "level": "intermediate"
+        },
+        {
+          "id": "vue-ssr-nuxt",
+          "name": "Server-side rendering with Nuxt",
+          "level": "advanced"
+        }
+      ]
+    },
+    "tailwind": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "tailwind-setup-utility-first",
+          "name": "Setup & the utility-first workflow",
+          "level": "beginner"
+        },
+        {
+          "id": "tailwind-spacing-layout",
+          "name": "Spacing, sizing, flex & grid utilities",
+          "level": "beginner"
+        },
+        {
+          "id": "tailwind-typography-colors",
+          "name": "Typography & colour utilities",
+          "level": "beginner"
+        },
+        {
+          "id": "tailwind-responsive-variants",
+          "name": "Responsive & state variants (hover, focus)",
+          "level": "intermediate"
+        },
+        {
+          "id": "tailwind-dark-mode",
+          "name": "Dark mode",
+          "level": "intermediate"
+        },
+        {
+          "id": "tailwind-component-reuse",
+          "name": "Extracting reusable components",
+          "level": "intermediate"
+        },
+        {
+          "id": "tailwind-theme-config",
+          "name": "Theme customisation & design tokens",
+          "level": "advanced"
+        },
+        {
+          "id": "tailwind-plugins-optimisation",
+          "name": "Plugins & production build optimisation",
+          "level": "advanced"
+        }
+      ]
+    },
+    "state-management": {
+      "roadmap_url": "https://roadmap.sh/react",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "state-management-local-lifting",
+          "name": "Local state & lifting state up",
+          "level": "beginner"
+        },
+        {
+          "id": "state-management-context",
+          "name": "Sharing state with Context",
+          "level": "beginner"
+        },
+        {
+          "id": "state-management-reducers",
+          "name": "useReducer & reducer patterns",
+          "level": "intermediate"
+        },
+        {
+          "id": "state-management-redux-toolkit",
+          "name": "Redux Toolkit: slices & store",
+          "level": "intermediate"
+        },
+        {
+          "id": "state-management-lightweight-stores",
+          "name": "Lightweight stores (Zustand)",
+          "level": "intermediate"
+        },
+        {
+          "id": "state-management-server-state",
+          "name": "Server state & caching (React Query)",
+          "level": "intermediate"
+        },
+        {
+          "id": "state-management-selectors-normalisation",
+          "name": "Selectors, normalised state & performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "web-accessibility": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "web-accessibility-wcag-principles",
+          "name": "WCAG principles & conformance levels",
+          "level": "beginner"
+        },
+        {
+          "id": "web-accessibility-semantic-landmarks",
+          "name": "Semantic HTML & landmarks",
+          "level": "beginner"
+        },
+        {
+          "id": "web-accessibility-text-alternatives-contrast",
+          "name": "Text alternatives & colour contrast",
+          "level": "beginner"
+        },
+        {
+          "id": "web-accessibility-keyboard-focus",
+          "name": "Keyboard navigation & focus management",
+          "level": "intermediate"
+        },
+        {
+          "id": "web-accessibility-accessible-forms",
+          "name": "Accessible forms & error messages",
+          "level": "intermediate"
+        },
+        {
+          "id": "web-accessibility-aria",
+          "name": "ARIA roles, states & properties",
+          "level": "intermediate"
+        },
+        {
+          "id": "web-accessibility-testing-tools",
+          "name": "Automated & screen-reader testing",
+          "level": "intermediate"
+        },
+        {
+          "id": "web-accessibility-custom-widgets",
+          "name": "Accessible custom widgets (dialogs, menus)",
+          "level": "advanced"
+        }
+      ]
+    },
+    "nodejs": {
+      "roadmap_url": "https://roadmap.sh/nodejs",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "nodejs-runtime-npm",
+          "name": "Node runtime, npm & package.json",
+          "level": "beginner"
+        },
+        {
+          "id": "nodejs-modules-fs",
+          "name": "Modules & the file system API",
+          "level": "beginner"
+        },
+        {
+          "id": "nodejs-http-basics",
+          "name": "Building a basic HTTP server",
+          "level": "beginner"
+        },
+        {
+          "id": "nodejs-event-loop",
+          "name": "Event loop & non-blocking I/O",
+          "level": "intermediate"
+        },
+        {
+          "id": "nodejs-streams-buffers",
+          "name": "Streams & buffers",
+          "level": "intermediate"
+        },
+        {
+          "id": "nodejs-config-errors",
+          "name": "Environment config & error handling",
+          "level": "intermediate"
+        },
+        {
+          "id": "nodejs-cluster-workers",
+          "name": "Worker threads & clustering",
+          "level": "advanced"
+        },
+        {
+          "id": "nodejs-profiling-debugging",
+          "name": "Profiling, memory leaks & debugging",
+          "level": "advanced"
+        }
+      ]
+    },
+    "express": {
+      "roadmap_url": "https://roadmap.sh/nodejs",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "express-setup-routing",
+          "name": "App setup & routing",
+          "level": "beginner"
+        },
+        {
+          "id": "express-request-response",
+          "name": "Request/response handling & JSON",
+          "level": "beginner"
+        },
+        {
+          "id": "express-middleware",
+          "name": "Middleware chain",
+          "level": "intermediate"
+        },
+        {
+          "id": "express-validation-errors",
+          "name": "Validation & centralised error handling",
+          "level": "intermediate"
+        },
+        {
+          "id": "express-database",
+          "name": "Database integration (ORM/ODM)",
+          "level": "intermediate"
+        },
+        {
+          "id": "express-auth-middleware",
+          "name": "Authentication middleware (sessions/JWT)",
+          "level": "intermediate"
+        },
+        {
+          "id": "express-api-testing",
+          "name": "API integration testing",
+          "level": "intermediate"
+        },
+        {
+          "id": "express-security-hardening",
+          "name": "Security hardening (headers, CORS, rate limits)",
+          "level": "advanced"
+        }
+      ]
+    },
+    "fastapi": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "fastapi-setup-endpoints",
+          "name": "App setup & first endpoints",
+          "level": "beginner"
+        },
+        {
+          "id": "fastapi-path-query",
+          "name": "Path & query parameters",
+          "level": "beginner"
+        },
+        {
+          "id": "fastapi-pydantic-models",
+          "name": "Request/response models with Pydantic",
+          "level": "beginner"
+        },
+        {
+          "id": "fastapi-dependencies",
+          "name": "Dependency injection",
+          "level": "intermediate"
+        },
+        {
+          "id": "fastapi-database",
+          "name": "Database access with SQLAlchemy/SQLModel",
+          "level": "intermediate"
+        },
+        {
+          "id": "fastapi-security-jwt",
+          "name": "OAuth2 & JWT security",
+          "level": "intermediate"
+        },
+        {
+          "id": "fastapi-testing",
+          "name": "Testing with TestClient",
+          "level": "intermediate"
+        },
+        {
+          "id": "fastapi-async-background",
+          "name": "Async endpoints, background tasks & performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "django": {
+      "roadmap_url": "https://roadmap.sh/django",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "django-project-urls",
+          "name": "Projects, apps & URL routing",
+          "level": "beginner"
+        },
+        {
+          "id": "django-views-templates",
+          "name": "Views & templates",
+          "level": "beginner"
+        },
+        {
+          "id": "django-models-migrations",
+          "name": "Models & migrations",
+          "level": "beginner"
+        },
+        {
+          "id": "django-forms-admin",
+          "name": "Forms & the admin site",
+          "level": "beginner"
+        },
+        {
+          "id": "django-querysets-relations",
+          "name": "QuerySets & model relations",
+          "level": "intermediate"
+        },
+        {
+          "id": "django-auth-permissions",
+          "name": "Authentication & permissions",
+          "level": "intermediate"
+        },
+        {
+          "id": "django-drf",
+          "name": "REST APIs with Django REST Framework",
+          "level": "intermediate"
+        },
+        {
+          "id": "django-performance-caching",
+          "name": "Query optimisation & caching",
+          "level": "advanced"
+        }
+      ]
+    },
+    "rest-api": {
+      "roadmap_url": "https://roadmap.sh/api-design",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "rest-api-http-fundamentals",
+          "name": "HTTP methods, status codes & headers",
+          "level": "beginner"
+        },
+        {
+          "id": "rest-api-resource-urls",
+          "name": "Resource modelling & URL design",
+          "level": "beginner"
+        },
+        {
+          "id": "rest-api-crud-idempotency",
+          "name": "CRUD endpoints & idempotency",
+          "level": "beginner"
+        },
+        {
+          "id": "rest-api-errors-validation",
+          "name": "Error responses & input validation",
+          "level": "intermediate"
+        },
+        {
+          "id": "rest-api-pagination-filtering",
+          "name": "Pagination, filtering & sorting",
+          "level": "intermediate"
+        },
+        {
+          "id": "rest-api-openapi-docs",
+          "name": "Documenting APIs with OpenAPI",
+          "level": "intermediate"
+        },
+        {
+          "id": "rest-api-versioning",
+          "name": "Versioning & backward compatibility",
+          "level": "intermediate"
+        },
+        {
+          "id": "rest-api-caching-rate-limiting",
+          "name": "HTTP caching & rate limiting",
+          "level": "advanced"
+        }
+      ]
+    },
+    "graphql": {
+      "roadmap_url": "https://roadmap.sh/graphql",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "graphql-schema-types",
+          "name": "Schema definition language & types",
+          "level": "beginner"
+        },
+        {
+          "id": "graphql-queries-mutations",
+          "name": "Queries, mutations & variables",
+          "level": "beginner"
+        },
+        {
+          "id": "graphql-resolvers",
+          "name": "Writing resolvers",
+          "level": "intermediate"
+        },
+        {
+          "id": "graphql-client",
+          "name": "Client integration (Apollo/urql)",
+          "level": "intermediate"
+        },
+        {
+          "id": "graphql-auth-errors",
+          "name": "Authorisation & error handling",
+          "level": "intermediate"
+        },
+        {
+          "id": "graphql-dataloader",
+          "name": "N+1 problem & DataLoader batching",
+          "level": "advanced"
+        },
+        {
+          "id": "graphql-subscriptions",
+          "name": "Subscriptions & real-time updates",
+          "level": "advanced"
+        },
+        {
+          "id": "graphql-federation",
+          "name": "Schema federation & query cost limits",
+          "level": "advanced"
+        }
+      ]
+    },
+    "auth": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "auth-authn-vs-authz",
+          "name": "Authentication vs authorisation",
+          "level": "beginner"
+        },
+        {
+          "id": "auth-password-hashing",
+          "name": "Password hashing & storage",
+          "level": "beginner"
+        },
+        {
+          "id": "auth-sessions-cookies",
+          "name": "Sessions & cookies",
+          "level": "beginner"
+        },
+        {
+          "id": "auth-jwt",
+          "name": "Token-based auth with JWT",
+          "level": "intermediate"
+        },
+        {
+          "id": "auth-oauth2",
+          "name": "OAuth 2.0 flows",
+          "level": "intermediate"
+        },
+        {
+          "id": "auth-rbac",
+          "name": "Role-based access control",
+          "level": "intermediate"
+        },
+        {
+          "id": "auth-oidc-sso",
+          "name": "OpenID Connect & single sign-on",
+          "level": "advanced"
+        },
+        {
+          "id": "auth-mfa-token-security",
+          "name": "MFA, refresh tokens & revocation",
+          "level": "advanced"
+        }
+      ]
+    },
+    "microservices": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "microservices-tradeoffs",
+          "name": "Monolith vs microservices trade-offs",
+          "level": "beginner"
+        },
+        {
+          "id": "microservices-sync-communication",
+          "name": "Synchronous communication (REST/gRPC)",
+          "level": "beginner"
+        },
+        {
+          "id": "microservices-boundaries-ddd",
+          "name": "Service boundaries & domain-driven design",
+          "level": "intermediate"
+        },
+        {
+          "id": "microservices-gateway-discovery",
+          "name": "API gateways & service discovery",
+          "level": "intermediate"
+        },
+        {
+          "id": "microservices-async-messaging",
+          "name": "Asynchronous messaging & events",
+          "level": "intermediate"
+        },
+        {
+          "id": "microservices-data-per-service",
+          "name": "Database per service & data consistency",
+          "level": "intermediate"
+        },
+        {
+          "id": "microservices-resilience",
+          "name": "Resilience patterns (circuit breakers, retries)",
+          "level": "advanced"
+        },
+        {
+          "id": "microservices-sagas",
+          "name": "Distributed transactions & sagas",
+          "level": "advanced"
+        }
+      ]
+    },
+    "statistics": {
+      "roadmap_url": "https://roadmap.sh/ai-data-scientist",
+      "references": [
+        "esco",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "statistics-descriptive",
+          "name": "Descriptive statistics & data distributions",
+          "level": "beginner"
+        },
+        {
+          "id": "statistics-probability",
+          "name": "Probability basics & rules",
+          "level": "beginner"
+        },
+        {
+          "id": "statistics-distributions",
+          "name": "Common probability distributions",
+          "level": "beginner"
+        },
+        {
+          "id": "statistics-sampling-clt",
+          "name": "Sampling & the central limit theorem",
+          "level": "intermediate"
+        },
+        {
+          "id": "statistics-confidence-intervals",
+          "name": "Estimation & confidence intervals",
+          "level": "intermediate"
+        },
+        {
+          "id": "statistics-hypothesis-testing",
+          "name": "Hypothesis testing & p-values",
+          "level": "intermediate"
+        },
+        {
+          "id": "statistics-regression",
+          "name": "Correlation & linear regression",
+          "level": "intermediate"
+        },
+        {
+          "id": "statistics-bayesian",
+          "name": "Bayesian inference",
+          "level": "advanced"
+        }
+      ]
+    },
+    "pandas": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "pandas-series-dataframes",
+          "name": "Series & DataFrames",
+          "level": "beginner"
+        },
+        {
+          "id": "pandas-io",
+          "name": "Reading & writing CSV, Excel & SQL",
+          "level": "beginner"
+        },
+        {
+          "id": "pandas-selection",
+          "name": "Selecting & filtering with loc/iloc",
+          "level": "beginner"
+        },
+        {
+          "id": "pandas-cleaning",
+          "name": "Missing values & type cleaning",
+          "level": "intermediate"
+        },
+        {
+          "id": "pandas-groupby",
+          "name": "GroupBy & aggregation",
+          "level": "intermediate"
+        },
+        {
+          "id": "pandas-merge-reshape",
+          "name": "Merging, joining & reshaping",
+          "level": "intermediate"
+        },
+        {
+          "id": "pandas-time-series",
+          "name": "Datetime handling & time series",
+          "level": "intermediate"
+        },
+        {
+          "id": "pandas-performance",
+          "name": "Vectorisation & performance on large data",
+          "level": "advanced"
+        }
+      ]
+    },
+    "numpy": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "numpy-arrays-dtypes",
+          "name": "ndarray creation & dtypes",
+          "level": "beginner"
+        },
+        {
+          "id": "numpy-indexing",
+          "name": "Indexing, slicing & boolean masks",
+          "level": "beginner"
+        },
+        {
+          "id": "numpy-ufuncs-aggregations",
+          "name": "Universal functions & aggregations",
+          "level": "beginner"
+        },
+        {
+          "id": "numpy-broadcasting",
+          "name": "Vectorised operations & broadcasting",
+          "level": "intermediate"
+        },
+        {
+          "id": "numpy-reshaping",
+          "name": "Reshaping, stacking & axes",
+          "level": "intermediate"
+        },
+        {
+          "id": "numpy-random",
+          "name": "Random sampling & simulation",
+          "level": "intermediate"
+        },
+        {
+          "id": "numpy-linalg",
+          "name": "Linear algebra routines",
+          "level": "intermediate"
+        },
+        {
+          "id": "numpy-memory-views",
+          "name": "Memory layout, views & performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "data-viz": {
+      "roadmap_url": "https://roadmap.sh/data-analyst",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "data-viz-chart-selection",
+          "name": "Choosing the right chart type",
+          "level": "beginner"
+        },
+        {
+          "id": "data-viz-matplotlib",
+          "name": "Plotting basics with Matplotlib",
+          "level": "beginner"
+        },
+        {
+          "id": "data-viz-seaborn",
+          "name": "Statistical plots with Seaborn",
+          "level": "beginner"
+        },
+        {
+          "id": "data-viz-design-principles",
+          "name": "Colour, labelling & decluttering charts",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-viz-interactive-plotly",
+          "name": "Interactive charts with Plotly",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-viz-bi-dashboards",
+          "name": "Dashboards in Power BI or Tableau",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-viz-bi-measures",
+          "name": "BI data models & calculated measures",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-viz-dashboard-ux",
+          "name": "Dashboard layout, interactivity & performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "eda": {
+      "roadmap_url": "https://roadmap.sh/data-analyst",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "eda-framing-questions",
+          "name": "Framing analysis questions",
+          "level": "beginner"
+        },
+        {
+          "id": "eda-profiling",
+          "name": "Data profiling: shape, types & summaries",
+          "level": "beginner"
+        },
+        {
+          "id": "eda-univariate",
+          "name": "Univariate distributions & outliers",
+          "level": "beginner"
+        },
+        {
+          "id": "eda-missing-data",
+          "name": "Missing data patterns & data quality",
+          "level": "intermediate"
+        },
+        {
+          "id": "eda-bivariate",
+          "name": "Bivariate & multivariate relationships",
+          "level": "intermediate"
+        },
+        {
+          "id": "eda-segmentation",
+          "name": "Group comparisons & segmentation",
+          "level": "intermediate"
+        },
+        {
+          "id": "eda-hypotheses",
+          "name": "Forming & validating hypotheses from EDA",
+          "level": "advanced"
+        }
+      ]
+    },
+    "ab-testing": {
+      "roadmap_url": "https://roadmap.sh/ai-data-scientist",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "ab-testing-experiment-basics",
+          "name": "Control, treatment & randomisation",
+          "level": "beginner"
+        },
+        {
+          "id": "ab-testing-metrics",
+          "name": "Choosing primary & guardrail metrics",
+          "level": "beginner"
+        },
+        {
+          "id": "ab-testing-sample-size-power",
+          "name": "Sample size & statistical power",
+          "level": "intermediate"
+        },
+        {
+          "id": "ab-testing-significance-lift",
+          "name": "Significance tests & confidence intervals for lift",
+          "level": "intermediate"
+        },
+        {
+          "id": "ab-testing-pitfalls",
+          "name": "Pitfalls: peeking, novelty & sample ratio mismatch",
+          "level": "intermediate"
+        },
+        {
+          "id": "ab-testing-variance-reduction",
+          "name": "Variance reduction (CUPED) & stratification",
+          "level": "advanced"
+        },
+        {
+          "id": "ab-testing-sequential-bayesian",
+          "name": "Sequential & Bayesian testing",
+          "level": "advanced"
+        },
+        {
+          "id": "ab-testing-bandits-multiple",
+          "name": "Multi-armed bandits & multiple comparisons",
+          "level": "advanced"
+        }
+      ]
+    },
+    "feature-engineering": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "feature-engineering-numeric-scaling",
+          "name": "Scaling & transforming numeric features",
+          "level": "beginner"
+        },
+        {
+          "id": "feature-engineering-categorical-encoding",
+          "name": "Encoding categorical variables",
+          "level": "beginner"
+        },
+        {
+          "id": "feature-engineering-imputation",
+          "name": "Imputing missing values",
+          "level": "beginner"
+        },
+        {
+          "id": "feature-engineering-datetime-text",
+          "name": "Date/time & text feature extraction",
+          "level": "intermediate"
+        },
+        {
+          "id": "feature-engineering-interactions",
+          "name": "Interaction & polynomial features",
+          "level": "intermediate"
+        },
+        {
+          "id": "feature-engineering-selection",
+          "name": "Feature selection methods",
+          "level": "intermediate"
+        },
+        {
+          "id": "feature-engineering-pipelines-leakage",
+          "name": "Pipelines & avoiding data leakage",
+          "level": "intermediate"
+        },
+        {
+          "id": "feature-engineering-high-cardinality",
+          "name": "Target encoding & high-cardinality features",
+          "level": "advanced"
+        }
+      ]
+    },
+    "storytelling": {
+      "roadmap_url": "https://roadmap.sh/data-analyst",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "storytelling-audience-message",
+          "name": "Knowing your audience & key message",
+          "level": "beginner"
+        },
+        {
+          "id": "storytelling-narrative",
+          "name": "Narrative structure for data stories",
+          "level": "beginner"
+        },
+        {
+          "id": "storytelling-simplify-visuals",
+          "name": "Simplifying visuals around the message",
+          "level": "beginner"
+        },
+        {
+          "id": "storytelling-annotation",
+          "name": "Annotating charts to highlight insight",
+          "level": "intermediate"
+        },
+        {
+          "id": "storytelling-slide-story",
+          "name": "Building a slide-based data story",
+          "level": "intermediate"
+        },
+        {
+          "id": "storytelling-exec-summary",
+          "name": "Executive summaries & recommendations",
+          "level": "intermediate"
+        },
+        {
+          "id": "storytelling-uncertainty",
+          "name": "Communicating uncertainty & caveats",
+          "level": "advanced"
+        },
+        {
+          "id": "storytelling-stakeholder-influence",
+          "name": "Driving decisions with stakeholders",
+          "level": "advanced"
+        }
+      ]
+    },
+    "ml-fundamentals": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [
+        "mslearn",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "ml-fundamentals-learning-types",
+          "name": "Supervised vs unsupervised learning",
+          "level": "beginner"
+        },
+        {
+          "id": "ml-fundamentals-workflow",
+          "name": "ML workflow: data, training, validation, testing",
+          "level": "beginner"
+        },
+        {
+          "id": "ml-fundamentals-linear-regression",
+          "name": "Linear regression & gradient descent",
+          "level": "beginner"
+        },
+        {
+          "id": "ml-fundamentals-classification",
+          "name": "Logistic regression & classification",
+          "level": "intermediate"
+        },
+        {
+          "id": "ml-fundamentals-trees-ensembles",
+          "name": "Decision trees & ensembles",
+          "level": "intermediate"
+        },
+        {
+          "id": "ml-fundamentals-bias-variance",
+          "name": "Overfitting, bias-variance & regularisation",
+          "level": "intermediate"
+        },
+        {
+          "id": "ml-fundamentals-clustering-dim-reduction",
+          "name": "Clustering & dimensionality reduction",
+          "level": "intermediate"
+        },
+        {
+          "id": "ml-fundamentals-kernels-probabilistic",
+          "name": "Kernel methods & probabilistic models",
+          "level": "advanced"
+        }
+      ]
+    },
+    "scikit-learn": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "scikit-learn-estimator-api",
+          "name": "Estimator API: fit, predict, transform",
+          "level": "beginner"
+        },
+        {
+          "id": "scikit-learn-first-models",
+          "name": "Train/test splits & first models",
+          "level": "beginner"
+        },
+        {
+          "id": "scikit-learn-preprocessing",
+          "name": "Preprocessing & ColumnTransformer",
+          "level": "intermediate"
+        },
+        {
+          "id": "scikit-learn-pipelines",
+          "name": "Building Pipelines",
+          "level": "intermediate"
+        },
+        {
+          "id": "scikit-learn-cv-tuning",
+          "name": "Cross-validation & hyperparameter search",
+          "level": "intermediate"
+        },
+        {
+          "id": "scikit-learn-ensembles-selection",
+          "name": "Ensemble models & model selection",
+          "level": "intermediate"
+        },
+        {
+          "id": "scikit-learn-custom-estimators",
+          "name": "Custom transformers & estimators",
+          "level": "advanced"
+        },
+        {
+          "id": "scikit-learn-persistence-inference",
+          "name": "Model persistence & inference performance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "deep-learning": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "deep-learning-neurons-mlp",
+          "name": "Neurons, layers & multilayer perceptrons",
+          "level": "beginner"
+        },
+        {
+          "id": "deep-learning-backprop",
+          "name": "Loss functions, backpropagation & gradient descent",
+          "level": "beginner"
+        },
+        {
+          "id": "deep-learning-optimisers",
+          "name": "Optimisers, initialisation & batch normalisation",
+          "level": "intermediate"
+        },
+        {
+          "id": "deep-learning-regularisation",
+          "name": "Regularisation: dropout & early stopping",
+          "level": "intermediate"
+        },
+        {
+          "id": "deep-learning-cnn",
+          "name": "Convolutional neural networks",
+          "level": "intermediate"
+        },
+        {
+          "id": "deep-learning-rnn",
+          "name": "Sequence models (RNNs, LSTMs)",
+          "level": "intermediate"
+        },
+        {
+          "id": "deep-learning-transfer-learning",
+          "name": "Transfer learning & fine-tuning",
+          "level": "intermediate"
+        },
+        {
+          "id": "deep-learning-transformers",
+          "name": "Attention & transformer architectures",
+          "level": "advanced"
+        }
+      ]
+    },
+    "pytorch": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "pytorch-tensors-autograd",
+          "name": "Tensors & autograd",
+          "level": "beginner"
+        },
+        {
+          "id": "pytorch-nn-module",
+          "name": "Building models with nn.Module",
+          "level": "beginner"
+        },
+        {
+          "id": "pytorch-training-loop",
+          "name": "Training loops, losses & optimisers",
+          "level": "beginner"
+        },
+        {
+          "id": "pytorch-data-loading",
+          "name": "Dataset & DataLoader",
+          "level": "intermediate"
+        },
+        {
+          "id": "pytorch-gpu",
+          "name": "GPU training & device management",
+          "level": "intermediate"
+        },
+        {
+          "id": "pytorch-checkpointing",
+          "name": "Saving, loading & checkpointing models",
+          "level": "intermediate"
+        },
+        {
+          "id": "pytorch-mixed-distributed",
+          "name": "Mixed precision & distributed training",
+          "level": "advanced"
+        },
+        {
+          "id": "pytorch-export",
+          "name": "Exporting models (TorchScript/ONNX)",
+          "level": "advanced"
+        }
+      ]
+    },
+    "tensorflow": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "tensorflow-tensors",
+          "name": "Tensors & basic operations",
+          "level": "beginner"
+        },
+        {
+          "id": "tensorflow-keras-sequential",
+          "name": "Keras Sequential models",
+          "level": "beginner"
+        },
+        {
+          "id": "tensorflow-compile-fit",
+          "name": "Compiling, training & evaluating models",
+          "level": "beginner"
+        },
+        {
+          "id": "tensorflow-tf-data",
+          "name": "Input pipelines with tf.data",
+          "level": "intermediate"
+        },
+        {
+          "id": "tensorflow-functional-callbacks",
+          "name": "Keras functional API & callbacks",
+          "level": "intermediate"
+        },
+        {
+          "id": "tensorflow-transfer-learning",
+          "name": "Transfer learning with pretrained models",
+          "level": "intermediate"
+        },
+        {
+          "id": "tensorflow-custom-training",
+          "name": "Custom training loops with GradientTape",
+          "level": "advanced"
+        },
+        {
+          "id": "tensorflow-serving",
+          "name": "SavedModel, TF Serving & TFLite",
+          "level": "advanced"
+        }
+      ]
+    },
+    "nlp": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "nlp-preprocessing",
+          "name": "Text preprocessing & tokenisation",
+          "level": "beginner"
+        },
+        {
+          "id": "nlp-bow-tfidf",
+          "name": "Bag-of-words & TF-IDF",
+          "level": "beginner"
+        },
+        {
+          "id": "nlp-text-classification",
+          "name": "Text classification & sentiment analysis",
+          "level": "beginner"
+        },
+        {
+          "id": "nlp-embeddings",
+          "name": "Word embeddings",
+          "level": "intermediate"
+        },
+        {
+          "id": "nlp-sequence-models",
+          "name": "Sequence models for text",
+          "level": "intermediate"
+        },
+        {
+          "id": "nlp-ner",
+          "name": "Named entity recognition & sequence labelling",
+          "level": "intermediate"
+        },
+        {
+          "id": "nlp-transformers-finetuning",
+          "name": "Transformer models & fine-tuning",
+          "level": "advanced"
+        },
+        {
+          "id": "nlp-seq2seq",
+          "name": "Summarisation, translation & seq2seq",
+          "level": "advanced"
+        }
+      ]
+    },
+    "computer-vision": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "computer-vision-image-basics",
+          "name": "Image representation & basic processing",
+          "level": "beginner"
+        },
+        {
+          "id": "computer-vision-classical",
+          "name": "Filtering, edges & feature detection",
+          "level": "beginner"
+        },
+        {
+          "id": "computer-vision-cnn-classification",
+          "name": "Image classification with CNNs",
+          "level": "intermediate"
+        },
+        {
+          "id": "computer-vision-augmentation",
+          "name": "Data augmentation",
+          "level": "intermediate"
+        },
+        {
+          "id": "computer-vision-transfer",
+          "name": "Transfer learning with pretrained backbones",
+          "level": "intermediate"
+        },
+        {
+          "id": "computer-vision-detection",
+          "name": "Object detection",
+          "level": "intermediate"
+        },
+        {
+          "id": "computer-vision-segmentation",
+          "name": "Image segmentation",
+          "level": "advanced"
+        },
+        {
+          "id": "computer-vision-vit-multimodal",
+          "name": "Vision transformers & multimodal models",
+          "level": "advanced"
+        }
+      ]
+    },
+    "llms": {
+      "roadmap_url": "https://roadmap.sh/ai-engineer",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "llms-how-llms-work",
+          "name": "How LLMs work: tokens, context & sampling",
+          "level": "beginner"
+        },
+        {
+          "id": "llms-prompt-basics",
+          "name": "Prompt design basics",
+          "level": "beginner"
+        },
+        {
+          "id": "llms-api-usage",
+          "name": "Calling LLM APIs & tuning parameters",
+          "level": "beginner"
+        },
+        {
+          "id": "llms-prompt-techniques",
+          "name": "Few-shot & chain-of-thought prompting",
+          "level": "intermediate"
+        },
+        {
+          "id": "llms-structured-output",
+          "name": "Structured outputs & function calling",
+          "level": "intermediate"
+        },
+        {
+          "id": "llms-prompt-evaluation",
+          "name": "Evaluating & testing prompts",
+          "level": "intermediate"
+        },
+        {
+          "id": "llms-fine-tuning",
+          "name": "Fine-tuning & parameter-efficient methods",
+          "level": "advanced"
+        },
+        {
+          "id": "llms-production",
+          "name": "Guardrails, cost & latency in production",
+          "level": "advanced"
+        }
+      ]
+    },
+    "speech-recognition": {
+      "roadmap_url": "",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "speech-recognition-audio-basics",
+          "name": "Digital audio: sampling & waveforms",
+          "level": "beginner"
+        },
+        {
+          "id": "speech-recognition-audio-features",
+          "name": "Spectrograms & MFCC features",
+          "level": "beginner"
+        },
+        {
+          "id": "speech-recognition-pretrained-asr",
+          "name": "Transcription with pretrained ASR models",
+          "level": "beginner"
+        },
+        {
+          "id": "speech-recognition-wer-evaluation",
+          "name": "Word error rate & ASR evaluation",
+          "level": "intermediate"
+        },
+        {
+          "id": "speech-recognition-audio-classification",
+          "name": "Audio classification models",
+          "level": "intermediate"
+        },
+        {
+          "id": "speech-recognition-diarisation",
+          "name": "Speaker diarisation & timestamps",
+          "level": "intermediate"
+        },
+        {
+          "id": "speech-recognition-fine-tuning",
+          "name": "Fine-tuning ASR models",
+          "level": "advanced"
+        },
+        {
+          "id": "speech-recognition-streaming",
+          "name": "Real-time streaming ASR",
+          "level": "advanced"
+        }
+      ]
+    },
+    "rag": {
+      "roadmap_url": "https://roadmap.sh/ai-engineer",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "rag-concept",
+          "name": "RAG concept & when to use it",
+          "level": "beginner"
+        },
+        {
+          "id": "rag-embeddings",
+          "name": "Text embeddings & similarity search",
+          "level": "beginner"
+        },
+        {
+          "id": "rag-chunking",
+          "name": "Document loading & chunking strategies",
+          "level": "intermediate"
+        },
+        {
+          "id": "rag-vector-db",
+          "name": "Vector databases & indexing",
+          "level": "intermediate"
+        },
+        {
+          "id": "rag-prompt-assembly",
+          "name": "Context assembly & source citations",
+          "level": "intermediate"
+        },
+        {
+          "id": "rag-hybrid-rerank",
+          "name": "Hybrid search & re-ranking",
+          "level": "advanced"
+        },
+        {
+          "id": "rag-query-rewriting",
+          "name": "Query rewriting & multi-hop retrieval",
+          "level": "advanced"
+        },
+        {
+          "id": "rag-evaluation",
+          "name": "RAG evaluation: faithfulness & retrieval recall",
+          "level": "advanced"
+        }
+      ]
+    },
+    "agentic-ai": {
+      "roadmap_url": "https://roadmap.sh/ai-agents",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "agentic-ai-agent-concept",
+          "name": "Agents: LLM, tools & the control loop",
+          "level": "beginner"
+        },
+        {
+          "id": "agentic-ai-tool-calling",
+          "name": "Tool/function calling",
+          "level": "beginner"
+        },
+        {
+          "id": "agentic-ai-planning-patterns",
+          "name": "ReAct & planning patterns",
+          "level": "intermediate"
+        },
+        {
+          "id": "agentic-ai-memory-state",
+          "name": "Agent memory & state",
+          "level": "intermediate"
+        },
+        {
+          "id": "agentic-ai-graph-orchestration",
+          "name": "Graph-based orchestration (LangGraph)",
+          "level": "intermediate"
+        },
+        {
+          "id": "agentic-ai-tool-protocols",
+          "name": "Tool protocols (MCP) & integrations",
+          "level": "intermediate"
+        },
+        {
+          "id": "agentic-ai-multi-agent",
+          "name": "Multi-agent collaboration patterns",
+          "level": "advanced"
+        },
+        {
+          "id": "agentic-ai-eval-guardrails",
+          "name": "Agent evaluation, observability & guardrails",
+          "level": "advanced"
+        }
+      ]
+    },
+    "mlops": {
+      "roadmap_url": "https://roadmap.sh/mlops",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "mlops-lifecycle",
+          "name": "ML lifecycle & DevOps principles for ML",
+          "level": "beginner"
+        },
+        {
+          "id": "mlops-versioning",
+          "name": "Versioning code, data & models",
+          "level": "beginner"
+        },
+        {
+          "id": "mlops-experiment-tracking",
+          "name": "Experiment tracking (MLflow)",
+          "level": "intermediate"
+        },
+        {
+          "id": "mlops-training-pipelines",
+          "name": "Automated training pipelines",
+          "level": "intermediate"
+        },
+        {
+          "id": "mlops-model-serving",
+          "name": "Model serving with APIs & containers",
+          "level": "intermediate"
+        },
+        {
+          "id": "mlops-ml-cicd",
+          "name": "CI/CD for ML",
+          "level": "intermediate"
+        },
+        {
+          "id": "mlops-monitoring-drift",
+          "name": "Model monitoring & drift detection",
+          "level": "advanced"
+        },
+        {
+          "id": "mlops-registry-feature-store",
+          "name": "Model registries & feature stores",
+          "level": "advanced"
+        }
+      ]
+    },
+    "model-evaluation": {
+      "roadmap_url": "https://roadmap.sh/machine-learning",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "model-evaluation-data-splits",
+          "name": "Train, validation & test splits",
+          "level": "beginner"
+        },
+        {
+          "id": "model-evaluation-regression-metrics",
+          "name": "Regression metrics (MAE, RMSE, R-squared)",
+          "level": "beginner"
+        },
+        {
+          "id": "model-evaluation-classification-metrics",
+          "name": "Accuracy, precision, recall & F1",
+          "level": "beginner"
+        },
+        {
+          "id": "model-evaluation-roc-pr-thresholds",
+          "name": "ROC-AUC, PR curves & thresholds",
+          "level": "intermediate"
+        },
+        {
+          "id": "model-evaluation-cross-validation",
+          "name": "Cross-validation strategies",
+          "level": "intermediate"
+        },
+        {
+          "id": "model-evaluation-imbalanced",
+          "name": "Evaluating on imbalanced data",
+          "level": "intermediate"
+        },
+        {
+          "id": "model-evaluation-calibration",
+          "name": "Probability calibration",
+          "level": "advanced"
+        },
+        {
+          "id": "model-evaluation-model-comparison",
+          "name": "Statistical model comparison & error analysis",
+          "level": "advanced"
+        }
+      ]
+    },
+    "sql": {
+      "roadmap_url": "https://roadmap.sh/sql",
+      "references": [
+        "mslearn",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "sql-select-filter",
+          "name": "SELECT, WHERE & ORDER BY",
+          "level": "beginner"
+        },
+        {
+          "id": "sql-aggregates",
+          "name": "Aggregate functions & GROUP BY",
+          "level": "beginner"
+        },
+        {
+          "id": "sql-joins",
+          "name": "Joins across tables",
+          "level": "beginner"
+        },
+        {
+          "id": "sql-dml",
+          "name": "INSERT, UPDATE & DELETE",
+          "level": "beginner"
+        },
+        {
+          "id": "sql-subqueries-ctes",
+          "name": "Subqueries & CTEs",
+          "level": "intermediate"
+        },
+        {
+          "id": "sql-window-functions",
+          "name": "Window functions",
+          "level": "intermediate"
+        },
+        {
+          "id": "sql-indexes-plans",
+          "name": "Indexes & query plans",
+          "level": "intermediate"
+        },
+        {
+          "id": "sql-transactions",
+          "name": "Transactions & isolation levels",
+          "level": "advanced"
+        }
+      ]
+    },
+    "etl": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "etl-concepts",
+          "name": "ETL vs ELT & pipeline stages",
+          "level": "beginner"
+        },
+        {
+          "id": "etl-extract",
+          "name": "Extracting from files, APIs & databases",
+          "level": "beginner"
+        },
+        {
+          "id": "etl-transform",
+          "name": "Transforming & cleaning data with Python/SQL",
+          "level": "beginner"
+        },
+        {
+          "id": "etl-load-patterns",
+          "name": "Full vs incremental loading",
+          "level": "intermediate"
+        },
+        {
+          "id": "etl-data-quality",
+          "name": "Data validation & quality checks",
+          "level": "intermediate"
+        },
+        {
+          "id": "etl-scheduling",
+          "name": "Scheduling & orchestration basics",
+          "level": "intermediate"
+        },
+        {
+          "id": "etl-idempotency-backfills",
+          "name": "Idempotent, backfill-safe pipelines",
+          "level": "advanced"
+        },
+        {
+          "id": "etl-cdc-streaming",
+          "name": "Change data capture & streaming ingestion",
+          "level": "advanced"
+        }
+      ]
+    },
+    "spark": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "spark-architecture",
+          "name": "Spark architecture: driver, executors & RDDs",
+          "level": "beginner"
+        },
+        {
+          "id": "spark-dataframes-io",
+          "name": "DataFrame API & file formats (Parquet)",
+          "level": "beginner"
+        },
+        {
+          "id": "spark-lazy-evaluation",
+          "name": "Transformations, actions & lazy evaluation",
+          "level": "beginner"
+        },
+        {
+          "id": "spark-spark-sql",
+          "name": "Spark SQL",
+          "level": "beginner"
+        },
+        {
+          "id": "spark-joins-aggregations",
+          "name": "Joins & aggregations at scale",
+          "level": "intermediate"
+        },
+        {
+          "id": "spark-partitioning-shuffles",
+          "name": "Partitioning & shuffles",
+          "level": "intermediate"
+        },
+        {
+          "id": "spark-tuning",
+          "name": "Performance tuning (caching, broadcast joins, AQE)",
+          "level": "advanced"
+        },
+        {
+          "id": "spark-structured-streaming",
+          "name": "Structured Streaming",
+          "level": "advanced"
+        }
+      ]
+    },
+    "airflow": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "airflow-concepts",
+          "name": "DAGs, tasks & scheduling concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "airflow-first-dag",
+          "name": "Operators & writing a first DAG",
+          "level": "beginner"
+        },
+        {
+          "id": "airflow-dependencies-retries",
+          "name": "Task dependencies, retries & backfills",
+          "level": "intermediate"
+        },
+        {
+          "id": "airflow-connections-hooks",
+          "name": "Connections, hooks & variables",
+          "level": "intermediate"
+        },
+        {
+          "id": "airflow-xcom",
+          "name": "Passing data between tasks with XCom",
+          "level": "intermediate"
+        },
+        {
+          "id": "airflow-taskflow-dynamic",
+          "name": "TaskFlow API & dynamic task mapping",
+          "level": "intermediate"
+        },
+        {
+          "id": "airflow-dag-testing",
+          "name": "Testing & monitoring DAGs",
+          "level": "advanced"
+        },
+        {
+          "id": "airflow-executors-scaling",
+          "name": "Executors, scaling & production deployment",
+          "level": "advanced"
+        }
+      ]
+    },
+    "kafka": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "kafka-core-concepts",
+          "name": "Topics, partitions & brokers",
+          "level": "beginner"
+        },
+        {
+          "id": "kafka-producers-consumers",
+          "name": "Producers & consumers",
+          "level": "beginner"
+        },
+        {
+          "id": "kafka-consumer-groups",
+          "name": "Consumer groups & offsets",
+          "level": "intermediate"
+        },
+        {
+          "id": "kafka-delivery-semantics",
+          "name": "Delivery semantics & idempotent producers",
+          "level": "intermediate"
+        },
+        {
+          "id": "kafka-schema-registry",
+          "name": "Schemas & Schema Registry",
+          "level": "intermediate"
+        },
+        {
+          "id": "kafka-connect",
+          "name": "Kafka Connect for integration",
+          "level": "intermediate"
+        },
+        {
+          "id": "kafka-stream-processing",
+          "name": "Stream processing (Kafka Streams/ksqlDB)",
+          "level": "advanced"
+        },
+        {
+          "id": "kafka-cluster-ops",
+          "name": "Replication, retention & cluster operations",
+          "level": "advanced"
+        }
+      ]
+    },
+    "data-warehousing": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "data-warehousing-oltp-olap",
+          "name": "OLTP vs OLAP & warehouse concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "data-warehousing-facts-dimensions",
+          "name": "Fact & dimension tables",
+          "level": "beginner"
+        },
+        {
+          "id": "data-warehousing-loading",
+          "name": "Loading & transforming data in the warehouse",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-warehousing-cloud-warehouses",
+          "name": "Cloud warehouses (Snowflake, BigQuery, Redshift)",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-warehousing-slowly-changing",
+          "name": "Slowly changing dimensions",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-warehousing-partition-cluster",
+          "name": "Partitioning & clustering tables",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-warehousing-cost-performance",
+          "name": "Query performance & cost optimisation",
+          "level": "advanced"
+        },
+        {
+          "id": "data-warehousing-governance",
+          "name": "Warehouse security & data governance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "dbt": {
+      "roadmap_url": "https://roadmap.sh/data-engineer",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "dbt-project-models",
+          "name": "Project structure & models",
+          "level": "beginner"
+        },
+        {
+          "id": "dbt-sources-ref",
+          "name": "Sources, ref() & lineage",
+          "level": "beginner"
+        },
+        {
+          "id": "dbt-tests-docs",
+          "name": "Data tests & documentation",
+          "level": "intermediate"
+        },
+        {
+          "id": "dbt-materializations",
+          "name": "Materialisations: view, table, incremental",
+          "level": "intermediate"
+        },
+        {
+          "id": "dbt-jinja-macros",
+          "name": "Jinja & macros",
+          "level": "intermediate"
+        },
+        {
+          "id": "dbt-snapshots",
+          "name": "Snapshots for changing data",
+          "level": "intermediate"
+        },
+        {
+          "id": "dbt-incremental-strategies",
+          "name": "Incremental model strategies",
+          "level": "advanced"
+        },
+        {
+          "id": "dbt-ci-deployment",
+          "name": "Packages, CI & deployment",
+          "level": "advanced"
+        }
+      ]
+    },
+    "data-modeling": {
+      "roadmap_url": "",
+      "references": [
+        "esco",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "data-modeling-entities-er",
+          "name": "Entity-relationship modelling",
+          "level": "beginner"
+        },
+        {
+          "id": "data-modeling-keys-relationships",
+          "name": "Keys, cardinality & relationships",
+          "level": "beginner"
+        },
+        {
+          "id": "data-modeling-normalisation",
+          "name": "Normalisation (1NF to 3NF)",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-modeling-denormalisation",
+          "name": "Denormalisation trade-offs",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-modeling-dimensional",
+          "name": "Dimensional modelling: facts & dimensions",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-modeling-star-snowflake",
+          "name": "Star vs snowflake schemas",
+          "level": "intermediate"
+        },
+        {
+          "id": "data-modeling-history-scd",
+          "name": "Modelling history with SCD types",
+          "level": "advanced"
+        },
+        {
+          "id": "data-modeling-data-vault",
+          "name": "Data vault & other enterprise modelling approaches",
+          "level": "advanced"
+        }
+      ]
+    },
+    "nosql": {
+      "roadmap_url": "",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "nosql-types",
+          "name": "NoSQL families: document, key-value, column, graph",
+          "level": "beginner"
+        },
+        {
+          "id": "nosql-document-crud",
+          "name": "Document CRUD (MongoDB)",
+          "level": "beginner"
+        },
+        {
+          "id": "nosql-key-value-cache",
+          "name": "Key-value stores & caching (Redis)",
+          "level": "beginner"
+        },
+        {
+          "id": "nosql-access-pattern-modelling",
+          "name": "Data modelling for access patterns",
+          "level": "intermediate"
+        },
+        {
+          "id": "nosql-indexing",
+          "name": "Indexing & query optimisation",
+          "level": "intermediate"
+        },
+        {
+          "id": "nosql-consistency",
+          "name": "CAP theorem & consistency models",
+          "level": "intermediate"
+        },
+        {
+          "id": "nosql-sharding",
+          "name": "Sharding & partition key design",
+          "level": "advanced"
+        },
+        {
+          "id": "nosql-replication",
+          "name": "Replication & failover",
+          "level": "advanced"
+        }
+      ]
+    },
+    "linux": {
+      "roadmap_url": "https://roadmap.sh/linux",
+      "references": [
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "linux-filesystem",
+          "name": "Filesystem hierarchy & navigation",
+          "level": "beginner"
+        },
+        {
+          "id": "linux-users-permissions",
+          "name": "Users, groups & file permissions",
+          "level": "beginner"
+        },
+        {
+          "id": "linux-packages",
+          "name": "Package management",
+          "level": "beginner"
+        },
+        {
+          "id": "linux-processes-services",
+          "name": "Processes, signals & systemd services",
+          "level": "intermediate"
+        },
+        {
+          "id": "linux-networking-ssh",
+          "name": "Networking tools & SSH",
+          "level": "intermediate"
+        },
+        {
+          "id": "linux-logs-troubleshooting",
+          "name": "Logs & troubleshooting",
+          "level": "intermediate"
+        },
+        {
+          "id": "linux-storage",
+          "name": "Disks, mounts & storage",
+          "level": "intermediate"
+        },
+        {
+          "id": "linux-hardening-tuning",
+          "name": "Security hardening & performance tuning",
+          "level": "advanced"
+        }
+      ]
+    },
+    "git": {
+      "roadmap_url": "https://roadmap.sh/git-github",
+      "references": [
+        "mslearn",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "git-basics",
+          "name": "Repos, commits & the staging area",
+          "level": "beginner"
+        },
+        {
+          "id": "git-history-undo",
+          "name": "Viewing history & undoing changes",
+          "level": "beginner"
+        },
+        {
+          "id": "git-branching-merging",
+          "name": "Branching & merging",
+          "level": "beginner"
+        },
+        {
+          "id": "git-remotes",
+          "name": "Remotes: clone, push & pull",
+          "level": "beginner"
+        },
+        {
+          "id": "git-conflicts",
+          "name": "Resolving merge conflicts",
+          "level": "intermediate"
+        },
+        {
+          "id": "git-pull-requests",
+          "name": "Pull requests & code review",
+          "level": "intermediate"
+        },
+        {
+          "id": "git-workflows",
+          "name": "Team workflows (GitHub flow, trunk-based)",
+          "level": "intermediate"
+        },
+        {
+          "id": "git-rebase-history",
+          "name": "Rebasing, cherry-picking & rewriting history",
+          "level": "advanced"
+        }
+      ]
+    },
+    "docker": {
+      "roadmap_url": "https://roadmap.sh/docker",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "docker-concepts",
+          "name": "Containers vs VMs & core concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "docker-images-containers",
+          "name": "Running containers & managing images",
+          "level": "beginner"
+        },
+        {
+          "id": "docker-dockerfile",
+          "name": "Writing Dockerfiles",
+          "level": "beginner"
+        },
+        {
+          "id": "docker-volumes-networks",
+          "name": "Volumes & networking",
+          "level": "intermediate"
+        },
+        {
+          "id": "docker-compose",
+          "name": "Multi-container apps with Docker Compose",
+          "level": "intermediate"
+        },
+        {
+          "id": "docker-registries",
+          "name": "Registries & image tagging",
+          "level": "intermediate"
+        },
+        {
+          "id": "docker-multi-stage",
+          "name": "Multi-stage builds & image optimisation",
+          "level": "advanced"
+        },
+        {
+          "id": "docker-security",
+          "name": "Container security best practices",
+          "level": "advanced"
+        }
+      ]
+    },
+    "kubernetes": {
+      "roadmap_url": "https://roadmap.sh/kubernetes",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "kubernetes-architecture-kubectl",
+          "name": "Cluster architecture & kubectl",
+          "level": "beginner"
+        },
+        {
+          "id": "kubernetes-pods-deployments",
+          "name": "Pods, ReplicaSets & Deployments",
+          "level": "beginner"
+        },
+        {
+          "id": "kubernetes-services",
+          "name": "Services & cluster networking basics",
+          "level": "beginner"
+        },
+        {
+          "id": "kubernetes-config-secrets",
+          "name": "ConfigMaps & Secrets",
+          "level": "intermediate"
+        },
+        {
+          "id": "kubernetes-storage",
+          "name": "Persistent volumes & storage classes",
+          "level": "intermediate"
+        },
+        {
+          "id": "kubernetes-ingress",
+          "name": "Ingress & load balancing",
+          "level": "intermediate"
+        },
+        {
+          "id": "kubernetes-helm",
+          "name": "Packaging apps with Helm",
+          "level": "intermediate"
+        },
+        {
+          "id": "kubernetes-scaling-security",
+          "name": "Autoscaling, RBAC & cluster security",
+          "level": "advanced"
+        }
+      ]
+    },
+    "aws": {
+      "roadmap_url": "https://roadmap.sh/aws",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "aws-foundations",
+          "name": "Global infrastructure, IAM basics & billing",
+          "level": "beginner"
+        },
+        {
+          "id": "aws-ec2",
+          "name": "Compute with EC2",
+          "level": "beginner"
+        },
+        {
+          "id": "aws-s3",
+          "name": "Object storage with S3",
+          "level": "beginner"
+        },
+        {
+          "id": "aws-vpc",
+          "name": "Networking with VPC",
+          "level": "intermediate"
+        },
+        {
+          "id": "aws-databases",
+          "name": "Managed databases (RDS, DynamoDB)",
+          "level": "intermediate"
+        },
+        {
+          "id": "aws-serverless",
+          "name": "Serverless with Lambda & API Gateway",
+          "level": "intermediate"
+        },
+        {
+          "id": "aws-cloudwatch",
+          "name": "Monitoring & logging with CloudWatch",
+          "level": "intermediate"
+        },
+        {
+          "id": "aws-well-architected",
+          "name": "High availability & cost-optimised architecture",
+          "level": "advanced"
+        }
+      ]
+    },
+    "azure": {
+      "roadmap_url": "",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "azure-cloud-concepts",
+          "name": "Cloud concepts & service models",
+          "level": "beginner"
+        },
+        {
+          "id": "azure-core-architecture",
+          "name": "Regions, subscriptions & resource groups",
+          "level": "beginner"
+        },
+        {
+          "id": "azure-compute",
+          "name": "Compute services (VMs, App Service, Functions)",
+          "level": "beginner"
+        },
+        {
+          "id": "azure-storage",
+          "name": "Storage services",
+          "level": "beginner"
+        },
+        {
+          "id": "azure-networking",
+          "name": "Virtual networks & network security",
+          "level": "intermediate"
+        },
+        {
+          "id": "azure-identity-rbac",
+          "name": "Microsoft Entra ID & role-based access",
+          "level": "intermediate"
+        },
+        {
+          "id": "azure-monitor-governance",
+          "name": "Azure Monitor, policy & governance",
+          "level": "intermediate"
+        },
+        {
+          "id": "azure-architecture-cost",
+          "name": "Well-architected design & cost management",
+          "level": "advanced"
+        }
+      ]
+    },
+    "gcp": {
+      "roadmap_url": "",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "gcp-resource-hierarchy",
+          "name": "Projects, regions & resource hierarchy",
+          "level": "beginner"
+        },
+        {
+          "id": "gcp-compute",
+          "name": "Compute Engine & Cloud Run",
+          "level": "beginner"
+        },
+        {
+          "id": "gcp-storage",
+          "name": "Cloud Storage",
+          "level": "beginner"
+        },
+        {
+          "id": "gcp-iam",
+          "name": "IAM & service accounts",
+          "level": "intermediate"
+        },
+        {
+          "id": "gcp-networking",
+          "name": "VPC networking",
+          "level": "intermediate"
+        },
+        {
+          "id": "gcp-data-services",
+          "name": "BigQuery & managed databases",
+          "level": "intermediate"
+        },
+        {
+          "id": "gcp-gke",
+          "name": "Kubernetes with GKE",
+          "level": "intermediate"
+        },
+        {
+          "id": "gcp-architecture",
+          "name": "Reliable, cost-efficient architecture on GCP",
+          "level": "advanced"
+        }
+      ]
+    },
+    "terraform": {
+      "roadmap_url": "https://roadmap.sh/terraform",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "terraform-iac-concepts",
+          "name": "Infrastructure as code concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "terraform-hcl-providers",
+          "name": "HCL, providers & resources",
+          "level": "beginner"
+        },
+        {
+          "id": "terraform-core-workflow",
+          "name": "The init, plan & apply workflow",
+          "level": "beginner"
+        },
+        {
+          "id": "terraform-variables-outputs",
+          "name": "Variables, outputs & locals",
+          "level": "intermediate"
+        },
+        {
+          "id": "terraform-state",
+          "name": "State management & remote backends",
+          "level": "intermediate"
+        },
+        {
+          "id": "terraform-modules",
+          "name": "Reusable modules",
+          "level": "intermediate"
+        },
+        {
+          "id": "terraform-environments",
+          "name": "Managing multiple environments",
+          "level": "advanced"
+        },
+        {
+          "id": "terraform-testing-ci",
+          "name": "Testing & CI/CD for infrastructure",
+          "level": "advanced"
+        }
+      ]
+    },
+    "cicd": {
+      "roadmap_url": "https://roadmap.sh/devops",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "cicd-concepts",
+          "name": "CI/CD concepts & pipeline stages",
+          "level": "beginner"
+        },
+        {
+          "id": "cicd-first-workflow",
+          "name": "Building a CI workflow (GitHub Actions)",
+          "level": "beginner"
+        },
+        {
+          "id": "cicd-tests-quality-gates",
+          "name": "Automated tests & quality gates",
+          "level": "intermediate"
+        },
+        {
+          "id": "cicd-artifacts-images",
+          "name": "Build artifacts & container images",
+          "level": "intermediate"
+        },
+        {
+          "id": "cicd-deployment",
+          "name": "Automated deployment to environments",
+          "level": "intermediate"
+        },
+        {
+          "id": "cicd-secrets-config",
+          "name": "Secrets & environment configuration",
+          "level": "intermediate"
+        },
+        {
+          "id": "cicd-release-strategies",
+          "name": "Blue-green & canary releases",
+          "level": "advanced"
+        },
+        {
+          "id": "cicd-reusable-secure",
+          "name": "Reusable workflows & pipeline security",
+          "level": "advanced"
+        }
+      ]
+    },
+    "monitoring": {
+      "roadmap_url": "https://roadmap.sh/devops",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "monitoring-pillars",
+          "name": "Metrics, logs & traces",
+          "level": "beginner"
+        },
+        {
+          "id": "monitoring-structured-logging",
+          "name": "Structured logging",
+          "level": "beginner"
+        },
+        {
+          "id": "monitoring-prometheus",
+          "name": "Metrics collection with Prometheus",
+          "level": "intermediate"
+        },
+        {
+          "id": "monitoring-grafana",
+          "name": "Dashboards with Grafana",
+          "level": "intermediate"
+        },
+        {
+          "id": "monitoring-alerting",
+          "name": "Alerting & on-call practices",
+          "level": "intermediate"
+        },
+        {
+          "id": "monitoring-tracing",
+          "name": "Distributed tracing (OpenTelemetry)",
+          "level": "intermediate"
+        },
+        {
+          "id": "monitoring-slos",
+          "name": "SLIs, SLOs & error budgets",
+          "level": "advanced"
+        }
+      ]
+    },
+    "networking": {
+      "roadmap_url": "",
+      "references": [
+        "ossu",
+        "ciu"
+      ],
+      "subtopics": [
+        {
+          "id": "networking-models",
+          "name": "OSI & TCP/IP models",
+          "level": "beginner"
+        },
+        {
+          "id": "networking-addressing",
+          "name": "IP addressing & subnetting",
+          "level": "beginner"
+        },
+        {
+          "id": "networking-tcp-udp",
+          "name": "TCP, UDP & ports",
+          "level": "beginner"
+        },
+        {
+          "id": "networking-dns-dhcp",
+          "name": "DNS & DHCP",
+          "level": "beginner"
+        },
+        {
+          "id": "networking-routing-switching",
+          "name": "Routing & switching fundamentals",
+          "level": "intermediate"
+        },
+        {
+          "id": "networking-http-tls",
+          "name": "HTTP, HTTPS & TLS basics",
+          "level": "intermediate"
+        },
+        {
+          "id": "networking-troubleshooting",
+          "name": "Troubleshooting tools & packet capture",
+          "level": "intermediate"
+        },
+        {
+          "id": "networking-nat-vpn-lb",
+          "name": "NAT, VPNs & load balancing",
+          "level": "advanced"
+        }
+      ]
+    },
+    "network-security": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [
+        "esco",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "network-security-cia-threats",
+          "name": "CIA triad & common network threats",
+          "level": "beginner"
+        },
+        {
+          "id": "network-security-firewalls",
+          "name": "Firewalls & access control lists",
+          "level": "beginner"
+        },
+        {
+          "id": "network-security-segmentation",
+          "name": "Network segmentation & DMZs",
+          "level": "intermediate"
+        },
+        {
+          "id": "network-security-vpn",
+          "name": "VPNs & secure remote access",
+          "level": "intermediate"
+        },
+        {
+          "id": "network-security-ids-ips",
+          "name": "Intrusion detection & prevention",
+          "level": "intermediate"
+        },
+        {
+          "id": "network-security-wireless",
+          "name": "Wireless network security",
+          "level": "intermediate"
+        },
+        {
+          "id": "network-security-traffic-analysis",
+          "name": "Packet analysis & traffic monitoring",
+          "level": "intermediate"
+        },
+        {
+          "id": "network-security-zero-trust",
+          "name": "Zero-trust network architecture",
+          "level": "advanced"
+        }
+      ]
+    },
+    "siem": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "siem-log-sources",
+          "name": "Log sources & log formats",
+          "level": "beginner"
+        },
+        {
+          "id": "siem-architecture",
+          "name": "SIEM architecture & data ingestion",
+          "level": "beginner"
+        },
+        {
+          "id": "siem-log-queries",
+          "name": "Searching logs with query languages",
+          "level": "intermediate"
+        },
+        {
+          "id": "siem-correlation-rules",
+          "name": "Correlation rules & detections",
+          "level": "intermediate"
+        },
+        {
+          "id": "siem-alert-triage",
+          "name": "Alert triage & false-positive tuning",
+          "level": "intermediate"
+        },
+        {
+          "id": "siem-dashboards-reporting",
+          "name": "Security dashboards & reporting",
+          "level": "intermediate"
+        },
+        {
+          "id": "siem-detection-engineering",
+          "name": "Detection engineering mapped to ATT&CK",
+          "level": "advanced"
+        },
+        {
+          "id": "siem-soar",
+          "name": "Automated response playbooks (SOAR)",
+          "level": "advanced"
+        }
+      ]
+    },
+    "incident-response": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "incident-response-lifecycle",
+          "name": "Incident response lifecycle",
+          "level": "beginner"
+        },
+        {
+          "id": "incident-response-triage",
+          "name": "Detection, triage & severity assessment",
+          "level": "beginner"
+        },
+        {
+          "id": "incident-response-containment",
+          "name": "Containment, eradication & recovery",
+          "level": "intermediate"
+        },
+        {
+          "id": "incident-response-evidence",
+          "name": "Evidence collection & chain of custody",
+          "level": "intermediate"
+        },
+        {
+          "id": "incident-response-playbooks",
+          "name": "Runbooks & playbooks",
+          "level": "intermediate"
+        },
+        {
+          "id": "incident-response-post-incident",
+          "name": "Post-incident review & reporting",
+          "level": "intermediate"
+        },
+        {
+          "id": "incident-response-forensics",
+          "name": "Disk & memory forensics",
+          "level": "advanced"
+        },
+        {
+          "id": "incident-response-malware-analysis",
+          "name": "Malware analysis basics",
+          "level": "advanced"
+        }
+      ]
+    },
+    "vuln-assessment": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "vuln-assessment-concepts",
+          "name": "Vulnerabilities, CVEs & CVSS scoring",
+          "level": "beginner"
+        },
+        {
+          "id": "vuln-assessment-asset-discovery",
+          "name": "Asset discovery & reconnaissance",
+          "level": "beginner"
+        },
+        {
+          "id": "vuln-assessment-network-scanning",
+          "name": "Network & vulnerability scanning",
+          "level": "intermediate"
+        },
+        {
+          "id": "vuln-assessment-web-scanning",
+          "name": "Web application scanning",
+          "level": "intermediate"
+        },
+        {
+          "id": "vuln-assessment-validation",
+          "name": "Validating findings & false positives",
+          "level": "intermediate"
+        },
+        {
+          "id": "vuln-assessment-prioritisation",
+          "name": "Risk-based prioritisation & remediation",
+          "level": "intermediate"
+        },
+        {
+          "id": "vuln-assessment-reporting",
+          "name": "Writing assessment reports",
+          "level": "intermediate"
+        },
+        {
+          "id": "vuln-assessment-pentest-method",
+          "name": "Penetration testing methodology",
+          "level": "advanced"
+        }
+      ]
+    },
+    "threat-intel": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [],
+      "subtopics": [
+        {
+          "id": "threat-intel-types-lifecycle",
+          "name": "Intelligence types & the intel lifecycle",
+          "level": "beginner"
+        },
+        {
+          "id": "threat-intel-iocs",
+          "name": "Indicators of compromise",
+          "level": "beginner"
+        },
+        {
+          "id": "threat-intel-attack-mapping",
+          "name": "Mapping behaviour to MITRE ATT&CK",
+          "level": "intermediate"
+        },
+        {
+          "id": "threat-intel-feeds-sharing",
+          "name": "Threat feeds & sharing platforms",
+          "level": "intermediate"
+        },
+        {
+          "id": "threat-intel-osint",
+          "name": "OSINT collection",
+          "level": "intermediate"
+        },
+        {
+          "id": "threat-intel-threat-hunting",
+          "name": "Hypothesis-driven threat hunting",
+          "level": "advanced"
+        },
+        {
+          "id": "threat-intel-adversary-profiling",
+          "name": "Adversary profiling & attribution",
+          "level": "advanced"
+        }
+      ]
+    },
+    "appsec": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "appsec-secure-design",
+          "name": "Secure design principles",
+          "level": "beginner"
+        },
+        {
+          "id": "appsec-owasp-top10",
+          "name": "OWASP Top 10 overview",
+          "level": "beginner"
+        },
+        {
+          "id": "appsec-input-validation",
+          "name": "Input validation & output encoding",
+          "level": "beginner"
+        },
+        {
+          "id": "appsec-auth-sessions",
+          "name": "Secure authentication & session handling",
+          "level": "intermediate"
+        },
+        {
+          "id": "appsec-dependencies-secrets",
+          "name": "Dependency & secrets management",
+          "level": "intermediate"
+        },
+        {
+          "id": "appsec-sast-dast",
+          "name": "SAST & DAST tooling",
+          "level": "intermediate"
+        },
+        {
+          "id": "appsec-threat-modelling",
+          "name": "Threat modelling",
+          "level": "intermediate"
+        },
+        {
+          "id": "appsec-devsecops",
+          "name": "Secure SDLC & DevSecOps",
+          "level": "advanced"
+        }
+      ]
+    },
+    "cryptography": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [
+        "esco",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "cryptography-concepts",
+          "name": "Confidentiality, integrity & core concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "cryptography-hashing",
+          "name": "Hash functions & password hashing",
+          "level": "beginner"
+        },
+        {
+          "id": "cryptography-symmetric",
+          "name": "Symmetric encryption (AES)",
+          "level": "beginner"
+        },
+        {
+          "id": "cryptography-asymmetric",
+          "name": "Public-key cryptography (RSA, ECC)",
+          "level": "intermediate"
+        },
+        {
+          "id": "cryptography-signatures-macs",
+          "name": "Digital signatures & MACs",
+          "level": "intermediate"
+        },
+        {
+          "id": "cryptography-pki",
+          "name": "Certificates & PKI",
+          "level": "intermediate"
+        },
+        {
+          "id": "cryptography-tls",
+          "name": "The TLS handshake",
+          "level": "intermediate"
+        },
+        {
+          "id": "cryptography-key-management",
+          "name": "Key management & common crypto pitfalls",
+          "level": "advanced"
+        }
+      ]
+    },
+    "iam": {
+      "roadmap_url": "",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "iam-concepts",
+          "name": "Identity, authentication & authorisation concepts",
+          "level": "beginner"
+        },
+        {
+          "id": "iam-mfa-passwords",
+          "name": "MFA & password policies",
+          "level": "beginner"
+        },
+        {
+          "id": "iam-least-privilege",
+          "name": "RBAC, ABAC & least privilege",
+          "level": "intermediate"
+        },
+        {
+          "id": "iam-sso-federation",
+          "name": "SSO & federation (SAML, OIDC)",
+          "level": "intermediate"
+        },
+        {
+          "id": "iam-directories",
+          "name": "Directory services (Entra ID, LDAP)",
+          "level": "intermediate"
+        },
+        {
+          "id": "iam-lifecycle",
+          "name": "Identity lifecycle & access reviews",
+          "level": "intermediate"
+        },
+        {
+          "id": "iam-pam",
+          "name": "Privileged access management",
+          "level": "advanced"
+        },
+        {
+          "id": "iam-zero-trust",
+          "name": "Zero-trust identity & conditional access",
+          "level": "advanced"
+        }
+      ]
+    },
+    "cloud-security": {
+      "roadmap_url": "https://roadmap.sh/cyber-security",
+      "references": [
+        "mslearn"
+      ],
+      "subtopics": [
+        {
+          "id": "cloud-security-shared-responsibility",
+          "name": "Shared responsibility model",
+          "level": "beginner"
+        },
+        {
+          "id": "cloud-security-cloud-iam",
+          "name": "Cloud IAM & least privilege",
+          "level": "beginner"
+        },
+        {
+          "id": "cloud-security-network-controls",
+          "name": "Security groups & private networking",
+          "level": "intermediate"
+        },
+        {
+          "id": "cloud-security-encryption-kms",
+          "name": "Encryption & key management services",
+          "level": "intermediate"
+        },
+        {
+          "id": "cloud-security-logging-detection",
+          "name": "Cloud logging & threat detection",
+          "level": "intermediate"
+        },
+        {
+          "id": "cloud-security-posture",
+          "name": "Posture management & misconfigurations",
+          "level": "intermediate"
+        },
+        {
+          "id": "cloud-security-containers-serverless",
+          "name": "Container & serverless security",
+          "level": "advanced"
+        },
+        {
+          "id": "cloud-security-compliance",
+          "name": "Compliance frameworks & governance",
+          "level": "advanced"
+        }
+      ]
+    },
+    "communication": {
+      "roadmap_url": "",
+      "references": [
+        "esco"
+      ],
+      "subtopics": [
+        {
+          "id": "communication-clear-writing",
+          "name": "Clear, concise technical writing",
+          "level": "beginner"
+        },
+        {
+          "id": "communication-active-listening",
+          "name": "Active listening & clarifying questions",
+          "level": "beginner"
+        },
+        {
+          "id": "communication-documentation",
+          "name": "Writing docs, READMEs & design notes",
+          "level": "intermediate"
+        },
+        {
+          "id": "communication-presenting",
+          "name": "Presenting technical work",
+          "level": "intermediate"
+        },
+        {
+          "id": "communication-non-technical",
+          "name": "Explaining tech to non-technical stakeholders",
+          "level": "intermediate"
+        },
+        {
+          "id": "communication-review-feedback",
+          "name": "Giving & receiving code review feedback",
+          "level": "intermediate"
+        },
+        {
+          "id": "communication-proposals",
+          "name": "Written proposals (RFCs) & driving alignment",
+          "level": "advanced"
+        }
+      ]
+    },
+    "agile": {
+      "roadmap_url": "",
+      "references": [
+        "esco"
+      ],
+      "subtopics": [
+        {
+          "id": "agile-values",
+          "name": "Agile values & principles",
+          "level": "beginner"
+        },
+        {
+          "id": "agile-scrum",
+          "name": "Scrum roles, events & artifacts",
+          "level": "beginner"
+        },
+        {
+          "id": "agile-kanban",
+          "name": "Kanban boards & WIP limits",
+          "level": "beginner"
+        },
+        {
+          "id": "agile-user-stories",
+          "name": "User stories & backlog refinement",
+          "level": "intermediate"
+        },
+        {
+          "id": "agile-estimation-planning",
+          "name": "Estimation & sprint planning",
+          "level": "intermediate"
+        },
+        {
+          "id": "agile-retrospectives",
+          "name": "Retrospectives & continuous improvement",
+          "level": "intermediate"
+        },
+        {
+          "id": "agile-flow-metrics",
+          "name": "Velocity, cycle time & flow metrics",
+          "level": "intermediate"
+        },
+        {
+          "id": "agile-scaling",
+          "name": "Scaling agile across teams",
+          "level": "advanced"
+        }
+      ]
+    },
+    "problem-solving": {
+      "roadmap_url": "https://roadmap.sh/datastructures-and-algorithms",
+      "references": [
+        "ciu",
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "problem-solving-complexity",
+          "name": "Big-O & complexity analysis",
+          "level": "beginner"
+        },
+        {
+          "id": "problem-solving-arrays-hashing",
+          "name": "Arrays, strings & hash tables",
+          "level": "beginner"
+        },
+        {
+          "id": "problem-solving-linear-structures",
+          "name": "Linked lists, stacks & queues",
+          "level": "beginner"
+        },
+        {
+          "id": "problem-solving-sorting-searching",
+          "name": "Sorting & binary search",
+          "level": "beginner"
+        },
+        {
+          "id": "problem-solving-recursion-backtracking",
+          "name": "Recursion & backtracking",
+          "level": "intermediate"
+        },
+        {
+          "id": "problem-solving-trees-heaps",
+          "name": "Trees, BSTs & heaps",
+          "level": "intermediate"
+        },
+        {
+          "id": "problem-solving-graphs",
+          "name": "Graphs: BFS, DFS & shortest paths",
+          "level": "intermediate"
+        },
+        {
+          "id": "problem-solving-dp-greedy",
+          "name": "Dynamic programming & greedy algorithms",
+          "level": "advanced"
+        }
+      ]
+    },
+    "system-design": {
+      "roadmap_url": "https://roadmap.sh/system-design",
+      "references": [
+        "ciu"
+      ],
+      "subtopics": [
+        {
+          "id": "system-design-fundamentals",
+          "name": "Client-server, latency & throughput basics",
+          "level": "beginner"
+        },
+        {
+          "id": "system-design-scaling-lb",
+          "name": "Vertical vs horizontal scaling & load balancing",
+          "level": "beginner"
+        },
+        {
+          "id": "system-design-caching",
+          "name": "Caching strategies",
+          "level": "intermediate"
+        },
+        {
+          "id": "system-design-replication-sharding",
+          "name": "Database replication & sharding",
+          "level": "intermediate"
+        },
+        {
+          "id": "system-design-queues",
+          "name": "Message queues & async processing",
+          "level": "intermediate"
+        },
+        {
+          "id": "system-design-cap-consistency",
+          "name": "CAP theorem & consistency trade-offs",
+          "level": "intermediate"
+        },
+        {
+          "id": "system-design-reliability",
+          "name": "Availability, fault tolerance & rate limiting",
+          "level": "advanced"
+        },
+        {
+          "id": "system-design-case-studies",
+          "name": "End-to-end design case studies",
+          "level": "advanced"
+        }
+      ]
+    },
+    "testing": {
+      "roadmap_url": "https://roadmap.sh/qa",
+      "references": [
+        "ossu"
+      ],
+      "subtopics": [
+        {
+          "id": "testing-pyramid",
+          "name": "Test types & the testing pyramid",
+          "level": "beginner"
+        },
+        {
+          "id": "testing-unit-tests",
+          "name": "Writing unit tests & assertions",
+          "level": "beginner"
+        },
+        {
+          "id": "testing-mocking",
+          "name": "Mocking & test doubles",
+          "level": "intermediate"
+        },
+        {
+          "id": "testing-integration-api",
+          "name": "Integration & API testing",
+          "level": "intermediate"
+        },
+        {
+          "id": "testing-tdd",
+          "name": "Test-driven development",
+          "level": "intermediate"
+        },
+        {
+          "id": "testing-e2e",
+          "name": "End-to-end UI testing",
+          "level": "intermediate"
+        },
+        {
+          "id": "testing-coverage-ci",
+          "name": "Coverage & running tests in CI",
+          "level": "intermediate"
+        },
+        {
+          "id": "testing-property-performance",
+          "name": "Property-based & performance testing",
+          "level": "advanced"
+        }
+      ]
+    }
+  }
+}
