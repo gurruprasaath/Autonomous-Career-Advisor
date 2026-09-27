@@ -19,6 +19,7 @@ def test_migrations_add_columns_and_are_idempotent():
     journey_cols = {c["name"] for c in inspector.get_columns("journeys")}
 
     assert {"quiz_score", "confidence_rating", "time_spent_minutes"} <= path_step_cols
+    assert {"subtopics_json", "roadmap_url"} <= path_step_cols
     assert "github_username" in user_cols
     assert {"leetcode_username", "leetcode_stats_json"} <= user_cols
     history_cols = {c["name"] for c in inspector.get_columns("competency_history")}

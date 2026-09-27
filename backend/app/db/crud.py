@@ -53,7 +53,9 @@ def create_path_steps(db: Session, journey_id: int, steps: list, order_offset: i
             objective=s.objective,
             milestone=s.milestone,
             estimated_weeks=s.estimated_weeks,
-            resources_json=json.dumps([r.model_dump() for r in s.resources])
+            resources_json=json.dumps([r.model_dump() for r in s.resources]),
+            subtopics_json=json.dumps([t.model_dump() for t in s.subtopics]),
+            roadmap_url=s.roadmap_url,
         )
         db_steps.append(db_step)
         db.add(db_step)

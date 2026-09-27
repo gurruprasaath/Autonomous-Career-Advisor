@@ -38,6 +38,8 @@ class PathStep(Base):
     estimated_weeks = Column(Float)
     status = Column(String, default="pending") # pending, in_progress, struggling, completed
     resources_json = Column(Text, default="[]") # JSON string of resources
+    subtopics_json = Column(Text, default="[]")  # JSON list of {id, name, level}
+    roadmap_url = Column(String, default="")
     quiz_score = Column(Integer, nullable=True)
     confidence_rating = Column(Integer, nullable=True)
     time_spent_minutes = Column(Integer, default=0)

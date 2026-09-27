@@ -373,6 +373,8 @@ def get_journeys(db: Session = Depends(get_db), current_user: models.User = Depe
                     "confidence_rating": s.confidence_rating,
                     "time_spent_minutes": s.time_spent_minutes,
                     "resources": json.loads(s.resources_json) if s.resources_json else [],
+                    "subtopics": json.loads(s.subtopics_json) if s.subtopics_json else [],
+                    "roadmap_url": s.roadmap_url or "",
                     "github_evidence": [
                         {"repo_name": e.repo_name, "last_pushed_at":
                          e.last_pushed_at.isoformat() if hasattr(e.last_pushed_at, "isoformat") else e.last_pushed_at}
