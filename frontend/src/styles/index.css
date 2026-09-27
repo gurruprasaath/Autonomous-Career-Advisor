@@ -775,3 +775,23 @@ select:focus {
 .repo-history a:hover {
   text-decoration: underline;
 }
+
+/* Curated sub-topics inside a path step */
+.subtopics {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+.subtopic-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.subtopic-list .tag {
+  margin-left: 0.35rem;
+  font-size: 0.72rem;
+}

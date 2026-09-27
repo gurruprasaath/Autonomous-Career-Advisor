@@ -3,6 +3,7 @@ import { useCompetencyHistory, useJourneys, useRecalculateJourney } from '../api
 import GithubConnect from '../components/GithubConnect'
 import LeetcodeConnect from '../components/LeetcodeConnect'
 import CompetencyChart from '../components/CompetencyChart'
+import SubtopicList from '../components/SubtopicList'
 import StepTracker from '../components/StepTracker'
 
 const STATUS_LABEL: Record<string, string> = {
@@ -68,6 +69,7 @@ export default function TrackerPage() {
                     </div>
                     <p className="syl-obj">{s.objective}</p>
                     <p className="milestone">🏁 {s.milestone}</p>
+                    <SubtopicList subtopics={s.subtopics ?? []} roadmapUrl={s.roadmap_url ?? ''} />
                     {s.resources.length > 0 && (
                       <div style={{ marginTop: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                         {s.resources.map((r) => (

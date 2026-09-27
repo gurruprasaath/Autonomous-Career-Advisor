@@ -1,5 +1,11 @@
 export type MasteryLevel = "none" | "beginner" | "intermediate" | "advanced"
 
+export interface Subtopic {
+  id: string
+  name: string
+  level: 'beginner' | 'intermediate' | 'advanced'
+}
+
 export interface StudentSkill {
   skill_id: string
   name: string
@@ -70,6 +76,8 @@ export interface PathStep {
   resources: PathResource[]
   estimated_weeks: number
   milestone: string
+  subtopics?: Subtopic[]
+  roadmap_url?: string
 }
 
 export interface LearningPath {
@@ -133,6 +141,8 @@ export interface TrackerStep {
   time_spent_minutes: number
   resources: PathResource[]
   github_evidence: TrackerStepGithubEvidence[]
+  subtopics?: Subtopic[]
+  roadmap_url?: string
 }
 
 export interface Journey {

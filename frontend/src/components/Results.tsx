@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import PathGraph from './PathGraph'
+import SubtopicList, { CurriculumAttribution } from './SubtopicList'
 import { useJobRecommendations } from '../api/jobs'
 import { useInterviewTips } from '../api/interview'
 import type {
@@ -209,6 +210,7 @@ function PathTimeline({ path }: { path: LearningPath | null }) {
               <div className="syl-name">{s.skill_name}</div>
               <p className="syl-obj">{s.objective}</p>
               <p className="milestone">🏁 {s.milestone}</p>
+              <SubtopicList subtopics={s.subtopics ?? []} roadmapUrl={s.roadmap_url ?? ''} />
               {s.resources.length > 0 && (
                 <div style={{ marginTop: '0.6rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                   {s.resources.map((r) => (
@@ -223,6 +225,7 @@ function PathTimeline({ path }: { path: LearningPath | null }) {
           </div>
         ))}
       </div>
+      <CurriculumAttribution />
     </div>
   )
 }
