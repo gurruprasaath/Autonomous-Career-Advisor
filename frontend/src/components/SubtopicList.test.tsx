@@ -32,7 +32,7 @@ describe('SubtopicList', () => {
   it('shows the curriculum attribution text', () => {
     render(<CurriculumAttribution />)
     expect(screen.getByText(
-      'Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0), Microsoft Learn',
+      'Sub-topics drafted with LLM assistance and reviewed by the authors; some skills cross-checked against ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0) and Microsoft Learn.',
     )).toBeInTheDocument()
   })
 })

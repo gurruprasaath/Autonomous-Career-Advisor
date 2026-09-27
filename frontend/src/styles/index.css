@@ -791,7 +791,3 @@ select:focus {
   flex-direction: column;
   gap: 0.25rem;
 }
-.subtopic-list .tag {
-  margin-left: 0.35rem;
-  font-size: 0.72rem;
-}

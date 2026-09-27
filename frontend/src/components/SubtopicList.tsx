@@ -14,7 +14,7 @@ export default function SubtopicList({ subtopics, roadmapUrl }: { subtopics: Sub
         <ol className="subtopic-list">
           {subtopics.map((t) => (
             <li key={t.id}>
-              {t.name} <span className={`tag level-${t.level}`}>{LEVEL_LABEL[t.level]}</span>
+              {t.name} <span className={`tag level level-${t.level}`}>{LEVEL_LABEL[t.level]}</span>
             </li>
           ))}
         </ol>
@@ -31,7 +31,9 @@ export default function SubtopicList({ subtopics, roadmapUrl }: { subtopics: Sub
 export function CurriculumAttribution() {
   return (
     <p className="hint">
-      Curriculum data: ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC BY-SA 4.0), Microsoft Learn
+      Sub-topics drafted with LLM assistance and reviewed by the authors; some skills
+      cross-checked against ESCO (CC BY 4.0), OSSU (MIT), Coding Interview University (CC
+      BY-SA 4.0) and Microsoft Learn.
     </p>
   )
 }

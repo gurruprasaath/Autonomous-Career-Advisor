@@ -3,7 +3,7 @@ import { useCompetencyHistory, useJourneys, useRecalculateJourney } from '../api
 import GithubConnect from '../components/GithubConnect'
 import LeetcodeConnect from '../components/LeetcodeConnect'
 import CompetencyChart from '../components/CompetencyChart'
-import SubtopicList from '../components/SubtopicList'
+import SubtopicList, { CurriculumAttribution } from '../components/SubtopicList'
 import StepTracker from '../components/StepTracker'
 
 const STATUS_LABEL: Record<string, string> = {
@@ -88,6 +88,7 @@ export default function TrackerPage() {
           </div>
         )
       })}
+      {journeys && journeys.length > 0 && <CurriculumAttribution />}
     </div>
   )
 }
