@@ -9,6 +9,8 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     github_username = Column(String, nullable=True)
+    leetcode_username = Column(String, nullable=True)
+    leetcode_stats_json = Column(Text, nullable=True)
 
     journeys = relationship("LearningJourney", back_populates="user")
 
@@ -62,6 +64,7 @@ class CompetencyHistory(Base):
     quiz_score = Column(Integer, nullable=True)
     confidence_rating = Column(Integer, nullable=True)
     has_github_evidence = Column(Boolean, default=False)
+    leetcode_depth = Column(Integer, nullable=True)
     rationale = Column(String)
     recorded_at = Column(DateTime, default=datetime.datetime.utcnow)
 

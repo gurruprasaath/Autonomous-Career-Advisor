@@ -32,6 +32,9 @@ def run_migrations(engine) -> None:
         "ALTER TABLE users ADD COLUMN github_username VARCHAR",
         "ALTER TABLE journeys ADD COLUMN gap_report_json TEXT",
         "ALTER TABLE journeys ADD COLUMN hours_per_week INTEGER DEFAULT 10",
+        "ALTER TABLE users ADD COLUMN leetcode_username VARCHAR",
+        "ALTER TABLE users ADD COLUMN leetcode_stats_json TEXT",
+        "ALTER TABLE competency_history ADD COLUMN leetcode_depth INTEGER",
     ]
     with engine.connect() as conn:
         for stmt in statements:

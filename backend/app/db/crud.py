@@ -1,6 +1,8 @@
+import datetime
+import json
+
 from sqlalchemy.orm import Session
 from . import models, auth
-import datetime
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -110,6 +112,22 @@ def get_github_evidence_by_skill(db: Session, user_id: int) -> dict[str, list]:
     for row in rows:
         by_skill.setdefault(row.skill_id, []).append(row)
     return by_skill
+
+def save_leetcode_snapshot(db: Session, user: models.User, username: str, snapshot: dict) -> None:
+    """Re-sync overwrites: only the latest snapshot matters, and derived
+    numbers (dsa_depth, weak topics) are recomputed from it on read."""
+    user.leetcode_username = username
+    user.leetcode_stats_json = json.dumps(snapshot)
+    db.commit()
+
+
+def get_leetcode_snapshot(user: models.User) -> dict | None:
+    if not user.leetcode_stats_json:
+        return None
+    try:
+        return json.loads(user.leetcode_stats_json)
+    except ValueError:
+        return None
 
 def create_competency_history(db: Session, user_id: int, skill_id: str, depth_score: int,
                               quiz_score: int | None, confidence_rating: int | None,

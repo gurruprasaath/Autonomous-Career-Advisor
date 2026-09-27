@@ -326,3 +326,37 @@ def test_get_most_recent_journey_returns_none_for_user_with_no_journeys():
     db.refresh(user)
 
     assert crud.get_most_recent_journey(db, user.id) is None
+
+
+def test_leetcode_snapshot_round_trips():
+    db = _db()
+    user = _make_user(db, email="lc@example.com")
+    assert crud.get_leetcode_snapshot(user) is None
+
+    snapshot = {"easy": 5, "medium": 1, "hard": 0, "topics": {"Array": 3},
+                "last_accepted_at": None, "synced_at": "2026-09-27T10:00:00+00:00"}
+    crud.save_leetcode_snapshot(db, user, "alice", snapshot)
+
+    db.refresh(user)
+    assert user.leetcode_username == "alice"
+    assert crud.get_leetcode_snapshot(user) == snapshot
+
+
+def test_leetcode_snapshot_corrupt_json_reads_as_none():
+    db = _db()
+    user = _make_user(db, email="lc2@example.com")
+    user.leetcode_stats_json = "{not json"
+    db.commit()
+    assert crud.get_leetcode_snapshot(user) is None
+
+
+def test_competency_history_batch_accepts_leetcode_depth():
+    db = _db()
+    user = _make_user(db, email="lc3@example.com")
+    crud.create_competency_history_batch(db, [
+        {"user_id": user.id, "skill_id": "problem-solving", "depth_score": 6,
+         "quiz_score": None, "confidence_rating": None, "has_github_evidence": False,
+         "leetcode_depth": 6, "rationale": "r"},
+    ])
+    row = crud.get_latest_competency(db, user.id, "problem-solving")
+    assert row.leetcode_depth == 6
