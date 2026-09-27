@@ -150,6 +150,18 @@ class InterviewTips(BaseModel):
     advice: str = ""
 
 
+class LeetcodeSummary(BaseModel):
+    username: str
+    easy: int
+    medium: int
+    hard: int
+    total: int
+    dsa_depth: Optional[int] = None
+    weak_topics: list[str] = []
+    last_accepted_at: Optional[str] = None
+    synced_at: Optional[str] = None
+
+
 class UserCreate(BaseModel):
     email: str
     password: str

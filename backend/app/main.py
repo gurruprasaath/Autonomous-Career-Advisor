@@ -16,12 +16,12 @@ from .config import get_settings
 from .core.graph import run_advisor
 from .core.llm import get_llm, invoke_llm
 from .core.vectorstore import repo_collection, reset_repo_collection, warm_up
-from .providers import get_job_provider, github
+from .providers import get_job_provider, github, leetcode
 from .db import database, models, crud, auth
 from .db.database import engine, run_migrations
 from pydantic import BaseModel, ValidationError
 
-from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token, RepoChatRequest, RepoChatResponse, JobRecommendation, InterviewTips
+from .schemas import AdviseRequest, AdvisorResult, UserCreate, Token, RepoChatRequest, RepoChatResponse, JobRecommendation, InterviewTips, LeetcodeSummary
 
 # GitHub's own username/repo-name constraints, applied to path params before
 # they reach Chroma collection naming or an outbound GitHub URL.
@@ -96,15 +96,17 @@ def advise(request: AdviseRequest, token: str = Depends(OAuth2PasswordBearer(tok
                 hours_per_week=request.hours_per_week)
             crud.create_path_steps(db, journey.id, result.path.steps)
             from .agents.competency_agent import assess_competency
+            leetcode_snapshot = crud.get_leetcode_snapshot(user)
             rows = []
             for skill in result.profile.skills:
+                lc_depth = leetcode.depth_for_skill(skill.skill_id, leetcode_snapshot)
                 depth_score, rationale = assess_competency(
-                    skill.name, skill.depth_score, None, None, False)
+                    skill.name, skill.depth_score, None, None, False, leetcode_depth=lc_depth)
                 rows.append({
                     "user_id": user.id, "skill_id": skill.skill_id,
                     "depth_score": depth_score, "quiz_score": None,
                     "confidence_rating": None, "has_github_evidence": False,
-                    "rationale": rationale,
+                    "leetcode_depth": lc_depth, "rationale": rationale,
                 })
             crud.create_competency_history_batch(db, rows)
         return result
@@ -312,6 +314,20 @@ def get_job_recommendations(db: Session = Depends(get_db),
     return recommend_jobs(db, current_user.id, journey)
 
 
+def _interview_focus_topics(gap_report_json: str | None, snapshot: dict | None) -> list[str]:
+    """Top-5 gap skills, then LeetCode weak topics (if synced), de-duplicated."""
+    topics: list[str] = []
+    if gap_report_json:
+        try:
+            gaps = json.loads(gap_report_json).get("gaps", [])
+            topics = [g["name"] for g in gaps[:5]]
+        except (ValueError, KeyError, AttributeError):
+            pass
+    if snapshot:
+        topics += [t for t in leetcode.weak_topics(snapshot) if t not in topics]
+    return topics
+
+
 @app.get("/api/interview-tips", response_model=InterviewTips)
 def get_interview_tips(db: Session = Depends(get_db),
                        current_user: models.User = Depends(get_current_user)):
@@ -319,13 +335,8 @@ def get_interview_tips(db: Session = Depends(get_db),
     journey = crud.get_most_recent_journey(db, current_user.id)
     if not journey:
         raise HTTPException(404, "Generate a learning path first to get interview tips.")
-    focus_topics = []
-    if journey.gap_report_json:
-        try:
-            gaps = json.loads(journey.gap_report_json).get("gaps", [])
-            focus_topics = [g["name"] for g in gaps[:5]]
-        except (ValueError, KeyError):
-            pass
+    focus_topics = _interview_focus_topics(journey.gap_report_json,
+                                           crud.get_leetcode_snapshot(current_user))
     tips, _notes = generate_interview_tips(journey.target_role, focus_topics)
     return tips
 
@@ -462,6 +473,40 @@ def sync_github(req: GithubSyncRequest, db: Session = Depends(get_db),
            "evidence_count": len(evidence_rows)}
 
 
+_LEETCODE_USERNAME_RE = re.compile(r"^[A-Za-z0-9_-]{1,30}$")
+
+
+class LeetcodeSyncRequest(BaseModel):
+    username: str
+
+
+@app.post("/api/leetcode/sync", response_model=LeetcodeSummary)
+def sync_leetcode(req: LeetcodeSyncRequest, db: Session = Depends(get_db),
+                  current_user: models.User = Depends(get_current_user)):
+    username = req.username.strip()
+    if not _LEETCODE_USERNAME_RE.match(username):
+        raise HTTPException(400, "Invalid LeetCode username")
+    try:
+        snapshot = leetcode.fetch_profile(username)
+    except leetcode.LeetcodeUserNotFound as e:
+        raise HTTPException(404, f"LeetCode user '{username}' not found") from e
+    except leetcode.LeetcodeUnavailable as e:
+        log.warning("LeetCode sync failed for %s: %s", username, e)
+        raise HTTPException(502, "LeetCode is unavailable right now — try again later") from e
+
+    snapshot["synced_at"] = datetime.now(timezone.utc).isoformat()
+    crud.save_leetcode_snapshot(db, current_user, username, snapshot)
+    return leetcode.summarize(username, snapshot)
+
+
+@app.get("/api/leetcode", response_model=LeetcodeSummary | None)
+def get_leetcode(current_user: models.User = Depends(get_current_user)):
+    snapshot = crud.get_leetcode_snapshot(current_user)
+    if snapshot is None:
+        return None
+    return leetcode.summarize(current_user.leetcode_username, snapshot)
+
+
 @app.post("/api/tracker/journey/{journey_id}/recalculate")
 def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
                         current_user: models.User = Depends(get_current_user)):
@@ -513,6 +558,7 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
 
     from .agents.competency_agent import assess_competency
     github_evidence = crud.get_github_evidence_by_skill(db, current_user.id)
+    leetcode_snapshot = crud.get_leetcode_snapshot(current_user)
     recency_cutoff = datetime.utcnow() - timedelta(days=180)
 
     def _recent(dt) -> bool:
@@ -535,15 +581,18 @@ def recalculate_journey(journey_id: int, db: Session = Depends(get_db),
                 has_github = any(_recent(e.last_pushed_at) for e in evidence_rows)
                 latest = crud.get_latest_competency(db, current_user.id, s.skill_id)
                 resume_prior = latest.depth_score if latest else s.depth_score
+                lc_depth = leetcode.depth_for_skill(s.skill_id, leetcode_snapshot)
                 new_depth, rationale = assess_competency(
-                    s.name, resume_prior, step.quiz_score, step.confidence_rating, has_github
+                    s.name, resume_prior, step.quiz_score, step.confidence_rating, has_github,
+                    leetcode_depth=lc_depth,
                 )
                 s.depth_score = new_depth
                 pending_history.append({
                     "user_id": current_user.id, "skill_id": s.skill_id,
                     "depth_score": new_depth, "quiz_score": step.quiz_score,
                     "confidence_rating": step.confidence_rating,
-                    "has_github_evidence": has_github, "rationale": rationale,
+                    "has_github_evidence": has_github, "leetcode_depth": lc_depth,
+                    "rationale": rationale,
                 })
 
     path, _notes = build_path(profile, partial_gap_report, revision_request=revision_request)
